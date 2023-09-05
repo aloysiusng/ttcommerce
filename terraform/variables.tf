@@ -9,6 +9,10 @@ variable "images_bucket_name" {
   default = "images-bucket-13812931"
 }
 
+variable "lambda_bucket_name" {
+  type    = string
+  default = "lambda-bucket-13812931"
+}
 # ==============Products====================================
 variable "product_table_name" {
   description = "Name of the Products table"
