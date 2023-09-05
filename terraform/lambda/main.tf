@@ -1,3 +1,6 @@
+module "dynamodb_module" {
+  source = "../dynamodb"
+}
 # IAM Policies ====================================================================================
 # Super Lambda Role with both dydb and s3 access
 resource "aws_iam_role" "super_lambda_role" {
