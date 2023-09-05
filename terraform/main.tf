@@ -1,11 +1,3 @@
-module "api_gateway_module" {
-  source   = "./apigw"
-  apigw_name = var.apigw_name
-}
-
-module "test" {
-  source = "./lambda/test"
-}
 # 1. Create a resource for the API Gateway
 resource "aws_api_gateway_resource" "test" {
   rest_api_id = module.api_gateway_module.api_id

@@ -5,9 +5,10 @@ terraform{
       version = "~> 3.0"
     }
   }
+  #  injected from github actions
   backend "s3" {
     bucket = ""
-    key    = "terraform.tfstate"
-    region = "ap-southeast-1"
+    key    = ""
+    region = ""
   }
 }
