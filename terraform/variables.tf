@@ -6,7 +6,7 @@ variable "apigw_name" {
 
 variable "images_bucket" {
   type    = string
-  default = "images-bucket-1234567890"
+  default = "images-bucket-13812931"
 }
 
 # ==============Products====================================
