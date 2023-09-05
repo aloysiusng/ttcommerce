@@ -57,3 +57,26 @@ resource "aws_dynamodb_table" "reviews" {
     type = "S"
   }
 }
+output "product_table_arn" {
+  value = aws_dynamodb_table.products.arn
+}
+
+output "suppliers_table_arn" {
+  value = aws_dynamodb_table.suppliers.arn
+}
+
+output "tiktokers_table_arn" {
+  value = aws_dynamodb_table.tiktokers.arn
+}
+
+output "listings_table_arn" {
+  value = aws_dynamodb_table.listings.arn
+}
+
+output "orders_table_arn" {
+  value = aws_dynamodb_table.orders.arn
+}
+
+output "reviews_table_arn" {
+  value = aws_dynamodb_table.reviews.arn
+}

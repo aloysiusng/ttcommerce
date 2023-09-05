@@ -1,8 +1,8 @@
 # IAM Policies ====================================================================================
 # Super Lambda Role with both dydb and s3 access
 resource "aws_iam_role" "super_lambda_role" {
-  name = "super_lambda_role"
-  assume_role_policy =  var.assume_role_policy
+  name               = "super_lambda_role"
+  assume_role_policy = var.assume_role_policy
 }
 # for more fine grained poicies ========================================
 # resource "aws_iam_role" "s3_lambda_role" {
@@ -17,8 +17,15 @@ resource "aws_iam_role" "super_lambda_role" {
 # ALL DynamoDB access
 data "aws_iam_policy_document" "dynamodb_policy" {
   statement {
-    actions   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query"]
-    resources = [aws_dynamodb_table.product_table.arn, aws_dynamodb_table.suppliers_table.arn, aws_dynamodb_table.tiktokers_table.arn, aws_dynamodb_table.listings_table.arn, aws_dynamodb_table.orders_table.arn, aws_dynamodb_table.reviews_table]
+    actions = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query"]
+    resources = [
+      module.dynamodb_module.product_table_arn,
+      module.dynamodb_module.suppliers_table_arn,
+      module.dynamodb_module.tiktokers_table_arn,
+      module.dynamodb_module.listings_table_arn,
+      module.dynamodb_module.orders_table_arn,
+      module.dynamodb_module.reviews_table_arn
+    ]
   }
 }
 
@@ -38,7 +45,7 @@ resource "aws_iam_policy_attachment" "dynamodb_attachment" {
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:PutObject", "s3:GetObject"]
-    resources = [aws_s3_bucket.images_bucket.arn]
+    resources = [module.s3_module.images_bucket_arn]
   }
 }
 
@@ -54,3 +61,6 @@ resource "aws_iam_policy_attachment" "s3_attachment" {
   policy_arn = aws_iam_policy.s3_access.arn
 }
 
+output "super_lambda_role_arn" {
+  value = aws_iam_role.super_lambda_role.name
+}
