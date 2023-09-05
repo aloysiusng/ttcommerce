@@ -208,7 +208,7 @@ resource "aws_lambda_function" "getTest" {
   timeout = 900
 }
 resource "aws_cloudwatch_log_group" "test" {
-  name              = "/aws/lambda/${aws_lambda_function.test.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.getTest.function_name}"
   retention_in_days = 30
 }
 resource "aws_apigatewayv2_integration" "getTest_integration" {
