@@ -8,12 +8,12 @@ variable "product_attributes" {
   type        = map(any)
   default = {
     product_id    = "S"
-    productname   = "S"
-    supplierPrice = "N"
+    product_name   = "S"
+    supplier_price = "N"
     description   = "S"
     quantity      = "N"
-    supplierID    = "S"
-    imageurl      = "S"
+    supplier_iD    = "S"
+    image_url      = "S"
   }
 }
 # ==============Suppliers====================================
@@ -55,9 +55,9 @@ variable "listings_attributes" {
   type        = map(any)
   default = {
     listing_id   = "S"
-    tiktokerID   = "S"
-    productID    = "S"
-    listingPrice = "N"
+    tiktoker_id   = "S"
+    product_id    = "S"
+    listing_price = "N"
     reviews      = "M"
   }
 }
@@ -73,7 +73,7 @@ variable "orders_attributes" {
   type        = map(any)
   default = {
     order_id  = "S"
-    productID = "S"
+    product_id = "S"
     quantity  = "N"
   }
 }
@@ -89,9 +89,9 @@ variable "reviews_attributes" {
   type        = map(any)
   default = {
     review_id     = "S"
-    listingID     = "S"
-    reviewContent = "S"
+    listing_id     = "S"
+    review_id = "S"
     rating        = "N"
-    imageUrl      = "S"
+    image_url      = "S"
   }
 }
