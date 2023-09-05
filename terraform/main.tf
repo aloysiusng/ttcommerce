@@ -3,7 +3,7 @@ module "api_gateway_module" {
   apigw_name = "example" # Provide a value for the apigw_name variable
 }
 
-module "dynamodb_tables" {
+module "dynamodb_module" {
   source = "./dynamodb"
 }
 
