@@ -1,4 +1,4 @@
-var "images_bucket" {
+variable "images_bucket" {
   type = string
   default = "images-bucket-1234567890"
 }
