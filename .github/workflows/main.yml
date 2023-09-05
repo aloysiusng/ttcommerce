@@ -37,7 +37,7 @@ jobs:
         run: cd terraform
       
       - name: Debugging step 
-        run: ls -al
+        run: cd terraform && ls -al
 
       - name: Terraform fmt
         id: fmt
