@@ -65,6 +65,7 @@ resource "aws_dynamodb_table" "tiktokers" {
   attribute {
     name = "listings"
     type = "M"
+  }
 }
 
 resource "aws_dynamodb_table" "listings" {
