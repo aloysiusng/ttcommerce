@@ -6,24 +6,25 @@ module "api_gateway_module" {
 module "test" {
   source = "./lambda/test"
 }
+
 # 1. Create a resource for the API Gateway
-resource "aws_api_gateway_resource" "test" {
+resource "aws_api_gateway_resource" "create_product" {
   rest_api_id = module.api_gateway_module.api_id
   parent_id   = module.api_gateway_module.root_resource_id
-  path_part   = "test"
+  path_part   = "create_product"
 }
 # 2. Create a method for the API Gateway
-resource "aws_api_gateway_method" "test_get" {
+resource "aws_api_gateway_method" "create_product_put" {
   rest_api_id = module.api_gateway_module.api_id
-  resource_id = aws_api_gateway_resource.test.id
-  http_method = "GET"
+  resource_id = aws_api_gateway_resource.create_product.id
+  http_method = "PUT"
 }
 # 3. Create an integration for the API Gateway
-resource "aws_api_gateway_integration" "test_get_integration" {
+resource "aws_api_gateway_integration" "create_product_put_integration" {
   rest_api_id             = module.api_gateway_module.api_id
-  resource_id             = aws_api_gateway_resource.test.id
-  http_method             = aws_api_gateway_method.test_get.http_method
-  integration_http_method = "GET"
+  resource_id             = aws_api_gateway_resource.create_product.id
+  http_method             = aws_api_gateway_method.create_product_put.http_method
+  integration_http_method = "PUT"
   type                    = "AWS_PROXY"
   uri                     = module.test.lambda_arn
 }
@@ -43,3 +44,30 @@ resource "aws_api_gateway_integration" "test_get_integration" {
 #   type                    = "AWS_PROXY"
 #   uri                     = module.test.lambda_arn
 # }
+
+
+module "create_product" {
+  source = "./lambda/test"
+}
+
+# 1. Create a resource for the API Gateway
+resource "aws_api_gateway_resource" "create_product" {
+  rest_api_id = module.api_gateway_module.api_id
+  parent_id   = module.api_gateway_module.root_resource_id
+  path_part   = "test"
+}
+# 2. Create a method for the API Gateway
+resource "aws_api_gateway_method" "test_get" {
+  rest_api_id = module.api_gateway_module.api_id
+  resource_id = aws_api_gateway_resource.test.id
+  http_method = "GET"
+}
+# 3. Create an integration for the API Gateway
+resource "aws_api_gateway_integration" "test_get_integration" {
+  rest_api_id             = module.api_gateway_module.api_id
+  resource_id             = aws_api_gateway_resource.test.id
+  http_method             = aws_api_gateway_method.test_get.http_method
+  integration_http_method = "GET"
+  type                    = "AWS_PROXY"
+  uri                     = module.test.lambda_arn
+}

@@ -33,9 +33,9 @@ jobs:
         with:
           terraform_version: 1.2.5
 
-      - name: Change Directory to /terraform
-        run: cd /terraform
-        
+      - name: Change Directory to terraform
+        run: cd terraform
+
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
@@ -98,6 +98,9 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+
+      - name: Change Directory Back to Root
+        run: cd ..
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
