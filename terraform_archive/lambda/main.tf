@@ -2,7 +2,7 @@ module "dynamodb_module" {
   source = "../dynamodb"
 }
 module "s3_module" {
-  source             = "../s3"
+  source = "../s3"
 }
 # IAM Policies ====================================================================================
 # Super Lambda Role with both dydb and s3 access
