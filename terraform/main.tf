@@ -3,8 +3,8 @@ module "api_gateway_module" {
   api_name = var.api_name
 }
 
-module "test" {
-  source = "./lambda/test"
+module "create_product" {
+  source = "./lambda/create_product"
 }
 
 # 1. Create a resource for the API Gateway
@@ -46,10 +46,9 @@ resource "aws_api_gateway_integration" "create_product_put_integration" {
 # }
 
 
-module "create_product" {
+module "test" {
   source = "./lambda/test"
 }
-
 # 1. Create a resource for the API Gateway
 resource "aws_api_gateway_resource" "create_product" {
   rest_api_id = module.api_gateway_module.api_id
