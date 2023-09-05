@@ -4,7 +4,7 @@ variable "apigw_name" {
   default     = "main_api_gw"
 }
 
-variable "images_bucket" {
+variable "images_bucket_name" {
   type    = string
   default = "images-bucket-13812931"
 }

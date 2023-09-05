@@ -22,7 +22,7 @@ module "dynamodb_tables" {
 
 module "images_bucket_module" {
   source        = "./s3"
-  images_bucket = var.images_bucket_name
+  images_bucket_name = var.images_bucket_name
 }
 
 module "lambda_module" {
