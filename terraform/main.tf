@@ -20,10 +20,12 @@ module "dynamodb_tables" {
   reviews_attributes   = var.reviews_attributes
 }
 
-module "images_bucket_module" {
+module "buckets_module" {
   source        = "./s3"
   images_bucket_name = var.images_bucket_name
+  lambda_bucket_name = var.lambda_bucket_name
 }
+
 
 module "lambda_module" {
   source = "./lambda"
