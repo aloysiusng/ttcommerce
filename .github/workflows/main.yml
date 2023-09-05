@@ -27,9 +27,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHub-OIDC-TERRAFORM
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -38,7 +35,7 @@ jobs:
 
       - name: Change Directory to terraform
         run: cd terraform
-        
+
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
@@ -101,6 +98,9 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+
+      - name: Change Directory Back to Root
+        run: cd ..
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
