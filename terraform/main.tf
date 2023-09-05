@@ -20,12 +20,13 @@ module "dynamodb_tables" {
   reviews_attributes   = var.reviews_attributes
 }
 
-module "images_bucket" {
-  source = "./s3"
+module "images_bucket_module" {
+  source        = "./s3"
+  images_bucket = var.images_bucket
 }
 
 module "lambda_module" {
-  source             = "./lambda"
+  source = "./lambda"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
