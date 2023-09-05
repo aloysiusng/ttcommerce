@@ -2,18 +2,24 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import { UserContext } from "../pages/_app";
 import { useContext, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Navbar = (props) => {
+  const router = useRouter();
   const { user, setUser } = useContext(UserContext);
   const logout = () => {
     setUser({});
+    router.push("/");
   };
   return (
     <>
       <header>
-        <h1 className={styles.title}>
-          TikTok <span className={styles.red}>Commerce</span>
-        </h1>
+        <Link href="/">
+          <h1 className={styles.title}>
+            TikTok <span className={styles.red}>Commerce</span>
+          </h1>
+        </Link>
         <button
           className={styles.primaryButton}
           onClick={() => {

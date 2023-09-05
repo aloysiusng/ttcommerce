@@ -1,17 +1,18 @@
 import React from "react";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Sidebar.module.css";
 import Link from "next/link";
 import { UserContext } from "../pages/_app";
 import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 
 const Sidebar = (props) => {
+  const router = useRouter();
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
   return (
     <>
       {user && user.userType == "seller" && (
         <div className={styles.sidebar}>
-          <Link href="/supplier-management">
+          <Link href="/supplier-analytics">
             <button>
               <i className="bi bi-graph-up-arrow"></i>
               <h1>Analytics</h1>

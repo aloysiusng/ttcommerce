@@ -8,9 +8,6 @@ import LoginForm from "../components/LoginForm";
 import { UserContext } from "./_app";
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isSeller, setIsSeller] = useState(false);
-  const [isTter, setIsTter] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
@@ -51,7 +48,7 @@ export default function Home() {
         >
           <h1>
             {user.userType
-              ? `Landing page of ${user.userType}`
+              ? `LANDING PAGE; TYPE: ${user.userType}`
               : "PRE-LOGIN CONTENT"}
           </h1>
         </div>
