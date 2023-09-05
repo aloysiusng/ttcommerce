@@ -1,3 +1,38 @@
+module "api_gateway_module" {
+  source     = "./apigw"
+  apigw_name = "example" # Provide a value for the apigw_name variable
+}
+
+module "dynamodb_tables" {
+  source = "./dynamodb"
+
+  product_table_name   = var.product_table_name
+  product_attributes   = var.product_attributes
+  suppliers_table_name = var.suppliers_table_name
+  supplier_attributes  = var.supplier_attributes
+  tiktokers_table_name = var.tiktokers_table_name
+  tiktokers_attributes = var.tiktokers_attributes
+  listings_table_name  = var.listings_table_name
+  listings_attributes  = var.listings_attributes
+  orders_table_name    = var.orders_table_name
+  orders_attributes    = var.orders_attributes
+  reviews_table_name   = var.reviews_table_name
+  reviews_attributes   = var.reviews_attributes
+}
+
+module "images_bucket" {
+  source = "./s3"
+}
+
+module "lambda_module" {
+  source             = "./lambda"
+  assume_role_policy = var.assume_role_policy
+}
+
+module "test" {
+  source = "./lambda/test"
+}
+
 # 1. Create a resource for the API Gateway
 # resource "aws_api_gateway_resource" "test" {
 #   rest_api_id = module.api_gateway_module.api_id
