@@ -1,78 +1,141 @@
 resource "aws_dynamodb_table" "products" {
-  name         = var.product_table_name
+  name         = "Products"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "product_id"
-  attribute = [
-    for key, type in var.product_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
+  attribute {
+    name = "product_id"
+    type = "S"
+  }
+  attribute {
+    name = "productname"
+    type = "S"
+  }
+  attribute {
+    name = "supplier_price"
+    type = "N"
+  }
+  attribute {
+    name = "description"
+    type = "S"
+  }
+  attribute {
+    name = "quantity"
+    type = "N"
+  }
+  attribute {
+    name = "supplier_id"
+    type = "S"
+  }
+  attribute {
+    name = "imageurl"
+    type = "S"
+  }
 }
 
 resource "aws_dynamodb_table" "suppliers" {
-  name         = var.suppliers_table_name
+  name         = "Suppliers"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "supplier_id"
-  attribute = [
-    for key, type in var.supplier_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
+  attribute {
+    name = "supplier_id"
+    type = "S"
+  }
+  attribute {
+    name = "tiktokers"
+    type = "M"
+  }
+  attribute {
+    name = "products"
+    type = "M"
+  }
 }
 
 resource "aws_dynamodb_table" "tiktokers" {
-  name         = var.tiktokers_table_name
+  name         = "Tiktokers"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "tiktoker_id"
-  attribute = [
-    for key, type in var.tiktokers_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
+  attribute {
+    name = "tiktoker_id"
+    type = "S"
+  }
+  attribute {
+    name = "suppliers"
+    type = "M"
+  }
+  attribute {
+    name = "listings"
+    type = "M"
 }
 
 resource "aws_dynamodb_table" "listings" {
-  name         = var.listings_table_name
+  name         = "Listings"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "listing_id"
-  attribute = [
-    for key, type in var.listings_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
+  attribute {
+    name = "listing_id"
+    type = "S"
+  }
+  attribute {
+    name = "tiktoker_id"
+    type = "S"
+  }
+  attribute {
+    name = "product_id"
+    type = "S"
+  }
+  attribute {
+    name = "listing_price"
+    type = "N"
+  }
+  attribute {
+    name = "reviews"
+    type = "M"
+  }
 }
 
 resource "aws_dynamodb_table" "orders" {
-  name         = var.orders_table_name
+  name         = "Orders"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "order_id"
-  attribute = [
-    for key, type in var.orders_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
-}
+  attribute {
+    name = "order_id"
+    type = "S"
+  }
+  attribute {
+    name = "product_id"
+    type = "S"
+  }
+  attribute {
+    name = "quantity"
+    type = "N"
+  }
 
+}
 resource "aws_dynamodb_table" "reviews" {
-  name         = var.reviews_table_name
+  name         = "Reviews"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "review_id"
 
-  attribute = [
-    for key, type in var.reviews_attributes :
-    {
-      name = key
-      type = type
-    }
-  ]
+  attribute {
+    name = "review_id"
+    type = "S"
+  }
+  attribute {
+    name = "listing_id"
+    type = "S"
+  }
+  attribute {
+    name = "review_content"
+    type = "S"
+  }
+  attribute {
+    name = "rating"
+    type = "N"
+  }
+  attribute {
+    name = "imageurl"
+    type = "S"
+  }
+
+
 }
