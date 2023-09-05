@@ -15,7 +15,7 @@ resource "aws_iam_role" "lambda_role" {
     }]
   })
 }
-# DynamoDB
+# DynamoDB access
 data "aws_iam_policy_document" "dynamodb_policy" {
   statement {
     actions   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query"]
@@ -35,7 +35,7 @@ resource "aws_iam_policy_attachment" "dynamodb_attachment" {
   policy_arn = aws_iam_policy.dynamodb_access.arn
 }
 
-# S3 
+# S3 access
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:PutObject", "s3:GetObject"]
