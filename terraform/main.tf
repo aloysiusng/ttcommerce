@@ -1,6 +1,6 @@
 module "api_gateway_module" {
   source   = "./apigw"
-  api_name = var.apigw_name
+  apigw_name = var.apigw_name
 }
 
 module "test" {
