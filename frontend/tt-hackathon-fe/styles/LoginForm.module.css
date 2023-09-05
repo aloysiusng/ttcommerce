@@ -1,0 +1,38 @@
+/* LoginForm.module.css */
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+}
+
+.label {
+  font-size: 25px;
+}
+
+.input {
+  width: 100%;
+  padding: 2px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 2rem;
+}
+.red {
+  color: #fe2c55;
+  text-decoration: none;
+}
+
+.submitButton {
+  background-color: #fe2c55;
+  color: white;
+  padding: 1em;
+  border-radius: 1em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: rgb(186, 28, 59);
+  cursor: pointer;
+}
