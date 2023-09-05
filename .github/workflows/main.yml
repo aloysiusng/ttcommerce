@@ -35,6 +35,9 @@ jobs:
 
       - name: Change Directory to terraform
         run: cd terraform
+      
+      - name: Debugging step 
+        run: ls -al
 
       - name: Terraform fmt
         id: fmt
