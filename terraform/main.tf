@@ -102,7 +102,7 @@ resource "aws_iam_role" "super_lambda_role" {
 # ALL DynamoDB access
 data "aws_iam_policy_document" "dynamodb_policy" {
   statement {
-    actions = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query"]
+    actions = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem", "dynamodb:Scan", "dynamodb:Query"]
     resources = [
       aws_dynamodb_table.products.arn,
       aws_dynamodb_table.suppliers.arn,
