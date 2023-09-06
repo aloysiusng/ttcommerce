@@ -5,7 +5,9 @@ import base64
 from io import BytesIO
 
 # Initialize AWS clients for DynamoDB and S3
-dynamodb = boto3.client('dynamodb')
+dynamodb = boto3.resource('dynamodb')
+supplierTable = dynamodb.Table('Suppliers')
+productTable = dynamodb.Table('Products')
 s3 = boto3.client('s3')
 s3_bucket_name = "images-bucket-13812931"
 
@@ -44,22 +46,31 @@ def lambda_handler(event, context):
         print(f'Image URL: {image_url}')
 
         # Access DynamoDB
-        dynamo_response = dynamodb.put_item(
-            TableName='Products',
+        products_response = productTable.put_item(
             Item ={
-                "product_id": {'S': uuid_value },
-                'product_name': {'S': product_name },
-                'supplier_price':{'S': supplier_price},
-                'description':{'S': description},
-                'quantity':{'S': quantity },
-                'supplier_id':{'S': supplier_id },
-                'image_url':{'S': image_url },
+                "product_id": uuid_value ,
+                'product_name': product_name ,
+                'supplier_price':supplier_price,
+                'description':description,
+                'quantity':quantity ,
+                'supplier_id':supplier_id ,
+                'image_url':image_url ,
             }
         )
 
+        print(products_response)
+
+        supplier_response = supplierTable.get_item(Key={'supplier_id': supplier_id})
+        supplier = supplier_response['Item']
+        supplier['products'].add(uuid_value)
+        # delete product from supplier's list of product
+        response = supplierTable.put_item(Item= supplier)
+
+        print(response)
+
         response = {
             'statusCode': 200,
-            'body': json.dumps({'dynamoData': dynamo_response})
+            'body': json.dumps({'productsData': products_response})
         }
         return response
 
@@ -67,5 +78,5 @@ def lambda_handler(event, context):
         print(f'Error: {str(e)}')
         return {
             'statusCode': 500,
-            'body': json.dumps({'error': 'Internal Server Error'})
+            'body': str(e)
         }

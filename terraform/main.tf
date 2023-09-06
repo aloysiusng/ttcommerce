@@ -268,6 +268,40 @@ resource "aws_lambda_permission" "create_product_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+# ========================= GET /get_product ========================================
+resource "aws_lambda_function" "get_product" {
+  function_name    = "get_product"
+  filename         = "../backend/get_product.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "get_product.get_product.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/get_product.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_product" {
+  name              = "/aws/lambda/${aws_lambda_function.get_product.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_product_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_product.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_product_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_product"
+  target    = "integrations/${aws_apigatewayv2_integration.get_product_integration.id}"
+}
+resource "aws_lambda_permission" "get_product_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_product.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
 
 # ========================= PUT /update_product ========================================
 resource "aws_lambda_function" "update_product" {
