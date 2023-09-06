@@ -7,6 +7,7 @@ from io import BytesIO
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.client('dynamodb')
 s3 = boto3.client('s3')
+s3_bucket_name = "images-bucket-13812931"
 
 def lambda_handler(event, context):
     try:
@@ -30,12 +31,12 @@ def lambda_handler(event, context):
 
         # Create a BytesIO object to treat the image data as a file-like object
         image_stream = BytesIO(image_data)
-        s3.upload_fileobj(image_stream, "ttchampsimages", storage_name)
+        s3.upload_fileobj(image_stream, s3_bucket_name, storage_name)
 
         expiration_time_in_seconds = 3600000000  # in seconds
         image_url = s3.generate_presigned_url(
             'get_object',
-            Params={'Bucket': "ttchampsimages", 'Key': storage_name},
+            Params={'Bucket': s3_bucket_name, 'Key': storage_name},
             ExpiresIn=expiration_time_in_seconds
         )
 

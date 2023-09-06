@@ -214,3 +214,73 @@ resource "aws_lambda_permission" "getTest_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
+# ========================= PUT /update_product ========================================
+resource "aws_lambda_function" "update_product" {
+  function_name    = "update_product"
+  filename         = "../backend/update_product.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "update_product.update_product.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/update_product.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "test" {
+  name              = "/aws/lambda/${aws_lambda_function.update_product.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "update_product_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.update_product.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "update_product_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "PUT /update_product"
+  target    = "integrations/${aws_apigatewayv2_integration.update_product_integration.id}"
+}
+resource "aws_lambda_permission" "update_product_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.update_product.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+# ========================= DELETE /delete_product ========================================
+resource "aws_lambda_function" "delete_product" {
+  function_name    = "delete_product"
+  filename         = "../backend/delete_product.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "delete_product.delete_product.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/delete_product.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "test" {
+  name              = "/aws/lambda/${aws_lambda_function.delete_product.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "delete_product_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.delete_product.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "delete_product_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "PUT /delete_product"
+  target    = "integrations/${aws_apigatewayv2_integration.delete_product_integration.id}"
+}
+resource "aws_lambda_permission" "delete_product_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.delete_product.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
