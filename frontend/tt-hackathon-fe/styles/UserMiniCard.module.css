@@ -19,11 +19,11 @@
 
 .userMiniCardContentRow {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 1em;
 }
 
 .userImage {
-  margin: 0em 0em 1em;
   height: 50px;
   width: 50px;
   object-fit: cover;

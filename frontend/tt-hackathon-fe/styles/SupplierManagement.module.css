@@ -159,3 +159,8 @@
 .carousell::-webkit-scrollbar-thumb {
   background-color: transparent; /* Color of the scrollbar thumb */
 }
+
+.sectionTitle {
+  align-self: flex-start;
+  justify-self: flex-start;
+}
