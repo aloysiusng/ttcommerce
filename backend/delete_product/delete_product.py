@@ -35,7 +35,7 @@ def lambda_handler(event, context):
 
         # delete product image from s3 bucket
         image_key_s3 = "productName"+"_"+ key +".jpg"
-        response = s3.delete_object(s3_bucket_name, image_key_s3)
+        response = s3.delete_object(Bucket=s3_bucket_name, Key=image_key_s3)
         print(response)
 
         return {
