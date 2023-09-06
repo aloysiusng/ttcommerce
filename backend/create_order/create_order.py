@@ -6,17 +6,25 @@ from io import BytesIO
 
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.client('dynamodb')
-productTable = dynamodb.Table('Products')
+dynamodbResource = boto3.resource('dynamodb')
+productTable = dynamodbResource.Table('Products')
+listingTable = dynamodbResource.Table('Listings')
 
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
         body = json.loads(event['body'])
-        product_id = body.get("product_id")
+        buyer_id = body.get("buyer_id")
+        listing_id = body.get("listing_id")
         quantity = body.get("quantity")
         
         # Generate a UUID
         uuid_value = str(uuid.uuid4())
+        
+        # Get listing
+        response = listingTable.get_item(Key={'listing_id': listing_id})
+        listing = response['Item']
+        product_id = listing["product_id"]
 
         # Get product
         response = productTable.get_item(Key={'product_id': product_id})
