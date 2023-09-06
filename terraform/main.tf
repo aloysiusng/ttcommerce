@@ -183,10 +183,11 @@ resource "aws_apigatewayv2_stage" "lambda" {
 # ========================= GET /getTest ========================================
 resource "aws_lambda_function" "getTest" {
   function_name    = "getTest"
-  filename         = "../backend/test.zip"
+  filename         = "../backend/getTest.zip"
   role             = aws_iam_role.super_lambda_role.arn
-  handler          = "getTest.test.lambda_handler"
-  source_code_hash = filebase64sha256("../backend/test.zip")
+  handler          = "getTest.getTest.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/getTest.zip")
 
   runtime = "python3.8"
   timeout = 900
