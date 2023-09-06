@@ -18,6 +18,8 @@ def lambda_handler(event, context):
         response = supplierTable.get_item(Key={'supplier_id': supplierID})
         supplier = response['Item']
         supplier['products'].remove(key)
+        if len(supplier['products']) == 0:
+            supplier['products'].add("")
 
         # delete product from supplier's list of product
         response = supplierTable.put_item(Item= supplier)
