@@ -1,11 +1,13 @@
 import boto3
+import json
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Products')
 
 def lambda_handler(event, context):
     # Extract the key of the record to delete from the event data
-    key = event.get('product_id')
+    body = json.loads(event['body'])
+    key = body.get('product_id')
     
     try:
         response = table.delete_item(
