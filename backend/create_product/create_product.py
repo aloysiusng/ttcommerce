@@ -1,6 +1,8 @@
 import json
 import boto3
 import uuid
+import base64
+from io import BytesIO
 
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.client('dynamodb')
@@ -22,13 +24,18 @@ def lambda_handler(event, context):
         
         storage_name = "productName"+"_"+uuid_value+".jpg"
         # Upload the image to S3
-        with open(image, 'rb') as image_file:
-            s3.upload_fileobj(image_file, "images_bucket", storage_name)
+        # with open(image, 'rb') as image_file:
+        # Decode the base64 data into bytes
+        image_data = base64.b64decode(image)
+
+        # Create a BytesIO object to treat the image data as a file-like object
+        image_stream = BytesIO(image_data)
+        s3.upload_fileobj(image_stream, "ttchampsimages", storage_name)
 
         expiration_time_in_seconds = 3600000000  # in seconds
         image_url = s3.generate_presigned_url(
             'get_object',
-            Params={'Bucket': "images_bucket", 'Key': storage_name},
+            Params={'Bucket': "ttchampsimages", 'Key': storage_name},
             ExpiresIn=expiration_time_in_seconds
         )
 
@@ -42,7 +49,7 @@ def lambda_handler(event, context):
                 "product_id": {'S': uuid_value },
                 'product_name': {'S': product_name },
                 'supplier_price':{'S': supplier_price},
-                'description':{'S',description},
+                'description':{'S': description},
                 'quantity':{'S': quantity },
                 'supplier_id':{'S': supplier_id },
                 'image_url':{'S': image_url },
