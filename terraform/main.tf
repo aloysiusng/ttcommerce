@@ -145,6 +145,7 @@ resource "aws_iam_policy_attachment" "s3_attachment" {
   roles      = [aws_iam_role.super_lambda_role.name]
   policy_arn = aws_iam_policy.s3_access.arn
 }
+
 # cloudwatch access
 data "aws_iam_policy_document" "cloudwatch_policy" {
   statement {
@@ -156,6 +157,12 @@ resource "aws_iam_policy" "cloudwatch_access" {
   name        = "cloudwatch-access-policy"
   description = "Policy for cloudwatch access"
   policy      = data.aws_iam_policy_document.cloudwatch_policy.json
+}
+
+resource "aws_iam_policy_attachment" "cloudwatch_attachment" {
+  name       = "cloudwatch-attachment"
+  roles      = [aws_iam_role.super_lambda_role.name]
+  policy_arn = aws_iam_policy.cloudwatch_access.arn
 }
 
 # ======================================= APIGW ==========================================================
