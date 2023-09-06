@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         print(response)
 
         # update product quantity after deleting order
-        response = orderTable.put_item(Item= product)
+        response = productTable.put_item(Item= product)
         print(response)
 
         return {

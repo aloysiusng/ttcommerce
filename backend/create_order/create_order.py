@@ -39,6 +39,12 @@ def lambda_handler(event, context):
             }
         )
 
+        product["quantity"] = str(int(product["quantity"]) - int(quantity))
+
+        # update product quantity after creating order
+        response = productTable.put_item(Item= product)
+        print(response)
+
         response = {
             'statusCode': 200,
             'body': json.dumps({'dynamoData': dynamo_response})
