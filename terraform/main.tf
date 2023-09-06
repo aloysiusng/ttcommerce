@@ -145,6 +145,18 @@ resource "aws_iam_policy_attachment" "s3_attachment" {
   roles      = [aws_iam_role.super_lambda_role.name]
   policy_arn = aws_iam_policy.s3_access.arn
 }
+# cloudwatch access
+data "aws_iam_policy_document" "cloudwatch_policy" {
+  statement {
+    actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["*"]
+  }
+}
+resource "aws_iam_policy" "cloudwatch_access" {
+  name        = "cloudwatch-access-policy"
+  description = "Policy for cloudwatch access"
+  policy      = data.aws_iam_policy_document.cloudwatch_policy.json
+}
 
 # ======================================= APIGW ==========================================================
 # API Gateway general
