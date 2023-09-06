@@ -185,7 +185,7 @@ resource "aws_lambda_function" "getTest" {
   function_name    = "getTest"
   filename         = "../backend/test.zip"
   role             = aws_iam_role.super_lambda_role.arn
-  handler          = "test.lambda_handler"
+  handler          = "test.test.lambda_handler"
   source_code_hash = filebase64sha256("../backend/test.zip")
 
   runtime = "python3.8"
