@@ -160,7 +160,7 @@ resource "aws_cloudwatch_log_group" "api_gw" {
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  name        = "serverless_lambda_stage"
+  name        = "api"
   auto_deploy = true
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw.arn
