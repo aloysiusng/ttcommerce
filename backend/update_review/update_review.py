@@ -37,7 +37,7 @@ def lambda_handler(event, context):
         # update the record fields
         for field in possible_fields:
             if field == "image" and product.get(field) != None:
-                storage_name = "productName"+"_"+key+".jpg"
+                storage_name = "reviewName"+"_"+key+".jpg"
                 # Upload the image to S3
                 # with open(image, 'rb') as image_file:
                 # Decode the base64 data into bytes

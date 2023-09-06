@@ -6,9 +6,10 @@ from io import BytesIO
 
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.client('dynamodb')
+dynamodbResource = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
 s3_bucket_name = "images-bucket-13812931"
-listingTable = dynamodb.Table('Listings')
+listingTable = dynamodbResource.Table('Listings')
 
 def lambda_handler(event, context):
     try:
@@ -58,6 +59,8 @@ def lambda_handler(event, context):
 
         response = listingTable.get_item(Key={'listing_id': listing_id})
         listing = response['Item']
+        if len(listing['reviews']) == 1 and "" in listing['reviews']:
+            listing['reviews'].remove("")
         listing['reviews'].add(uuid_value)
         response = listingTable.put_item(Item= listing)
         print(response)
