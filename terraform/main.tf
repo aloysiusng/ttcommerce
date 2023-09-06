@@ -160,7 +160,7 @@ resource "aws_cloudwatch_log_group" "api_gw" {
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  name        = "serverless_lambda_stage"
+  name        = "api"
   auto_deploy = true
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw.arn
@@ -183,10 +183,11 @@ resource "aws_apigatewayv2_stage" "lambda" {
 # ========================= GET /getTest ========================================
 resource "aws_lambda_function" "getTest" {
   function_name    = "getTest"
-  filename         = "../backend/test.zip"
+  filename         = "../backend/getTest.zip"
   role             = aws_iam_role.super_lambda_role.arn
-  handler          = "test.lambda_handler"
-  source_code_hash = filebase64sha256("../backend/test.zip")
+  handler          = "getTest.getTest.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/getTest.zip")
 
   runtime = "python3.8"
   timeout = 900
@@ -199,7 +200,7 @@ resource "aws_apigatewayv2_integration" "getTest_integration" {
   api_id             = aws_apigatewayv2_api.lambda.id
   integration_uri    = aws_lambda_function.getTest.invoke_arn
   integration_type   = "AWS_PROXY"
-  integration_method = "GET"
+  integration_method = "POST"
 }
 resource "aws_apigatewayv2_route" "getTest_route" {
   api_id    = aws_apigatewayv2_api.lambda.id
