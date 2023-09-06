@@ -129,7 +129,7 @@ resource "aws_iam_policy_attachment" "dynamodb_attachment" {
 # S3 access
 data "aws_iam_policy_document" "s3_policy" {
   statement {
-    actions   = ["s3:PutObject", "s3:GetObject", "s3-object-lambda:PutObject"]
+    actions   = ["s3:PutObject", "s3:PutObjectAcl","s3:GetObject", "s3-object-lambda:PutObject"]
     resources = [aws_s3_bucket.images_bucket.arn]
   }
 }
