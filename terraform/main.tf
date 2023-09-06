@@ -130,7 +130,7 @@ resource "aws_iam_policy_attachment" "dynamodb_attachment" {
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:*", "s3-object-lambda:*"]
-    resources = [aws_s3_bucket.images_bucket.arn]
+    resources = ["*"]
   }
 }
 
