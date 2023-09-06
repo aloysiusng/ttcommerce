@@ -239,7 +239,7 @@ resource "aws_apigatewayv2_integration" "create_product_integration" {
 }
 resource "aws_apigatewayv2_route" "create_product_route" {
   api_id    = aws_apigatewayv2_api.lambda.id
-  route_key = "PUT /create_product"
+  route_key = "POST /create_product"
   target    = "integrations/${aws_apigatewayv2_integration.create_product_integration.id}"
 }
 resource "aws_lambda_permission" "create_product_permission" {
@@ -309,7 +309,7 @@ resource "aws_apigatewayv2_integration" "delete_product_integration" {
 }
 resource "aws_apigatewayv2_route" "delete_product_route" {
   api_id    = aws_apigatewayv2_api.lambda.id
-  route_key = "PUT /delete_product"
+  route_key = "DELETE /delete_product"
   target    = "integrations/${aws_apigatewayv2_integration.delete_product_integration.id}"
 }
 resource "aws_lambda_permission" "delete_product_permission" {
