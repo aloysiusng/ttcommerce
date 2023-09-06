@@ -8,6 +8,7 @@ from io import BytesIO
 dynamodb = boto3.client('dynamodb')
 s3 = boto3.client('s3')
 s3_bucket_name = "images-bucket-13812931"
+listingTable = dynamodb.Table('Listings')
 
 def lambda_handler(event, context):
     try:
@@ -54,6 +55,12 @@ def lambda_handler(event, context):
                 'image_url':{'S': image_url },
             }
         )
+
+        response = listingTable.get_item(Key={'listing_id': listing_id})
+        listing = response['Item']
+        listing['reviews'].add(uuid_value)
+        response = listingTable.put_item(Item= listing)
+        print(response)
 
         response = {
             'statusCode': 200,
