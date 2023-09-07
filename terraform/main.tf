@@ -165,6 +165,25 @@ resource "aws_iam_policy_attachment" "cloudwatch_attachment" {
   policy_arn = aws_iam_policy.cloudwatch_access.arn
 }
 
+# lambda access
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    actions   = ["lambda:InvokeFunction"]
+    resources = ["*"]
+  }
+}
+resource "aws_iam_policy" "lambda_access" {
+  name        = "lambda-access-policy"
+  description = "Policy for lambda access"
+  policy      = data.aws_iam_policy_document.lambda_policy.json
+}
+
+resource "aws_iam_policy_attachment" "lambda_attachment" {
+  name       = "lambda-attachment"
+  roles      = [aws_iam_role.super_lambda_role.name]
+  policy_arn = aws_iam_policy.lambda_access.arn
+}
+
 # ======================================= APIGW ==========================================================
 # API Gateway general
 resource "aws_apigatewayv2_api" "lambda" {
