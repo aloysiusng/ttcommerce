@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     try:
         response = reviewTable.get_item(Key={'review_id': key})
         listingID = response['Item']['listing_id']
-        response = listingID.get_item(Key={'supplier_id': listingID})
+        response = listingTable.get_item(Key={'listing_id': listingID})
         listing = response['Item']
         listing['reviews'].remove(key)
         if len(listing['reviews']) == 0:
