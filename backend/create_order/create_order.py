@@ -42,7 +42,7 @@ def lambda_handler(event, context):
                 "product": {'M': {
                     "product_id": {'S': product_id },
                     "product_name": {'S': product['product_name'] },
-                    "supplier_price":{'S': product['supplier_price']},
+                    "price":{'S': listing['listing_price']},
                     "description":{'S': product['description']},
                     "supplier_id":{'S': product['supplier_id'] },
                     "image_url":{'S': product['image_url'] }
