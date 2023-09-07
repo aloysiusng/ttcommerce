@@ -63,7 +63,7 @@ def lambda_handler(event, context):
         supplier_response = supplierTable.get_item(Key={'supplier_id': supplier_id})
         supplier = supplier_response['Item']
         supplier['products'].add(uuid_value)
-        # delete product from supplier's list of product
+        # add product to supplier's list of product
         response = supplierTable.put_item(Item= supplier)
 
         print(response)

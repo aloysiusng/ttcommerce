@@ -512,3 +512,38 @@ resource "aws_lambda_permission" "delete_order_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
+# ========================= POST /create_listing ========================================
+resource "aws_lambda_function" "create_listing" {
+  function_name    = "create_listing"
+  filename         = "../backend/create_listing.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "create_listing.create_listing.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/create_listing.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "create_listing" {
+  name              = "/aws/lambda/${aws_lambda_function.create_listing.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "create_listing_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.create_listing.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "create_listing_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "POST /create_listing"
+  target    = "integrations/${aws_apigatewayv2_integration.create_listing_integration.id}"
+}
+resource "aws_lambda_permission" "create_listing_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.create_listing.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
