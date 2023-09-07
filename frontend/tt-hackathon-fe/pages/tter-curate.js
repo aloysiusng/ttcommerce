@@ -1,12 +1,30 @@
 import Head from "next/head";
-import styles from "../styles/SupplierAnalytics.module.css";
-import { useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
+import Sidebar from "../components/sidebar";
+import styles from "../styles/TterCurate.module.css";
+import { getAllProducts } from "../utils/tter-service";
 import { UserContext } from "./_app";
 
 export default function TterCurate() {
   const { user, setUser } = useContext(UserContext);
+  const [allProducts, setAllProducts] = useState([]);
+
+  async function fetchAllProducts() {
+    try {
+      const products = await getAllProducts();
+      setAllProducts(products);
+      console.log(products);
+    } catch (error) {
+      console.log("Error fetching all products: " + error);
+      alert("Error retrieving products from the backend");
+    }
+  }
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -19,7 +37,12 @@ export default function TterCurate() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
-          <h1>CURATE</h1>
+          <h1 className={styles.sectionTitle}>Products Available</h1>
+          <div className={styles.carousell}>
+            {allProducts?.map((product) => (
+              <ProductCard product={product} />
+            ))}
+          </div>
         </div>
       </main>
 
@@ -38,9 +61,7 @@ export default function TterCurate() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;
