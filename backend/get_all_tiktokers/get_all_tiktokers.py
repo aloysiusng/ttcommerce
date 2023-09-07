@@ -4,13 +4,12 @@ import uuid
 
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.resource('dynamodb')
+tiktokerTable = dynamodb.Table('Tiktokers')
 
 def lambda_handler(event, context):
     try:
         # Perform a scan operation to get all records
-        response = dynamodb.scan(
-            TableName="Tiktokers"
-        )
+        response = tiktokerTable.scan()
 
         # Retrieve the items from the response
         items = response.get('Items', [])
