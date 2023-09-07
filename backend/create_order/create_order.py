@@ -60,14 +60,18 @@ def lambda_handler(event, context):
         # update tiktoker orders
         response = tiktokerTable.get_item(Key={'tiktoker_id': buyer_id})
         tiktoker = response['Item']
+        if "" in tiktoker["orders"]:
+            tiktoker["orders"].remove("")
         tiktoker["orders"].add(uuid_value)
         response = tiktokerTable.put_item(Item= tiktoker)
 
         # update supplier orders
         response = supplierTable.get_item(Key={'supplier_id': supplier_id})
         supplier = response['Item']
+        if "" in supplier["orders"]:
+            supplier["orders"].remove("")
         supplier["orders"].add(uuid_value)
-        response = supplier.put_item(Item= supplier)
+        response = supplierTable.put_item(Item= supplier)
 
         response = {
             'statusCode': 200,
