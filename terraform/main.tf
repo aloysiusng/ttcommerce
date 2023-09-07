@@ -739,3 +739,38 @@ resource "aws_lambda_permission" "get_affiliates_under_supplier_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
+# ========================= GET /get_products_by_supplier ========================================
+resource "aws_lambda_function" "get_products_by_supplier" {
+  function_name    = "get_products_by_supplier"
+  filename         = "../backend/get_products_by_supplier.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "get_products_by_supplier.get_products_by_supplier.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/get_products_by_supplier.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_products_by_supplier" {
+  name              = "/aws/lambda/${aws_lambda_function.get_products_by_supplier.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_products_by_supplier_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_products_by_supplier.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_products_by_supplier_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_products_by_supplier"
+  target    = "integrations/${aws_apigatewayv2_integration.get_products_by_supplier_integration.id}"
+}
+resource "aws_lambda_permission" "get_products_by_supplier_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_products_by_supplier.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
