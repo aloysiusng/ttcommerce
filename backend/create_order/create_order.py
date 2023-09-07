@@ -9,6 +9,8 @@ dynamodb = boto3.client('dynamodb')
 dynamodbResource = boto3.resource('dynamodb')
 productTable = dynamodbResource.Table('Products')
 listingTable = dynamodbResource.Table('Listings')
+supplierTable = dynamodbResource.Table('Suppliers')
+tiktokerTable = dynamodbResource.Table('Tiktokers')
 
 def lambda_handler(event, context):
     try:
@@ -29,12 +31,14 @@ def lambda_handler(event, context):
         # Get product
         response = productTable.get_item(Key={'product_id': product_id})
         product = response['Item']
+        supplier_id = product['supplier_id']
 
         # Access DynamoDB
         dynamo_response = dynamodb.put_item(
             TableName='Orders',
             Item ={
                 "order_id": {'S': uuid_value },
+                "buyer_id": {'S': buyer_id },
                 "product": {'M': {
                     "product_id": {'S': product_id },
                     "product_name": {'S': product['product_name'] },
@@ -52,6 +56,18 @@ def lambda_handler(event, context):
         # update product quantity after creating order
         response = productTable.put_item(Item= product)
         print(response)
+
+        # update tiktoker orders
+        response = tiktokerTable.get_item(Key={'tiktoker_id': buyer_id})
+        tiktoker = response['Item']
+        tiktoker["orders"].add(uuid_value)
+        response = tiktokerTable.put_item(Item= tiktoker)
+
+        # update supplier orders
+        response = supplierTable.get_item(Key={'supplier_id': supplier_id})
+        supplier = response['Item']
+        supplier["orders"].add(uuid_value)
+        response = supplier.put_item(Item= supplier)
 
         response = {
             'statusCode': 200,

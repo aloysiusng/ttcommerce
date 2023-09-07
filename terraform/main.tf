@@ -547,3 +547,73 @@ resource "aws_lambda_permission" "create_listing_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
+# ========================= DELETE /delete_review ========================================
+resource "aws_lambda_function" "delete_review" {
+  function_name    = "delete_review"
+  filename         = "../backend/delete_review.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "delete_review.delete_review.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/delete_review.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "delete_review" {
+  name              = "/aws/lambda/${aws_lambda_function.delete_review.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "delete_review_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.delete_review.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "delete_review_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "DELETE /delete_review"
+  target    = "integrations/${aws_apigatewayv2_integration.delete_review_integration.id}"
+}
+resource "aws_lambda_permission" "delete_review_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.delete_review.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+# ========================= GET /get_reviews_for_listing ========================================
+resource "aws_lambda_function" "get_reviews_for_listing" {
+  function_name    = "get_reviews_for_listing"
+  filename         = "../backend/get_reviews_for_listing.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "get_reviews_for_listing.get_reviews_for_listing.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/get_reviews_for_listing.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_reviews_for_listing" {
+  name              = "/aws/lambda/${aws_lambda_function.get_reviews_for_listing.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_reviews_for_listing_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_reviews_for_listing.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_reviews_for_listing_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_reviews_for_listing"
+  target    = "integrations/${aws_apigatewayv2_integration.get_reviews_for_listing_integration.id}"
+}
+resource "aws_lambda_permission" "get_reviews_for_listing_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_reviews_for_listing.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
