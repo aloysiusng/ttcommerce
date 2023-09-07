@@ -21,11 +21,11 @@ def lambda_handler(event, context):
         if len(listing['reviews']) == 0:
             listing['reviews'].add("")
 
-        # delete product from supplier's list of product
+        # delete review from listing's list of reviews
         response = listingTable.put_item(Item= listing)
         print(response)
 
-        # delete product from product table
+        # delete review from review table
         response = reviewTable.delete_item(
             Key={
                 'review_id': key
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         )
         print(response)
 
-        # delete product image from s3 bucket
+        # delete review image from s3 bucket
         image_key_s3 = "reviewName"+"_"+ key +".jpg"
         response = s3.delete_object(Bucket=s3_bucket_name, Key=image_key_s3)
         print(response)
