@@ -18,8 +18,12 @@ def lambda_handler(event, context):
         for tiktoker_id in tiktoker_ids:
             if tiktoker_id != "":
                 response = tiktokerTable.get_item(Key={"tiktoker_id": tiktoker_id})
-                tiktokers.append(response["Item"])
-        
+                # Convert sets to lists in the response
+                item = response.get("Item", {})
+                item["listings"] = list(item.get("listings", []))
+                item["suppliers"] = list(item.get("suppliers", []))
+                item["orders"] = list(item.get("orders", []))
+                tiktokers.append(item)
         print(tiktokers)
 
         return {
