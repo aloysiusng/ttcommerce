@@ -20,7 +20,9 @@ def lambda_handler(event, context):
         listing_id = body.get("listing_id")
 
         listing_response = listingsTable.get_item(Key={"listing_id": listing_id})
-        
+        # Convert sets to lists in the response
+        item = listing_response.get("Item", {})
+        item["reviews"] = list(item.get("reviews", []))
         response = {
             'statusCode': 200,
             'body': json.dumps(listing_response["Item"])
