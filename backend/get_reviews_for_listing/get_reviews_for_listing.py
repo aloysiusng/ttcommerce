@@ -4,7 +4,7 @@ import boto3
 # Initialize AWS clients for DynamoDB and S3
 dynamodb = boto3.resource('dynamodb')
 reviewTable = dynamodb.Table('Reviews')
-listingTable = dynamodb.Table('Listing')
+listingTable = dynamodb.Table('Listings')
 
 def lambda_handler(event, context):
     try:
