@@ -6,7 +6,6 @@ client = boto3.client('dynamodb')
 def lambda_handler(event, context):
     try:
         response = client.scan(TableName = "Products",
-                                AttributesToGet = ["product_id", "product_name", "product_description", "product_price", "product_quantity", "product_supplier"],
                                 Select = "ALL_ATTRIBUTES",
                                 Limit = 10)
         return {
