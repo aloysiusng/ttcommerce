@@ -20,8 +20,7 @@ def lambda_handler(event, context):
 
         return {
             "statusCode": 200,
-            # returns an array of products
-            "body": {"products": json.dumps(data)},
+            "body": json.dumps({"products": json.dumps(data)}),
         }
 
     except Exception as e:
