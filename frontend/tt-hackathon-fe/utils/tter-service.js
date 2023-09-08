@@ -9,19 +9,18 @@
 // }
 // export { getAllProducts };
 
-const getAllProducts = () => {
+const getAllProducts = async () => {
   var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_products";
-  return fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json(); // Assuming the response contains JSON data
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      throw error;
-    });
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };
 
 export { getAllProducts };
