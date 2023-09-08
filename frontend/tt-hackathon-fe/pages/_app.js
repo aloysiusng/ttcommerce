@@ -1,9 +1,8 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
-import { useState, createContext, useEffect } from "react";
 
 const UserContext = createContext();
 
