@@ -38,9 +38,11 @@ export default function TterCurate() {
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
           <h1 className={styles.sectionTitle}>Products Available</h1>
-          <div className={styles.carousell}>
+          <div className={styles.productCardContainer}>
             {allProducts?.map((product) => (
-              <ProductCard product={product} />
+              <div className={styles.productCardWrapper}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </div>
