@@ -27,6 +27,7 @@ def lambda_handler(event, context):
         response = listingTable.get_item(Key={'listing_id': listing_id})
         listing = response['Item']
         product_id = listing["product_id"]
+        seller_id = listing["tiktoker_id"]
 
         # Get product
         response = productTable.get_item(Key={'product_id': product_id})
@@ -39,6 +40,7 @@ def lambda_handler(event, context):
             Item ={
                 "order_id": {'S': uuid_value },
                 "buyer_id": {'S': buyer_id },
+                "seller_id": {'S': seller_id },
                 "product": {'M': {
                     "product_id": {'S': product_id },
                     "product_name": {'S': product['product_name'] },
@@ -71,6 +73,15 @@ def lambda_handler(event, context):
         if "" in supplier["orders"]:
             supplier["orders"].remove("")
         supplier["orders"].add(uuid_value)
+        
+        tiktokers_sales = supplier["tiktokers_sales"]
+        if tiktokers_sales.get(seller_id) != None:
+            tiktokers_sales.update({ seller_id: tiktokers_sales.get(seller_id) + 1})
+        else:
+            tiktokers_sales.update({ seller_id: 1})
+        
+        supplier["tiktokers_sales"] = tiktokers_sales
+        
         response = supplierTable.put_item(Item= supplier)
 
         response = {
