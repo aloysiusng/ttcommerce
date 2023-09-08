@@ -1,6 +1,8 @@
-import "../styles/globals.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useState, createContext } from "react";
+import { createContext, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/globals.css";
 
 const UserContext = createContext();
 
@@ -10,8 +12,11 @@ export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <Component {...pageProps} />
-    </UserContext.Provider>
+    <>
+      <ToastContainer />
+      <UserContext.Provider value={{ user, setUser }}>
+        <Component {...pageProps} />
+      </UserContext.Provider>
+    </>
   );
 }

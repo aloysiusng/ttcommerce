@@ -1,10 +1,10 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import { useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
-import Navbar from "../components/Navbar";
-import Modal from "../components/Modal";
 import LoginForm from "../components/LoginForm";
+import Modal from "../components/Modal";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/sidebar";
+import styles from "../styles/Home.module.css";
 import { UserContext } from "./_app";
 
 export default function Home() {
@@ -28,7 +28,7 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>TikTok Commerce</title>
-        <link rel="icon" href="../public/favicon.ico" />
+        <link rel="icon" href="../public/tiktok_icon.png" />
       </Head>
       <Navbar isLoggedIn={user} loginOnClick={openModal}></Navbar>
 
@@ -69,9 +69,7 @@ export default function Home() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;

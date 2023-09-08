@@ -10,6 +10,7 @@ import {
 } from "../utils/seller-service";
 import ProductCard from "../components/ProductCard";
 import UserMiniCard from "../components/UserMiniCard";
+import { toast } from "react-toastify";
 
 export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);
@@ -23,7 +24,7 @@ export default function SupplierManagement() {
       console.log(products);
     } catch (error) {
       console.log("Error fetching seller all products: " + error);
-      alert("Error retrieving products from the backend");
+      toast.error("Error retrieving products please contact support!");
     }
   }
 
@@ -34,7 +35,7 @@ export default function SupplierManagement() {
       console.log(affiliates);
     } catch (error) {
       console.log("Error fetching seller all affiliates: " + error);
-      alert("Error retrieving affiliates from the backend");
+      toast.error("Error retrieving affiliates please contact support!");
     }
   }
 
