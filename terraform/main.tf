@@ -906,7 +906,7 @@ resource "aws_apigatewayv2_integration" "get_all_products_integration" {
 resource "aws_apigatewayv2_route" "get_all_products_route" {
   api_id    = aws_apigatewayv2_api.lambda.id
   route_key = "GET /get_all_products"
-  target    = "integrations/${aws_apigatewayv2_integration.get_all_products.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.get_all_products_integration.id}"
 }
 resource "aws_lambda_permission" "get_all_products_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
