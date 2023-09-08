@@ -1,22 +1,29 @@
 import json
+
 import boto3
 
-client = boto3.client('dynamodb')
+client = boto3.client("dynamodb")
+
 
 def lambda_handler(event, context):
     try:
-        response = client.scan(TableName = "Products",
-                                Select = "ALL_ATTRIBUTES",
-                                Limit = 10)
+        response = client.scan(TableName="Products", Select="ALL_ATTRIBUTES", Limit=10)
+        data = response["Items"]
+        counter = 0
+        while counter < len(data):
+            temp = {}
+            for key, value in data[counter].items():
+                for _, v in value.items():
+                    temp[key] = v
+            data[counter] = temp
+            counter += 1
+
         return {
-            'statusCode': 200,
+            "statusCode": 200,
             # returns an array of products
-            'body': json.dumps(response["Items"])
-            }
+            "body": {"products": json.dumps(data)},
+        }
 
     except Exception as e:
-        print(f'Error: {str(e)}')
-        return {
-            'statusCode': 500,
-            'body': str(e)
-        }
+        print(f"Error: {str(e)}")
+        return {"statusCode": 500, "body": str(e)}
