@@ -13,7 +13,8 @@ export default function TterCurate() {
 
   async function fetchAllProducts() {
     try {
-      const products = await getAllProducts();
+      const products = await getAllProducts().then((res) => console.log(res));
+      console.log("Products: " + products);
       setAllProducts(products);
       console.log(products);
     } catch (error) {
