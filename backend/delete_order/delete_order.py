@@ -16,6 +16,7 @@ def lambda_handler(event, context):
         response = orderTable.get_item(Key={'order_id': key})
         orderQuantity = response['Item']['quantity']
         buyer_id = response['Item']['buyer_id']
+        seller_id = response['Item']['seller_id']
         product = response['Item']['product']
         product_id = product.get("product_id")
         supplier_id = product.get("supplier_id")
@@ -51,7 +52,14 @@ def lambda_handler(event, context):
         supplier["orders"].remove(key)
         if len(supplier["orders"]) == 0:
             supplier["orders"].add("")
-        response = supplier.put_item(Item= supplier)
+            
+        tiktokers_sales = supplier["tiktokers_sales"]
+        if tiktokers_sales.get(seller_id) != None:
+            tiktokers_sales.update({ seller_id: tiktokers_sales.get(seller_id) - 1})
+        
+        supplier["tiktokers_sales"] = tiktokers_sales
+        
+        response = supplierTable.put_item(Item= supplier)
 
         return {
             'statusCode': 200,

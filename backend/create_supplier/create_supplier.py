@@ -21,7 +21,8 @@ def lambda_handler(event, context):
                 'name': {'S': name},
                 'orders': {'SS': list({""})},
                 'products': {'SS': list({""})},
-                'tiktokers': {'SS': list({""})}
+                'tiktokers': {'SS': list({""})},
+                'tiktokers_sales': {'M': {}}
             }
         )
 
