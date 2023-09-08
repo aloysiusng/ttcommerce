@@ -903,6 +903,76 @@ resource "aws_lambda_permission" "get_all_tiktokers_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
+# ========================= POST /create_tiktoker ========================================
+resource "aws_lambda_function" "create_tiktoker" {
+  function_name    = "create_tiktoker"
+  filename         = "../backend/create_tiktoker.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "create_tiktoker.create_tiktoker.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/create_tiktoker.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "create_tiktoker" {
+  name              = "/aws/lambda/${aws_lambda_function.create_tiktoker.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "create_tiktoker_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.create_tiktoker.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "create_tiktoker_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "POST /create_tiktoker"
+  target    = "integrations/${aws_apigatewayv2_integration.create_tiktoker_integration.id}"
+}
+resource "aws_lambda_permission" "create_tiktoker_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.create_tiktoker.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+# ========================= POST /create_supplier ========================================
+resource "aws_lambda_function" "create_supplier" {
+  function_name    = "create_supplier"
+  filename         = "../backend/create_supplier.zip"
+  role             = aws_iam_role.super_lambda_role.arn
+  handler          = "create_supplier.create_supplier.lambda_handler"
+  #                   function name
+  source_code_hash = filebase64sha256("../backend/create_supplier.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "create_supplier" {
+  name              = "/aws/lambda/${aws_lambda_function.create_supplier.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "create_supplier_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.create_supplier.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "create_supplier_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "POST /create_supplier"
+  target    = "integrations/${aws_apigatewayv2_integration.create_supplier_integration.id}"
+}
+resource "aws_lambda_permission" "create_supplier_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.create_supplier.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
 # ========================= GET /get_all_products ========================================
 resource "aws_lambda_function" "get_all_products" {
   function_name = "get_all_products"

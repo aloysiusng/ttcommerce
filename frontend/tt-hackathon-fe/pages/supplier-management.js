@@ -56,16 +56,7 @@ export default function SupplierManagement() {
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
           <h1 className={styles.sectionTitle}>Your Orders</h1>
-          <table>
-            <th>header 1</th>
-            <th>header 2</th>
-            <th>header 3</th>
-            <tr>
-              <td>0,0</td>
-              <td>0,1</td>
-              <td>0,2</td>
-            </tr>
-          </table>
+
           <h1 className={styles.sectionTitle}>Your Products</h1>
           <div className={styles.carousell}>
             {sellerAllProducts?.map((product) => (
