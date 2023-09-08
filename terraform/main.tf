@@ -210,6 +210,7 @@ resource "aws_apigatewayv2_api" "lambda" {
     allow_origins = ["*"]
     allow_methods = ["POST", "GET", "PUT", "DELETE","OPTIONS"]
     max_age       = 300
+    allow_headers = ["content-type"]
   }
 }
 resource "aws_cloudwatch_log_group" "api_gw" {
