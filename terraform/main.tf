@@ -189,6 +189,11 @@ resource "aws_iam_policy_attachment" "lambda_attachment" {
 resource "aws_apigatewayv2_api" "lambda" {
   name          = "serverless_lambda_gw"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["POST", "GET", "PUT", "DELETE","OPTIONS"]
+    max_age       = 300
+  }
 }
 resource "aws_cloudwatch_log_group" "api_gw" {
   name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}"
@@ -220,10 +225,10 @@ resource "aws_apigatewayv2_stage" "lambda" {
 #======================================== API Gateway routes========================================
 # ========================= GET /getTest ========================================
 resource "aws_lambda_function" "getTest" {
-  function_name    = "getTest"
-  filename         = "../backend/getTest.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "getTest.getTest.lambda_handler"
+  function_name = "getTest"
+  filename      = "../backend/getTest.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "getTest.getTest.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/getTest.zip")
 
@@ -255,10 +260,10 @@ resource "aws_lambda_permission" "getTest_permission" {
 
 # ========================= POST /create_product ========================================
 resource "aws_lambda_function" "create_product" {
-  function_name    = "create_product"
-  filename         = "../backend/create_product.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "create_product.create_product.lambda_handler"
+  function_name = "create_product"
+  filename      = "../backend/create_product.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "create_product.create_product.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/create_product.zip")
 
@@ -289,10 +294,10 @@ resource "aws_lambda_permission" "create_product_permission" {
 }
 # ========================= GET /get_product ========================================
 resource "aws_lambda_function" "get_product" {
-  function_name    = "get_product"
-  filename         = "../backend/get_product.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_product.get_product.lambda_handler"
+  function_name = "get_product"
+  filename      = "../backend/get_product.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_product.get_product.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_product.zip")
 
@@ -324,10 +329,10 @@ resource "aws_lambda_permission" "get_product_permission" {
 
 # ========================= PUT /update_product ========================================
 resource "aws_lambda_function" "update_product" {
-  function_name    = "update_product"
-  filename         = "../backend/update_product.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "update_product.update_product.lambda_handler"
+  function_name = "update_product"
+  filename      = "../backend/update_product.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "update_product.update_product.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/update_product.zip")
 
@@ -359,10 +364,10 @@ resource "aws_lambda_permission" "update_product_permission" {
 
 # ========================= DELETE /delete_product ========================================
 resource "aws_lambda_function" "delete_product" {
-  function_name    = "delete_product"
-  filename         = "../backend/delete_product.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "delete_product.delete_product.lambda_handler"
+  function_name = "delete_product"
+  filename      = "../backend/delete_product.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "delete_product.delete_product.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/delete_product.zip")
 
@@ -394,10 +399,10 @@ resource "aws_lambda_permission" "delete_product_permission" {
 
 # ========================= POST /create_review ========================================
 resource "aws_lambda_function" "create_review" {
-  function_name    = "create_review"
-  filename         = "../backend/create_review.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "create_review.create_review.lambda_handler"
+  function_name = "create_review"
+  filename      = "../backend/create_review.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "create_review.create_review.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/create_review.zip")
 
@@ -429,10 +434,10 @@ resource "aws_lambda_permission" "create_review_permission" {
 
 # ========================= PUT /update_review ========================================
 resource "aws_lambda_function" "update_review" {
-  function_name    = "update_review"
-  filename         = "../backend/update_review.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "update_review.update_review.lambda_handler"
+  function_name = "update_review"
+  filename      = "../backend/update_review.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "update_review.update_review.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/update_review.zip")
 
@@ -464,10 +469,10 @@ resource "aws_lambda_permission" "update_review_permission" {
 
 # ========================= POST /create_order ========================================
 resource "aws_lambda_function" "create_order" {
-  function_name    = "create_order"
-  filename         = "../backend/create_order.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "create_order.create_order.lambda_handler"
+  function_name = "create_order"
+  filename      = "../backend/create_order.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "create_order.create_order.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/create_order.zip")
 
@@ -499,10 +504,10 @@ resource "aws_lambda_permission" "create_order_permission" {
 
 # ========================= DELETE /delete_order ========================================
 resource "aws_lambda_function" "delete_order" {
-  function_name    = "delete_order"
-  filename         = "../backend/delete_order.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "delete_order.delete_order.lambda_handler"
+  function_name = "delete_order"
+  filename      = "../backend/delete_order.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "delete_order.delete_order.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/delete_order.zip")
 
@@ -534,10 +539,10 @@ resource "aws_lambda_permission" "delete_order_permission" {
 
 # ========================= POST /create_listing ========================================
 resource "aws_lambda_function" "create_listing" {
-  function_name    = "create_listing"
-  filename         = "../backend/create_listing.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "create_listing.create_listing.lambda_handler"
+  function_name = "create_listing"
+  filename      = "../backend/create_listing.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "create_listing.create_listing.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/create_listing.zip")
 
@@ -568,10 +573,10 @@ resource "aws_lambda_permission" "create_listing_permission" {
 }
 # ========================= DELETE /delete_listing ========================================
 resource "aws_lambda_function" "delete_listing" {
-  function_name    = "delete_listing"
-  filename         = "../backend/delete_listing.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "delete_listing.delete_listing.lambda_handler"
+  function_name = "delete_listing"
+  filename      = "../backend/delete_listing.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "delete_listing.delete_listing.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/delete_listing.zip")
 
@@ -603,10 +608,10 @@ resource "aws_lambda_permission" "delete_listing_permission" {
 
 # ========================= DELETE /delete_review ========================================
 resource "aws_lambda_function" "delete_review" {
-  function_name    = "delete_review"
-  filename         = "../backend/delete_review.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "delete_review.delete_review.lambda_handler"
+  function_name = "delete_review"
+  filename      = "../backend/delete_review.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "delete_review.delete_review.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/delete_review.zip")
 
@@ -638,10 +643,10 @@ resource "aws_lambda_permission" "delete_review_permission" {
 
 # ========================= GET /get_reviews_for_listing ========================================
 resource "aws_lambda_function" "get_reviews_for_listing" {
-  function_name    = "get_reviews_for_listing"
-  filename         = "../backend/get_reviews_for_listing.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_reviews_for_listing.get_reviews_for_listing.lambda_handler"
+  function_name = "get_reviews_for_listing"
+  filename      = "../backend/get_reviews_for_listing.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_reviews_for_listing.get_reviews_for_listing.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_reviews_for_listing.zip")
 
@@ -673,10 +678,10 @@ resource "aws_lambda_permission" "get_reviews_for_listing_permission" {
 
 # ========================= GET /get_listing ========================================
 resource "aws_lambda_function" "get_listing" {
-  function_name    = "get_listing"
-  filename         = "../backend/get_listing.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_listing.get_listing.lambda_handler"
+  function_name = "get_listing"
+  filename      = "../backend/get_listing.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_listing.get_listing.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_listing.zip")
 
@@ -708,10 +713,10 @@ resource "aws_lambda_permission" "get_listing_permission" {
 
 # ========================= PUT /update_listing ========================================
 resource "aws_lambda_function" "update_listing" {
-  function_name    = "update_listing"
-  filename         = "../backend/update_listing.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "update_listing.update_listing.lambda_handler"
+  function_name = "update_listing"
+  filename      = "../backend/update_listing.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "update_listing.update_listing.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/update_listing.zip")
 
@@ -744,10 +749,10 @@ resource "aws_lambda_permission" "update_listing_permission" {
 
 # ========================= GET /get_orders_of_supplier ========================================
 resource "aws_lambda_function" "get_orders_of_supplier" {
-  function_name    = "get_orders_of_supplier"
-  filename         = "../backend/get_orders_of_supplier.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_orders_of_supplier.get_orders_of_supplier.lambda_handler"
+  function_name = "get_orders_of_supplier"
+  filename      = "../backend/get_orders_of_supplier.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_orders_of_supplier.get_orders_of_supplier.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_orders_of_supplier.zip")
 
@@ -779,10 +784,10 @@ resource "aws_lambda_permission" "get_orders_of_supplier_permission" {
 
 # ========================= GET /get_affiliates_under_supplier ========================================
 resource "aws_lambda_function" "get_affiliates_under_supplier" {
-  function_name    = "get_affiliates_under_supplier"
-  filename         = "../backend/get_affiliates_under_supplier.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_affiliates_under_supplier.get_affiliates_under_supplier.lambda_handler"
+  function_name = "get_affiliates_under_supplier"
+  filename      = "../backend/get_affiliates_under_supplier.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_affiliates_under_supplier.get_affiliates_under_supplier.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_affiliates_under_supplier.zip")
 
@@ -814,10 +819,10 @@ resource "aws_lambda_permission" "get_affiliates_under_supplier_permission" {
 
 # ========================= GET /get_products_by_supplier ========================================
 resource "aws_lambda_function" "get_products_by_supplier" {
-  function_name    = "get_products_by_supplier"
-  filename         = "../backend/get_products_by_supplier.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_products_by_supplier.get_products_by_supplier.lambda_handler"
+  function_name = "get_products_by_supplier"
+  filename      = "../backend/get_products_by_supplier.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_products_by_supplier.get_products_by_supplier.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_products_by_supplier.zip")
 
@@ -849,10 +854,10 @@ resource "aws_lambda_permission" "get_products_by_supplier_permission" {
 
 # ========================= GET /get_all_tiktokers ========================================
 resource "aws_lambda_function" "get_all_tiktokers" {
-  function_name    = "get_all_tiktokers"
-  filename         = "../backend/get_all_tiktokers.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_all_tiktokers.get_all_tiktokers.lambda_handler"
+  function_name = "get_all_tiktokers"
+  filename      = "../backend/get_all_tiktokers.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_all_tiktokers.get_all_tiktokers.lambda_handler"
   #                   function name
   source_code_hash = filebase64sha256("../backend/get_all_tiktokers.zip")
 
@@ -883,10 +888,10 @@ resource "aws_lambda_permission" "get_all_tiktokers_permission" {
 }
 # ========================= GET /get_all_products ========================================
 resource "aws_lambda_function" "get_all_products" {
-  function_name    = "get_all_products"
-  filename         = "../backend/get_all_products.zip"
-  role             = aws_iam_role.super_lambda_role.arn
-  handler          = "get_all_products.get_all_products.lambda_handler"
+  function_name = "get_all_products"
+  filename      = "../backend/get_all_products.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_all_products.get_all_products.lambda_handler"
 
   source_code_hash = filebase64sha256("../backend/get_all_products.zip")
 
