@@ -1,0 +1,40 @@
+.productCard {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 16px 16px 16px 0px;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+.productCard :hover {
+  cursor: pointer;
+}
+
+.productCardContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.productName {
+  margin: 0em 0em 1em;
+}
+
+.productDescription {
+  margin: 0em 0em 1em;
+}
+
+.productPrice {
+}
+
+.productImage {
+  margin: 0em 0em 1em;
+  height: 300px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.productQuantity {
+}

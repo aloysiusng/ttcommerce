@@ -1,0 +1,166 @@
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar {
+  min-width: 300px;
+  background-color: "red";
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+}
+
+.sidebar button {
+  background-color: transparent;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 1.4em;
+  padding: 1.5em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.sidebar i {
+  font-size: 2.2em;
+}
+
+.sidebar button:hover {
+  background-color: #c2c2c2;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background-color: #fe2c55;
+  color: white;
+  padding: 1em;
+  border-radius: 1em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.primaryButton h1 {
+  margin: 0;
+}
+
+.primaryButton:hover {
+  background-color: rgb(186, 28, 59);
+  cursor: pointer;
+}
+
+.red {
+  color: #fe2c55;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0 0 0rem;
+  line-height: 1.15;
+  font-size: 2.95rem;
+}
+
+.title {
+  text-align: center;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  max-width: 800px;
+}
+
+.card {
+  margin: 1rem;
+  flex-basis: 45%;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  color: #0070f3;
+  border-color: #0070f3;
+}
+
+.card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.logo {
+  height: 1em;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.contentContainer {
+  display: flex;
+  padding: 2em;
+  flex-direction: column;
+  width: 80%;
+}
+
+.carousell {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow: auto;
+  align-self: flex-start;
+  scrollbar-width: none;
+}
+
+.carousell::-webkit-scrollbar {
+  width: 0.5em; /* Width of the scrollbar track */
+}
+
+.carousell::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Color of the scrollbar thumb */
+}
+
+.sectionTitle {
+  align-self: flex-start;
+  justify-self: flex-start;
+}
