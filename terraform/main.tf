@@ -973,6 +973,7 @@ resource "aws_lambda_permission" "create_supplier_permission" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
+
 # ========================= GET /get_all_products ========================================
 resource "aws_lambda_function" "get_all_products" {
   function_name = "get_all_products"
@@ -1004,6 +1005,41 @@ resource "aws_lambda_permission" "get_all_products_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.get_all_products.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+# ========================= GET /get_tiktoker_by_id ========================================
+resource "aws_lambda_function" "get_tiktoker_by_id" {
+  function_name = "get_tiktoker_by_id"
+  filename      = "../backend/get_tiktoker_by_id.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_tiktoker_by_id.get_tiktoker_by_id.lambda_handler"
+
+  source_code_hash = filebase64sha256("../backend/get_tiktoker_by_id.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_tiktoker_by_id" {
+  name              = "/aws/lambda/${aws_lambda_function.get_tiktoker_by_id.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_tiktoker_by_id_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_tiktoker_by_id.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_tiktoker_by_id_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_tiktoker_by_id"
+  target    = "integrations/${aws_apigatewayv2_integration.get_tiktoker_by_id_integration.id}"
+}
+resource "aws_lambda_permission" "get_tiktoker_by_id_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_tiktoker_by_id.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
