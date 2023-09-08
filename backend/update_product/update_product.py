@@ -53,17 +53,18 @@ def lambda_handler(event, context):
                 # with open(image, 'rb') as image_file:
                 # Decode the base64 data into bytes
                 image_data = base64.b64decode(product.get(field))
+                content_type = 'image/jpeg'
         
                 # Create a BytesIO object to treat the image data as a file-like object
                 image_stream = BytesIO(image_data)
-                s3.upload_fileobj(image_stream, s3_bucket_name, storage_name)
+                s3.upload_fileobj(image_stream, s3_bucket_name, storage_name, ExtraArgs={'ContentType': content_type})
         
-                expiration_time_in_seconds = 3600000000  # in seconds
-                image_url = s3.generate_presigned_url(
-                    'get_object',
-                    Params={'Bucket': s3_bucket_name, 'Key': storage_name},
-                    ExpiresIn=expiration_time_in_seconds
-                )
+                # Get the bucket's region
+                region = s3.head_bucket(Bucket=s3_bucket_name)['ResponseMetadata']['HTTPHeaders']['x-amz-bucket-region']
+
+                # Construct the object URL
+                image_url = f"https://s3-{region}.amazonaws.com/{s3_bucket_name}/{storage_name}"
+
                 update_item['image_url'] = image_url
             elif product.get(field) != None:
                 update_item[field] = product.get(field)
