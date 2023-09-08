@@ -19,7 +19,12 @@ export default function SupplierManagement() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
-          <h1>ANALYTICS</h1>
+          <h1 className={styles.sectionTitle}>Total Orders</h1>
+          <div className={styles.description}>
+            20
+          </div>
+          <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
+          
         </div>
       </main>
 

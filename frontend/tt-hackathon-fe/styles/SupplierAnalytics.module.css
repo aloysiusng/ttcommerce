@@ -138,7 +138,12 @@
 
 .contentContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: inherit;
+  padding: 2em;
+  flex-direction: column;
+  width: 80%;
+}
+
+.sectionTitle {
+  align-self: flex-start;
+  justify-self: flex-start;
 }
