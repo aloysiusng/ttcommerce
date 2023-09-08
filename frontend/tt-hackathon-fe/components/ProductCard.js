@@ -3,7 +3,7 @@ import styles from "../styles/ProductCard.module.css";
 
 const ProductCard = ({ product }) => {
   // handle insanely loooong product descriptions
-  var desc = product.description.length > 100 ? product.description.substring(0, 97) + "..." : product.description;
+  var desc = product.description.length > 65 ? product.description.substring(0, 62) + "..." : product.description;
   return (
     <div className={styles.productCard} id={product.product_id}>
       <div className={styles.productCardContent}>
