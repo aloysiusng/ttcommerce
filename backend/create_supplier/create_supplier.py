@@ -18,7 +18,7 @@ def lambda_handler(event, context):
             TableName="Suppliers",
             Item={
                 'supplier_id': {'S': uuid_value},
-                'name': {'S': uuid_value},
+                'name': {'S': name},
                 'orders': {'SS': list({""})},
                 'products': {'SS': list({""})},
                 'tiktokers': {'SS': list({""})}
