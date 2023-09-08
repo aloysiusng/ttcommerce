@@ -3,8 +3,7 @@ import boto3
 import uuid
 
 # Initialize AWS clients for DynamoDB and S3
-dynamodb = boto3.resource('dynamodb')
-supplierTable = dynamodb.Table('Suppliers')
+dynamodb = boto3.client('dynamodb')
 
 def lambda_handler(event, context):
     try:
@@ -15,14 +14,14 @@ def lambda_handler(event, context):
         # Generate a UUID
         uuid_value = str(uuid.uuid4())
         
-        # Access DynamoDB
-        supplier_response = supplierTable.put_item(
-            Item ={
-                "supplier_id": uuid_value ,
-                'name': name ,
-                'orders': list(""),
-                'products':list(""),
-                'tiktokers':list("") ,
+        response = dynamodb.put_item(
+            TableName="Suppliers",
+            Item={
+                'supplier_id': {'S': uuid_value},
+                'name': {'S': uuid_value},
+                'orders': {'SS': list({""})},
+                'products': {'SS': list({""})},
+                'tiktokers': {'SS': list({""})}
             }
         )
 
