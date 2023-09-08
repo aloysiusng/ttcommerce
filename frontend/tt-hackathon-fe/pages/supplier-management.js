@@ -13,6 +13,7 @@ import ProductCard from "../components/ProductCard";
 import UserMiniCard from "../components/UserMiniCard";
 import Modal from "../components/Modal";
 import CreateProductForm from "../components/CreateProductForm";
+import { toast } from "react-toastify";
 
 export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);
@@ -38,7 +39,7 @@ export default function SupplierManagement() {
       console.log(products);
     } catch (error) {
       console.log("Error fetching seller all products: " + error);
-      alert("Error retrieving products from the backend");
+      toast.error("Error retrieving affiliates please contact support!");
     }
   }
 
@@ -49,7 +50,18 @@ export default function SupplierManagement() {
       console.log(affiliates);
     } catch (error) {
       console.log("Error fetching seller all affiliates: " + error);
-      alert("Error retrieving affiliates from the backend");
+      toast.error("Error retrieving affiliates please contact support!");
+    }
+  }
+
+  async function fetchSellerAllOrders() {
+    try {
+      const orders = await getAllOrdersBySellerId(user.email);
+      setSellerAllOrders(orders);
+      console.log(orders);
+    } catch (error) {
+      console.log("Error fetching seller all orders: " + error);
+      alert("Error retrieving orders from the backend");
     }
   }
 

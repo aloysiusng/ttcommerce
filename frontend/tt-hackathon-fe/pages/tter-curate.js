@@ -1,22 +1,28 @@
 import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
+import Modal from "../components/Modal";
+import ModalProduct from "../components/ModalProduct";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Sidebar from "../components/sidebar";
 import styles from "../styles/TterCurate.module.css";
 import { getAllProducts } from "../utils/tter-service";
 import { UserContext } from "./_app";
+import { toast } from "react-toastify";
 
 export default function TterCurate() {
   const { user, setUser } = useContext(UserContext);
+
   const [allProducts, setAllProducts] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalProduct, setModalProduct] = useState({});
 
   async function fetchAllProducts() {
     try {
       getAllProducts().then((res) => setAllProducts(JSON.parse(res.products)));
     } catch (error) {
       console.log("Error fetching all products: " + error);
-      alert("Error retrieving products from the backend");
+      toast.error("Error retrieving products please contact support!");
     }
   }
 
@@ -35,10 +41,21 @@ export default function TterCurate() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
+          {/* modal open when product*/}
+          <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+            <ModalProduct product={modalProduct} handleClose={() => setOpenModal(false)} />
+          </Modal>
+          {/* main content */}
           <h1 className={styles.sectionTitle}>Products Available</h1>
           <div className={styles.productCardContainer}>
             {allProducts.map((product) => (
-              <div className={styles.productCardWrapper} key={product.product_id}>
+              <div
+                className={styles.productCardWrapper}
+                key={product.product_id}
+                onClick={() => {
+                  setOpenModal(true);
+                  setModalProduct(product);
+                }}>
                 <ProductCard product={product} />
               </div>
             ))}

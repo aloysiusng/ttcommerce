@@ -24,12 +24,39 @@
   background-color: rgb(186, 28, 59);
   cursor: pointer;
 }
-
+.primaryButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 .red {
   color: #fe2c55;
   text-decoration: none;
 }
 
+.secondaryButton {
+  background-color: #68c9d0;
+  color: black;
+  padding: 1em;
+  border-radius: 1em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+}
+.secondaryButton h1 {
+  margin: 0;
+}
+
+.secondaryButton:hover {
+  background-color: rgb(104, 201, 208);
+  cursor: pointer;
+}
+.secondaryButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.blue {
+  color: #68c9d0;
+  text-decoration: none;
+}
 .title a:hover,
 .title a:focus,
 .title a:active {

@@ -5,7 +5,7 @@ import Sidebar from "../components/sidebar";
 import Navbar from "../components/Navbar";
 import { UserContext } from "./_app";
 
-export default function SupplierManagement() {
+export default function SupplierAnalytics() {
   const { user, setUser } = useContext(UserContext);
 
   return (
