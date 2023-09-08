@@ -13,9 +13,7 @@ export default function TterCurate() {
 
   async function fetchAllProducts() {
     try {
-      const products = await getAllProducts();
-      setAllProducts(products);
-      console.log(products);
+      getAllProducts().then((res) => setAllProducts(JSON.parse(res.products)));
     } catch (error) {
       console.log("Error fetching all products: " + error);
       alert("Error retrieving products from the backend");
@@ -38,9 +36,11 @@ export default function TterCurate() {
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
           <h1 className={styles.sectionTitle}>Products Available</h1>
-          <div className={styles.carousell}>
-            {allProducts?.map((product) => (
-              <ProductCard product={product} />
+          <div className={styles.productCardContainer}>
+            {allProducts.map((product) => (
+              <div className={styles.productCardWrapper} key={product.product_id}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </div>
