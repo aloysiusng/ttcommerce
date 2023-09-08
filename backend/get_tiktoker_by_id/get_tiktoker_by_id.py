@@ -12,6 +12,9 @@ def lambda_handler(event, context):
         tiktoker_id = body.get("tiktoker_id")
         response = tiktokerTable.get_item(Key={"tiktoker_id": tiktoker_id})
         tiktoker = response["Item"]
+        tiktoker["listings"] = list(tiktoker.get("listings", []))
+        tiktoker["suppliers"] = list(tiktoker.get("suppliers", []))
+        tiktoker["orders"] = list(tiktoker.get("orders", []))
 
         return {
             'statusCode': 200,
