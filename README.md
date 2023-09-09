@@ -36,3 +36,6 @@ The entire backend is serverless and hosted on AWS and built through terraform a
 aws_policies documents the policies applied in AWS
 parameters such as AWS region, S3 bucket name... are stored as secrets in github actions
 
+## Cloud Architecture 
+
+![Cloud Architecture](cloudarchi.png)
