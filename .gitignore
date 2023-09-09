@@ -33,3 +33,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 backend/.DS_Store
+
+
+# ignore node_modules
+**/node_modules
+**/.next 
+```

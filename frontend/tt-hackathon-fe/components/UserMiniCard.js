@@ -8,7 +8,7 @@ const UserMiniCard = ({ user }) => {
         <img
           className={styles.userImage}
           alt="user-image"
-          src={user.profilePicUrl}
+          src={user.profilepic_url}
         />
         <div className={styles.userMiniCardContentColumn}>
           <h2 className={styles.userName}>{user.name}</h2>

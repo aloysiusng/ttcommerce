@@ -1,20 +1,48 @@
 import Head from "next/head";
-import styles from "../styles/SupplierManagement.module.css";
-import { useContext, useState, useEffect } from "react";
-import Sidebar from "../components/sidebar";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import CreateProductForm from "../components/CreateProductForm";
+import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
-import { UserContext } from "./_app";
+import ProductCard from "../components/ProductCard";
+import Sidebar from "../components/Sidebar";
+import UserMiniCard from "../components/UserMiniCard";
+import styles from "../styles/SupplierManagement.module.css";
 import {
   getAllAffiliatesBySellerId,
+  getAllOrdersBySellerId,
   getAllProductsBySellerId,
 } from "../utils/seller-service";
-import ProductCard from "../components/ProductCard";
-import UserMiniCard from "../components/UserMiniCard";
+import { UserContext } from "./_app";
 
 export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);
   const [sellerAllProducts, setSellerAllProducts] = useState([]);
   const [sellerAllAffiliates, setSellerAllAffiliates] = useState([]);
+  const [sellerAllOrders, setSellerAllOrders] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [productToEdit, setProductToEdit] = useState(undefined);
+  const [hadChangesMade, setHasChangesMade] = useState(false);
+
+  const toggleChanges = () => {
+    location.reload();
+  };
+
+  const handleEdit = (product) => {
+    console.log(product);
+    setProductToEdit(product);
+    openModal("editProduct");
+  };
+
+  const openModal = (type) => {
+    setModalType(type);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   async function fetchSellerAllProducts() {
     try {
@@ -23,7 +51,7 @@ export default function SupplierManagement() {
       console.log(products);
     } catch (error) {
       console.log("Error fetching seller all products: " + error);
-      alert("Error retrieving products from the backend");
+      toast.error("Error retrieving affiliates please contact support!");
     }
   }
 
@@ -34,14 +62,27 @@ export default function SupplierManagement() {
       console.log(affiliates);
     } catch (error) {
       console.log("Error fetching seller all affiliates: " + error);
-      alert("Error retrieving affiliates from the backend");
+      toast.error("Error retrieving affiliates please contact support!");
+    }
+  }
+
+  async function fetchSellerAllOrders() {
+    try {
+      const orders = await getAllOrdersBySellerId(user.email);
+      setSellerAllOrders(orders);
+      console.log(orders);
+    } catch (error) {
+      console.log("Error fetching seller all orders: " + error);
+      alert("Error retrieving orders from the backend");
     }
   }
 
   useEffect(() => {
+    console.log("USE EFFECT FIRED");
     fetchSellerAllAffiliates();
     fetchSellerAllProducts();
-  });
+    fetchSellerAllOrders();
+  }, [hadChangesMade]);
 
   return (
     <div className={styles.container}>
@@ -51,26 +92,122 @@ export default function SupplierManagement() {
       </Head>
       <Navbar isLoggedIn={user}></Navbar>
 
+      {modalType == "createProduct" && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateProductForm
+            closeModal={closeModal}
+            changesMade={toggleChanges}
+          ></CreateProductForm>
+        </Modal>
+      )}
+
+      {modalType == "editProduct" && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateProductForm
+            isEdit={true}
+            closeModal={closeModal}
+            productToEdit={productToEdit}
+            changesMade={toggleChanges}
+          ></CreateProductForm>
+        </Modal>
+      )}
+
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
           <h1 className={styles.sectionTitle}>Your Orders</h1>
-          <table>
-            <th>header 1</th>
-            <th>header 2</th>
-            <th>header 3</th>
-            <tr>
-              <td>0,0</td>
-              <td>0,1</td>
-              <td>0,2</td>
-            </tr>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Unit Cost</th>
+                <th>Total Quantity</th>
+                <th>Total Cost</th>
+                <th>Affiliate Seller</th>
+                <th>OMS Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sellerAllOrders.map((order) => (
+                <tr>
+                  <td>{order.order_id}</td>
+                  <td>{order.product.product_name}</td>
+                  <td>{order.product.price}</td>
+                  <td>{order.quantity}</td>
+                  <td>
+                    $
+                    {(
+                      Number(order.quantity) * Number(order.product.price)
+                    ).toFixed(2)}
+                  </td>
+                  <td>{`${order.buyer.name} (@${order.buyer.username})`}</td>
+                  <td>
+                    <button
+                      className={styles.secondaryButton}
+                      style={{ padding: "0.8em 1em" }}
+                      onClick={() => {
+                        alert(
+                          "Feature unimplemented: \nSeller's OMS will be linked and opened locally."
+                        );
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5em",
+                        }}
+                      >
+                        <i
+                          style={{ fontSize: "1.3em" }}
+                          className="bi bi-box-arrow-right"
+                        ></i>
+                        <p>Open in OMS</p>
+                      </div>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
-          <h1 className={styles.sectionTitle}>Your Products</h1>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h1 className={styles.sectionTitle}>Your Products</h1>
+            <button
+              className={styles.primaryButton}
+              style={{ padding: "0.8em 1em" }}
+              onClick={() => {
+                openModal("createProduct");
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.7em",
+                }}
+              >
+                <i
+                  style={{ fontSize: "1.7em" }}
+                  className="bi bi-plus-square"
+                ></i>
+                <h2>Add Product</h2>
+              </div>
+            </button>
+          </div>
           <div className={styles.carousell}>
             {sellerAllProducts?.map((product) => (
-              <ProductCard product={product} />
+              <ProductCard product={product} handleEdit={handleEdit} />
             ))}
           </div>
+
           <h1 className={styles.sectionTitle}>Your TikTok Affiliates</h1>
           <div className={styles.carousell}>
             {sellerAllAffiliates?.map((affiliate) => (

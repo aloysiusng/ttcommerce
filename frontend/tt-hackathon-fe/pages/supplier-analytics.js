@@ -2,7 +2,10 @@ import Head from "next/head";
 import styles from "../styles/SupplierAnalytics.module.css";
 import { useEffect, useContext, useState } from "react";
 import Sidebar from "../components/sidebar";
+
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import styles from "../styles/SupplierAnalytics.module.css";
 import { UserContext } from "./_app";
 import SellerMiniCard from "../components/TopSellerCard";
 import {
@@ -10,7 +13,7 @@ import {
   getSupplierById,
 } from "../utils/topseller-service";
 
-export default function SupplierManagement() {
+export default function SupplierAnalytics() {
   const { user, setUser } = useContext(UserContext);
   const [supplier, setSupplier] = useState([]);
   const [supplierId, setSupplierId] = useState("7b0febb8-d61d-4ff6-be7c-120beb7ea691")
@@ -121,9 +124,7 @@ export default function SupplierManagement() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;
