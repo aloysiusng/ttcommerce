@@ -16,13 +16,13 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: .
+        working-directory: ./terraform
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
@@ -35,7 +35,7 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: cd terraform && terraform fmt -check
+        run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
@@ -43,15 +43,16 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        run: cd terraform && terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
 
       - name: Terraform Validate
         id: validate
-        run: cd terraform && terraform validate -no-color
+        run: terraform validate -no-color
 
       - name: Terraform Plan
         id: plan
-        run: cd terraform && terraform plan -no-color
+        run: terraform plan -no-color
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
@@ -61,4 +62,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: cd terraform && terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false
