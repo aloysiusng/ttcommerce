@@ -7,6 +7,7 @@ import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { UserContext } from "./_app";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Home() {
   // const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [createFormModalOpen, setCreateFormModalOpen] = useState(false);
   const [createUserModalOpen, setCreateUserModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleSetUserType = (ut) => {
     setUserType(ut);
@@ -36,12 +38,21 @@ export default function Home() {
 
   const onLoginSuccess = (user) => {
     closeModal();
+    if (user.userType == "seller") {
+      router.push("/supplier-management");
+    } else {
+      router.push("/tter-curate");
+    }
     setUser(user);
   };
 
   return (
     <Box>
       <Head>
+        <link
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
+          rel="stylesheet"
+        />
         <title>TikTok Collective</title>
         <link rel="icon" src="tiktok_icon.png" />
       </Head>
@@ -78,15 +89,24 @@ export default function Home() {
           <div className="mx-auto max-w-xl text-center">
             <h1 className="text-3xl font-extrabold sm:text-5xl">
               Tiktok Commmerce.
-              <strong className="font-extrabold sm:block" style={{ color: "#FE2C55" }}>
+              <strong
+                className="font-extrabold sm:block"
+                style={{ color: "#FE2C55" }}
+              >
                 Where E-Commerce meets Social Media
               </strong>
             </h1>
 
-            <p className="mt-4 sm:text-xl/relaxed">Livestreaming for Tiktokers has never been so rewarding before.</p>
+            <p className="mt-4 sm:text-xl/relaxed">
+              Livestreaming for Tiktokers has never been so rewarding before.
+            </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <a className="block w-full rounded px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto" style={{ backgroundColor: "#FE2C55" }} onClick={() => setCreateUserModalOpen(true)}>
+              <a
+                className="block w-full rounded px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+                href=""
+                style={{ backgroundColor: "#FE2C55" }}
+              >
                 Get Started
               </a>
 
@@ -97,17 +117,36 @@ export default function Home() {
           </div>
         </div>
 
-        <section id="learn-more-section" className="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2">
-          <img alt="Student" src="tiktok_live.jpg" className="h-56 w-full object-cover sm:h-full" />
+        <section
+          id="learn-more-section"
+          className="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2"
+        >
+          <img
+            alt="Student"
+            src="tiktok_live.jpg"
+            className="h-56 w-full object-cover sm:h-full"
+          />
 
           <div className="p-8 md:p-12 lg:px-16 lg:py-24">
             <div className="mx-auto max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
-              <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">With Tiktok Ecommerce, tiktokers who go live have an added value to livestream more often.</h2>
+              <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                With Tiktok Ecommerce, tiktokers who go live have an added value
+                to livestream more often.
+              </h2>
 
-              <p className="hidden text-gray-500 md:mt-4 md:block">Get connected with suppliers around the world and curate your product collection to sell to your audience. Forget all the hassle cause Tiktok ecommerce will handle all the shipping and logistics for you through the suppliers. Your only job is to go live and sell and of course, make a profit with every sale.</p>
+              <p className="hidden text-gray-500 md:mt-4 md:block">
+                Get connected with suppliers around the world and curate your
+                product collection to sell to your audience. Forget all the
+                hassle cause Tiktok ecommerce will handle all the shipping and
+                logistics for you through the suppliers. Your only job is to go
+                live and sell and of course, make a profit with every sale.
+              </p>
 
               <div className="mt-4 md:mt-8">
-                <a className="inline-block rounded px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus:ring focus:ring-yellow-400" style={{ backgroundColor: "#FE2C55" }}>
+                <a
+                  className="inline-block rounded px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus:ring focus:ring-yellow-400"
+                  style={{ backgroundColor: "#FE2C55" }}
+                >
                   Get Started Today
                 </a>
               </div>
@@ -118,12 +157,23 @@ export default function Home() {
         <section className="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2 sm:items-center">
           <div className="p-8 md:p-12 lg:px-16 lg:py-24">
             <div className="mx-auto max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
-              <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">Don't worry Suppliers, we got you covered too.</h2>
+              <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                Don't worry Suppliers, we got you covered too.
+              </h2>
 
-              <p className="hidden text-gray-500 md:mt-4 md:block">With Tiktok commerce, gone are the days where you have to worry about marketing or sales. Focus on what you do best, which is to produce quality products and ship them to customers. Leave the rest to Tiktokers, who will sell your products to their audience in their own creative ways.</p>
+              <p className="hidden text-gray-500 md:mt-4 md:block">
+                With Tiktok commerce, gone are the days where you have to worry
+                about marketing or sales. Focus on what you do best, which is to
+                produce quality products and ship them to customers. Leave the
+                rest to Tiktokers, who will sell your products to their audience
+                in their own creative ways.
+              </p>
 
               <div className="mt-4 md:mt-8">
-                <a className="inline-block rounded px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus:ring focus:ring-yellow-400" style={{ backgroundColor: "#FE2C55" }}>
+                <a
+                  className="inline-block rounded px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus:ring focus:ring-yellow-400"
+                  style={{ backgroundColor: "#FE2C55" }}
+                >
                   Get Started Today
                 </a>
               </div>
@@ -136,7 +186,11 @@ export default function Home() {
         <footer className="bg-gray-100">
           <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="flex justify-center text-teal-600">
-              <img src="tiktok_icon.png" className="h-12 w-12" alt="Tiktok Logo" />
+              <img
+                src="tiktok_icon.png"
+                className="h-12 w-12"
+                alt="Tiktok Logo"
+              />
             </div>
 
             <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
@@ -172,7 +226,9 @@ export default function Home() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+            sans-serif;
         }
         * {
           box-sizing: border-box;
