@@ -1,9 +1,8 @@
-import React from "react";
-import styles from "../styles/Sidebar.module.css";
 import Link from "next/link";
-import { UserContext } from "../pages/_app";
-import { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useContext } from "react";
+import { UserContext } from "../pages/_app";
+import styles from "../styles/Sidebar.module.css";
 
 const Sidebar = (props) => {
   const router = useRouter();

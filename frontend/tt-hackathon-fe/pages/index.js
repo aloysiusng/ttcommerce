@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import LoginForm from "../components/LoginForm";
 import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import styles from "../styles/Home.module.css";
 import { UserContext } from "./_app";
 import LoginFormNew from "../components/LoginFormNew";
@@ -46,13 +46,8 @@ export default function Home() {
             justifyContent: "center",
             alignItems: "center",
             width: "inherit",
-          }}
-        >
-          <h1>
-            {user.userType
-              ? `LANDING PAGE; TYPE: ${user.userType}`
-              : "PRE-LOGIN CONTENT"}
-          </h1>
+          }}>
+          <h1>{user.userType ? `LANDING PAGE; TYPE: ${user.userType}` : "PRE-LOGIN CONTENT"}</h1>
         </div>
       </main>
 

@@ -1,12 +1,12 @@
 import Head from "next/head";
-import styles from "../styles/TterManagement.module.css";
 import { useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
-import Navbar from "../components/Navbar";
-import { UserContext } from "./_app";
 import AffiliateCard from "../components/AffiliateCard";
 import AffiliateExplore from "../components/AffliateExplore";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import styles from "../styles/TterManagement.module.css";
 import { affiliates, affliatesExplore } from "../utils/dummyData";
+import { UserContext } from "./_app";
 
 const cardContainerStyle = {
   width: '100%',
@@ -116,9 +116,7 @@ export default function TterManagement() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;

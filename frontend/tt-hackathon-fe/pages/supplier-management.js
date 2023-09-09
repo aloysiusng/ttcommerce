@@ -1,19 +1,15 @@
 import Head from "next/head";
-import styles from "../styles/SupplierManagement.module.css";
-import { useContext, useState, useEffect } from "react";
-import Sidebar from "../components/sidebar";
-import Navbar from "../components/Navbar";
-import { UserContext } from "./_app";
-import {
-  getAllAffiliatesBySellerId,
-  getAllOrdersBySellerId,
-  getAllProductsBySellerId,
-} from "../utils/seller-service";
-import ProductCard from "../components/ProductCard";
-import UserMiniCard from "../components/UserMiniCard";
-import Modal from "../components/Modal";
-import CreateProductForm from "../components/CreateProductForm";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import CreateProductForm from "../components/CreateProductForm";
+import Modal from "../components/Modal";
+import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
+import Sidebar from "../components/Sidebar";
+import UserMiniCard from "../components/UserMiniCard";
+import styles from "../styles/SupplierManagement.module.css";
+import { getAllAffiliatesBySellerId, getAllOrdersBySellerId, getAllProductsBySellerId } from "../utils/seller-service";
+import { UserContext } from "./_app";
 
 export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);
@@ -91,9 +87,7 @@ export default function SupplierManagement() {
       <Navbar isLoggedIn={user}></Navbar>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {modalType == "createProduct" && (
-          <CreateProductForm></CreateProductForm>
-        )}
+        {modalType == "createProduct" && <CreateProductForm></CreateProductForm>}
       </Modal>
 
       <main>
@@ -119,35 +113,22 @@ export default function SupplierManagement() {
                   <td>{order.product.product_name}</td>
                   <td>{order.product.supplier_price}</td>
                   <td>{order.quantity}</td>
-                  <td>
-                    $
-                    {(
-                      Number(order.quantity) *
-                      Number(order.product.supplier_price.slice(1))
-                    ).toFixed(2)}
-                  </td>
+                  <td>${(Number(order.quantity) * Number(order.product.supplier_price.slice(1))).toFixed(2)}</td>
                   <td>{`${order.buyer.name} (@${order.buyer.username})`}</td>
                   <td>
                     <button
                       className={styles.secondaryButton}
                       style={{ padding: "0.8em 1em" }}
                       onClick={() => {
-                        alert(
-                          "Feature unimplemented: \nSeller's OMS will be linked and opened locally."
-                        );
-                      }}
-                    >
+                        alert("Feature unimplemented: \nSeller's OMS will be linked and opened locally.");
+                      }}>
                       <div
                         style={{
                           display: "flex",
                           alignItems: "center",
                           gap: "0.5em",
-                        }}
-                      >
-                        <i
-                          style={{ fontSize: "1.3em" }}
-                          className="bi bi-box-arrow-right"
-                        ></i>
+                        }}>
+                        <i style={{ fontSize: "1.3em" }} className="bi bi-box-arrow-right"></i>
                         <p>Open in OMS</p>
                       </div>
                     </button>
@@ -162,27 +143,21 @@ export default function SupplierManagement() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-            }}
-          >
+            }}>
             <h1 className={styles.sectionTitle}>Your Products</h1>
             <button
               className={styles.primaryButton}
               style={{ padding: "0.8em 1em" }}
               onClick={() => {
                 openModal("createProduct");
-              }}
-            >
+              }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "0.7em",
-                }}
-              >
-                <i
-                  style={{ fontSize: "1.7em" }}
-                  className="bi bi-plus-square"
-                ></i>
+                }}>
+                <i style={{ fontSize: "1.7em" }} className="bi bi-plus-square"></i>
                 <h2>Add Product</h2>
               </div>
             </button>
@@ -217,9 +192,7 @@ export default function SupplierManagement() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;
