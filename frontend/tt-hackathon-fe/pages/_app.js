@@ -3,6 +3,8 @@ import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
+
 
 const UserContext = createContext();
 
@@ -25,9 +27,11 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <ToastContainer />
-      <UserContext.Provider value={{ user, setUser }}>
-        <Component {...pageProps} />
-      </UserContext.Provider>
+      <SessionProvider session={pageProps.session}>
+        <UserContext.Provider value={{ user, setUser }}>
+          <Component {...pageProps} />
+        </UserContext.Provider>
+      </SessionProvider>
     </>
   );
 }

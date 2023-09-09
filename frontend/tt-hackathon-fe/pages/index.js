@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/sidebar";
 import styles from "../styles/Home.module.css";
 import { UserContext } from "./_app";
+import LoginFormNew from "../components/LoginFormNew";
 
 export default function Home() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -33,7 +34,8 @@ export default function Home() {
       <Navbar isLoggedIn={user} loginOnClick={openModal}></Navbar>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <LoginForm _callback={onLoginSuccess}></LoginForm>
+        {/* <LoginForm _callback={onLoginSuccess}></LoginForm> */}
+        <LoginFormNew></LoginFormNew>
       </Modal>
 
       <main>
