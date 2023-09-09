@@ -54,7 +54,7 @@ export default function TterCurate() {
               <h1 className={styles.sectionTitle}>Products Available</h1>
             </Grid>
             {allProducts.map((product) => (
-              <Grid xs={12} md={4} lg={3} xl={3}>
+              <Grid xs={12} md={6} lg={4} xl={3}>
                 <div
                   key={product.product_id}
                   onClick={() => {
