@@ -1,51 +1,52 @@
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AffiliateCard from "../components/AffiliateCard";
 import AffiliateExplore from "../components/AffliateExplore";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/TterManagement.module.css";
-import { affiliates } from "../utils/dummyData";
+import { affliatesExplore } from "../utils/dummyData";
+import { getAllSuppliers } from "../utils/tter-service";
 import { UserContext } from "./_app";
-
-const cardContainerStyle = {
-  width: "100%",
-  backgroundColor: "lightgrey",
-  border: "2px solid #FF2D55",
-  color: "white",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "16px",
-  padding: "16px",
-};
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
-
+  const [affliateCards, setAffliateCards] = useState([]);
+  const [affiliates, setAffiliates] = useState(affliatesExplore);
   const [affiliateModals, setAffiliateModals] = useState(affiliates.map((affliate, index) => ({ isOpen: false, data: affliate })));
+
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+      try {
+        const tiktokerID = "48479c4d-0419-45c8-8d84-d3997c673858";
+        const filteredSuppliers = await getAllSuppliers(tiktokerID);
+        const initialAffiliateCards = filteredSuppliers.map((affliate, index) => ({ isOpen: false, data: affliate }));
+        setAffliateCards(initialAffiliateCards);
+      } catch (error) {
+        console.error("Error fetching suppliers:", error);
+      }
+    };
+
+    fetchSuppliers();
+  }, []);
 
   const openModal = (index) => {
     const updatedModals = [...affiliateModals];
     updatedModals[index].isOpen = true;
     setAffiliateModals(updatedModals);
+    const updatedAffiliateCards = [...affliateCards];
+    updatedAffiliateCards[index].isOpen = true;
+    setAffliateCards(updatedAffiliateCards);
   };
 
   const closeModal = (index) => {
+    const updatedAffiliateCards = [...affliateCards];
+    updatedAffiliateCards[index].isOpen = false;
+    setAffliateCards(updatedAffiliateCards);
     const updatedModals = [...affiliateModals];
     updatedModals[index].isOpen = false;
     setAffiliateModals(updatedModals);
-  };
-
-  const cardContainerStyle = {
-    width: "100%",
-    backgroundColor: "lightgrey",
-    border: "2px solid #FF2D55",
-    color: "white",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "16px",
-    padding: "16px",
-    display: "flex",
-    overflowX: "auto",
   };
 
   return (
