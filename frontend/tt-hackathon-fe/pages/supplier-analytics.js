@@ -1,7 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/SupplierAnalytics.module.css";
 import { useEffect, useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
