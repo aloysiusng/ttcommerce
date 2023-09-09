@@ -10,7 +10,9 @@ def lambda_handler(event, context):
         # Extract data from the API Gateway event
         body = json.loads(event['body'])
         name = body.get("name")
-        
+        category = body.get("category")
+        description = body.get("description")
+
         # Generate a UUID
         uuid_value = str(uuid.uuid4())
         
@@ -22,7 +24,9 @@ def lambda_handler(event, context):
                 'orders': {'SS': list({""})},
                 'products': {'SS': list({""})},
                 'tiktokers': {'SS': list({""})},
-                'tiktokers_sales': {'M': {}}
+                'tiktokers_sales': {'M': {}},
+                'category': {'S': category},
+                'description': {'S': description},
             }
         )
 

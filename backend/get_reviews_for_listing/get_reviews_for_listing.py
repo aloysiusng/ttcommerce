@@ -11,7 +11,7 @@ listingTable = dynamodb.Table("Listings")
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
-        body = json.loads(event['queryStringParameters'])
+        body = event['queryStringParameters']
         listing_id = body.get("listing_id")
         response = listingTable.get_item(Key={"listing_id": listing_id})
         if "Item" not in response:

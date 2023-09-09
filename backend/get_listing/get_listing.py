@@ -16,7 +16,7 @@ lambda_client = boto3.client('lambda')
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
-        body = json.loads(event['queryStringParameters'])
+        body = event['queryStringParameters']
         listing_id = body.get("listing_id")
 
         listing_response = listingsTable.get_item(Key={"listing_id": listing_id})
