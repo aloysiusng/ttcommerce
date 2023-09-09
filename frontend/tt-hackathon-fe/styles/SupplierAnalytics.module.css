@@ -147,3 +147,20 @@
   align-self: flex-start;
   justify-self: flex-start;
 }
+
+.carousell {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow: auto;
+  align-self: flex-start;
+  scrollbar-width: none;
+}
+
+.carousell::-webkit-scrollbar {
+  width: 0.5em; /* Width of the scrollbar track */
+}
+
+.carousell::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Color of the scrollbar thumb */
+}

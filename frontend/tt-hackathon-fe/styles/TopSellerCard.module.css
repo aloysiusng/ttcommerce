@@ -1,0 +1,33 @@
+.sellerMiniCard {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px 16px 16px 0px;
+    min-width: 300px;
+  }
+  
+  .sellerMiniCard :hover {
+    cursor: pointer;
+  }
+  
+  .sellerMiniCardContentColumn {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sellerMiniCardContentRow {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+  }
+  
+  .sellerImage {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+  
