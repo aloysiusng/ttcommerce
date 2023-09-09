@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         user_type = body.get("type")
         user_email = body.get("email")
         response = users_table.get_item(Key={"user_email": user_email})
-
+        print(body)
         # validate if user exists
         if "Item" in response:
             return {
@@ -40,7 +40,7 @@ def lambda_handler(event, context):
             }
         )
         okCheck1 = response["ResponseMetadata"]["HTTPStatusCode"] == 200
-
+        print(okCheck1)
         if user_type == "tiktoker":
             name = body.get("name")
             username = body.get("username")
