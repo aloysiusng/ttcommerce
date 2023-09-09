@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/TopSellerCard.module.css";
 
-const SellerMiniCard = ({ seller, orders }) => {
+const SellerMiniCard = ({ seller }) => {
   return (
     <div className={styles.sellerMiniCard} id={seller.tiktoker_id}>
       <div className={styles.sellerMiniCardContentRow}>
@@ -16,7 +16,7 @@ const SellerMiniCard = ({ seller, orders }) => {
         </div>
       </div>
       <div className={styles.sellerMiniCardContentRow}>
-        <p>{`${orders} orders fulfilled`}</p>
+        <p>{`${seller.numOrders} orders fulfilled`}</p>
       </div>
     </div>
   );

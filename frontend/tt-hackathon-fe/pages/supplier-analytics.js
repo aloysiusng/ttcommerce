@@ -14,16 +14,17 @@ export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);
   const [supplier, setSupplier] = useState([]);
   const [supplierId, setSupplierId] = useState("7b0febb8-d61d-4ff6-be7c-120beb7ea691")
-  const [topSellers, setTopSellers] = useState([]);
+  const [topSellers, setTopSellers] = useState({});
   const [tiktokers, setTiktokers] = useState([]);
+  const [tiktoker_ids, setTiktokerIds] = useState([]);
 
   async function fetchSupplier() {
     try {
-      const current_supplier = await getSupplierById(supplierId);
-      // getSupplierById(supplierId).then((res) => setSupplier(res));
-      setSupplier(current_supplier);
+      // const current_supplier = await getSupplierById(supplierId);
+      getSupplierById(supplierId).then((res) => setSupplier(res));
+      // setSupplier(current_supplier);
       console.log("supplier is " + supplier);
-      setTopSellers(supplier.tiktokers_sales)
+      console.log("keys are " + topSellers)
     } catch (error) {
       console.log("Error fetching supplier: " + error);
       alert("Error retrieving supplier from the backend");
@@ -34,15 +35,23 @@ export default function SupplierManagement() {
     console.log(supplier.tiktokers_sales)
     const sellers = Object.entries(supplier.tiktokers_sales);
     sellers.sort((x, y) => x[1] - y[1]);
-    console.log(JSON.stringify(sellers));
+    console.log("sellers are" + JSON.stringify(sellers));
 
-    for (let seller in sellers) {
+    for (let i = 0; i < sellers.length; i++) {
       try {
-        const tiktoker = await getTiktokerById(seller[0]);
-        console.log("tiktoker is " + tiktoker)
-        tiktokers.push(tiktoker);
+        getTiktokerById(sellers[i][0]).then((res) => {
+          // tiktoker.put("numOrders", sellers[i][1])
+          res.numOrders = sellers[i][1];
+          console.log("res numOrders is " + res.numOrders);
+          if(!tiktoker_ids.includes(res.tiktoker_id)) {
+            tiktokers.push(res);
+            const updated_tiktoker_ids = [...tiktoker_ids];
+            updated_tiktoker_ids.push(res.tiktoker_id);
+            setTiktokerIds(updated_tiktoker_ids);
+          }
+        });
         setTiktokers(tiktokers);
-        console.log(tiktokers);
+        console.log("tiktokers are " + tiktokers);
       } catch (error) {
         console.log("Error fetching tiktoker: " + error);
         alert("Error retrieving tiktoker from the backend");
@@ -65,9 +74,14 @@ export default function SupplierManagement() {
 
   useEffect(() => {
     fetchSupplier();
-    fetchTopSellers();
+    if (supplier.length != 0) {
+      setTopSellers(supplier.tiktokers_sales);
+    }
+    if (Object.keys(topSellers).length != 0) {
+      fetchTopSellers();
+    }
     // fetchTiktokers();
-  }, [supplierId]);
+  }, [supplier.supplier_id, Object.keys(topSellers).length]);
 
   return (
     <div className={styles.container}>
@@ -80,10 +94,8 @@ export default function SupplierManagement() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
-          <h1 className={styles.sectionTitle}>Total Orders</h1>
-          <div className={styles.description}>
-            20
-          </div>
+          <h1 className={styles.sectionTitle}>Total Orders: {supplier.length != 0 ? supplier.orders.length : 0}</h1>
+          <br></br>
           <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
           <div className={styles.carousell}>
             {tiktokers?.map((affiliate) => (

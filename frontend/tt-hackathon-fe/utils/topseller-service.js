@@ -6,12 +6,25 @@ import tiktokers from "../mock/mock-tiktokers.json";
 2) get_supplier_by_id
 */
 
-const getTiktokerById = (tiktokerId) => {
-  //MOCK
-  const tiktoker = tiktokers;
-  return new Promise((resolve, reject) => {
-    resolve(tiktoker);
-  });
+const getTiktokerById = async (tiktokerId) => {
+//   //MOCK
+//   const tiktoker = tiktokers;
+//   return new Promise((resolve, reject) => {
+//     resolve(tiktoker);
+//   });
+
+  var url = `https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_tiktoker_by_id?tiktoker_id=${tiktokerId}`;
+  try {
+    const response = await fetch(url);
+    console.log(response)
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };
 
 const getSupplierById = async (supplierId) => {
@@ -29,9 +42,7 @@ const getSupplierById = async (supplierId) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    return new Promise((resolve, reject) => {
-        resolve(response.json());
-      });
+    return await response.json();
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
