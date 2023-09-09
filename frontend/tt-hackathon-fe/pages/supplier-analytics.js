@@ -94,7 +94,7 @@ export default function SupplierManagement() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
-          <h1 className={styles.sectionTitle}>Total Orders: {supplier.length != 0 ? supplier.orders.length : 0}</h1>
+          <h1 className={styles.sectionTitle}>Total Orders: <span className={styles.red}>{supplier.length != 0 ? supplier.orders.length : 0}</span></h1>
           <br></br>
           <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
           <div className={styles.carousell}>
