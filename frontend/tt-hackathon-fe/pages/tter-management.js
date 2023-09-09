@@ -7,28 +7,38 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/TterManagement.module.css";
 import { affliatesExplore } from "../utils/dummyData";
-import { getAllSuppliers } from "../utils/tter-service";
+import { getAllSuppliers, getAllSuppliersNotAffliated } from "../utils/tter-service";
 import { UserContext } from "./_app";
-import { affiliates } from "../utils/dummyData";
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
   const [affliateCards, setAffliateCards] = useState([]);
 
+  const [affliateExplore, setAffliateExplore] = useState([]);
+
   useEffect(() => {
-    const fetchSuppliers = async () => {
+    const fetchData = async () => {
+      const tiktokerID = "48479c4d-0419-45c8-8d84-d3997c673858";
+
       try {
-        const tiktokerID = "48479c4d-0419-45c8-8d84-d3997c673858";
-        const filteredSuppliers = await getAllSuppliers(tiktokerID);
-        const initialAffiliateCards = filteredSuppliers.map((affliate, index) => ({ isOpen: false, data: affliate }));
+        // Fetch affiliated suppliers
+        const affiliatedSuppliers = await getAllSuppliers(tiktokerID);
+        const initialAffiliateCards = affiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
         setAffliateCards(initialAffiliateCards);
+
+        // Fetch non-affiliated suppliers
+        const nonAffiliatedSuppliers = await getAllSuppliersNotAffliated(tiktokerID);
+        const initialAffiliateExplore = nonAffiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
+        console.log(initialAffiliateExplore);
+        setAffliateExplore(initialAffiliateExplore);
       } catch (error) {
         console.error("Error fetching suppliers:", error);
       }
     };
 
-    fetchSuppliers();
+    fetchData();
   }, []);
+
 
   const openModal = (index) => {
     const updatedAffiliateCards = [...affliateCards];
@@ -69,15 +79,15 @@ export default function TterManagement() {
               </Grid>
               {affliateCards.map((affiliate, index) => (
                 <Grid xs={12} md={6} lg={4} xl={3}>
-                  <AffiliateCard key={index} affiliate={affiliate} isOpen={affliateCards[index].isOpen} data={affliateCards[index].data} openModal={() => openModal(index)} closeModal={() => closeModal(index)} />
+                  <AffiliateCard key={index} affiliate={affliateCards[index].data} isOpen={affliateCards[index].isOpen} data={affliateCards[index].data} openModal={() => openModal(index)} closeModal={() => closeModal(index)} />
                 </Grid>
               ))}
               <Grid xs={12}>
                 <h6>Explore more affliates, improve your product range</h6>
               </Grid>
-              {affiliates.map((affiliate, index) => (
+              {affliateExplore.map((affiliate, index) => (
                 <Grid xs={12} md={6} lg={4} xl={3}>
-                  <AffiliateExplore key={index} affiliate={affiliate} />
+                  <AffiliateExplore key={index} affiliate={affliateExplore[index].data} />
                 </Grid>
               ))}
 
