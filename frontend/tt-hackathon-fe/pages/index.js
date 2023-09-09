@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { UserContext } from "./_app";
 import { useRouter } from "next/router";
+import TailwindSpec from "../components/TailwindSpec";
 
 export default function Home() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -49,10 +50,6 @@ export default function Home() {
   return (
     <Box>
       <Head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
-          rel="stylesheet"
-        />
         <title>TikTok Collective</title>
         <link rel="icon" src="tiktok_icon.png" />
       </Head>
@@ -62,22 +59,43 @@ export default function Home() {
         <LoginForm _callback={onLoginSuccess}></LoginForm>
       </Modal>
       {/* MODAL user select which type to create */}
-      <Modal isOpen={createUserModalOpen} onClose={() => setCreateUserModalOpen(false)}>
+      <Modal
+        isOpen={createUserModalOpen}
+        onClose={() => setCreateUserModalOpen(false)}
+      >
         <Box justifyContent="space-between">
           <Typography variant="h2" sx={{ padding: 4, mb: 4 }}>
             Sign up as:
           </Typography>
-          <Button variant="contained" size="large" sx={{ mx: 4, backgroundColor: "#FE2C55" }} onClick={() => handleSetUserType("tiktoker")}>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ mx: 4, backgroundColor: "#FE2C55" }}
+            onClick={() => handleSetUserType("tiktoker")}
+          >
             Tiktoker
           </Button>
-          <Button variant="outlined" size="large" color="error" sx={{ mx: 4 }} onClick={() => handleSetUserType("supplier")}>
+          <Button
+            variant="outlined"
+            size="large"
+            color="error"
+            sx={{ mx: 4 }}
+            onClick={() => handleSetUserType("supplier")}
+          >
             Supplier
           </Button>
         </Box>
       </Modal>
       {/* MODAL user fills in form */}
-      <Modal isOpen={createFormModalOpen} onClose={() => handleCreateFormModalClose(false)} width="50%">
-        <CreateUserForm userType={userType} handleCreateFormModalClose={handleCreateFormModalClose} />
+      <Modal
+        isOpen={createFormModalOpen}
+        onClose={() => handleCreateFormModalClose(false)}
+        width="50%"
+      >
+        <CreateUserForm
+          userType={userType}
+          handleCreateFormModalClose={handleCreateFormModalClose}
+        />
       </Modal>
 
       <main style={{ display: "flex", width: "100%", overflow: "hidden" }}>

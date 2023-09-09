@@ -26,14 +26,18 @@ export default function TterCurate() {
         setAllProducts(JSON.parse(res.products));
         setFilteredProducts(JSON.parse(res.products));
       })
-      .catch((err) => toast.error("Error fetching products please contact support!"));
+      .catch((err) =>
+        toast.error("Error fetching products please contact support!")
+      );
   }
   const handleClear = () => {
     setSearchQuery("");
     setFilteredProducts(allProducts);
   };
   const handleSearch = () => {
-    const filteredResults = allProducts.filter((product) => product.product_name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredResults = allProducts.filter((product) =>
+      product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     setFilteredProducts(filteredResults);
   };
 
@@ -54,13 +58,21 @@ export default function TterCurate() {
         <Sidebar user={user}></Sidebar>
         {/* modal open when product*/}
         <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
-          <ModalProduct product={modalProduct} handleClose={() => setOpenModal(false)} />
+          <ModalProduct
+            product={modalProduct}
+            handleClose={() => setOpenModal(false)}
+          />
         </Modal>
         {/* main content */}
         <Box sx={{ pt: 4, pl: 4, width: "80%" }}>
           <Grid container spacing={2}>
             <Grid xs={12} xl={12}>
-              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} handleClear={handleClear} />
+              <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                handleSearch={handleSearch}
+                handleClear={handleClear}
+              />
             </Grid>
             <Grid xs={12}>
               <h1 className={styles.sectionTitle}>Products Available</h1>
@@ -72,8 +84,9 @@ export default function TterCurate() {
                   onClick={() => {
                     setOpenModal(true);
                     setModalProduct(product);
-                  }}>
-                  <ProductCard product={product} />
+                  }}
+                >
+                  <ProductCard product={product} nonEditable={true} />
                 </div>
               </Grid>
             ))}
@@ -96,7 +109,9 @@ export default function TterCurate() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+            sans-serif;
         }
         * {
           box-sizing: border-box;

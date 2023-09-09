@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/ProductCard.module.css";
 
-const ProductCard = ({ product, handleEdit }) => {
+const ProductCard = ({ product, handleEdit, nonEditable }) => {
   // handle insanely loooong product descriptions
   //var desc = product.description.length > 65 ? product.description.substring(0, 62) + "..." : product.description;
   return (
@@ -16,6 +16,7 @@ const ProductCard = ({ product, handleEdit }) => {
         >
           <h2 className={styles.productName}>{product.product_name}</h2>
           <button
+            hidden={nonEditable}
             className={styles.secondaryButton}
             onClick={() => handleEdit(product)}
           >
