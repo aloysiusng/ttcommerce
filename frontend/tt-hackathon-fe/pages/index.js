@@ -1,12 +1,12 @@
+import { Box } from "@mui/material";
 import Head from "next/head";
 import { useContext, useState } from "react";
+import IndexPage from "../components/IndexPage";
 import LoginForm from "../components/LoginForm";
 import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import styles from "../styles/Home.module.css";
 import { UserContext } from "./_app";
-import LoginFormNew from "../components/LoginFormNew";
 
 export default function Home() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -26,10 +26,10 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <Box >
       <Head>
         <title>TikTok Commerce</title>
-        <link rel="icon" href="../public/tiktok_icon.png" />
+        <link rel="icon" src="tiktok_icon.png" />
       </Head>
       <Navbar isLoggedIn={user} loginOnClick={openModal}></Navbar>
 
@@ -37,17 +37,9 @@ export default function Home() {
         <LoginForm _callback={onLoginSuccess}></LoginForm>
       </Modal>
 
-      <main>
+      <main style={{ display: "flex", width: "100%", overflow:"hidden" }}>
         <Sidebar user={user}></Sidebar>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "inherit",
-          }}>
-          <h1>{user.userType ? `LANDING PAGE; TYPE: ${user.userType}` : "PRE-LOGIN CONTENT"}</h1>
-        </div>
+        {user.userType ? `LANDING PAGE; TYPE: ${user.userType}` : <IndexPage></IndexPage>}
       </main>
 
       <style jsx>{`
@@ -71,6 +63,6 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
-    </div>
+    </Box>
   );
 }
