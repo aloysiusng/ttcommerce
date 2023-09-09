@@ -38,4 +38,4 @@ parameters such as AWS region, S3 bucket name... are stored as secrets in github
 
 ## Cloud Architecture 
 
-![Cloud Architecture](cloudarchi.png)
+![Cloud Architecture](/cloudarchi.png)
