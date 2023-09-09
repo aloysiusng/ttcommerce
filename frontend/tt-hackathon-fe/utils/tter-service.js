@@ -44,4 +44,18 @@ const createListing = async (body) => {
   }
 };
 
+const getAllListingBySellerID = async (sellerID) => {
+  var url = ""
+  // Get listings via Tiktok ID 
+  // Get listing price, reviews and product iD
+  // Product details for below
+}
+
+const getAllAffiliatesBySellerId = async (sellerId) => {
+  var url = ""
+  // Get affiliates via Tiktok ID
+  // use get aflliates to  see if user_id is in the list
+  // display
+}
+
 export { getAllProducts, createListing };
