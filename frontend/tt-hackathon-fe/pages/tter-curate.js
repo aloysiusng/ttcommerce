@@ -28,7 +28,10 @@ export default function TterCurate() {
       })
       .catch((err) => toast.error("Error fetching products please contact support!"));
   }
-
+  const handleClear = () => {
+    setSearchQuery("");
+    setFilteredProducts(allProducts);
+  };
   const handleSearch = () => {
     const filteredResults = allProducts.filter((product) => product.product_name.toLowerCase().includes(searchQuery.toLowerCase()));
     setFilteredProducts(filteredResults);
@@ -54,10 +57,10 @@ export default function TterCurate() {
           <ModalProduct product={modalProduct} handleClose={() => setOpenModal(false)} />
         </Modal>
         {/* main content */}
-        <Box sx={{ pt: 4, width: "80%" }}>
+        <Box sx={{ pt: 4, pl: 4, width: "80%" }}>
           <Grid container spacing={2}>
-            <Grid xs={12}>
-              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
+            <Grid xs={12} xl={12}>
+              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} handleClear={handleClear} />
             </Grid>
             <Grid xs={12}>
               <h1 className={styles.sectionTitle}>Products Available</h1>
