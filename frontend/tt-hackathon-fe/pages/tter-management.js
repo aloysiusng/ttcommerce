@@ -7,11 +7,18 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/TterManagement.module.css";
 import { affliatesExplore } from "../utils/dummyData";
-import { getAllSuppliers, getAllSuppliersNotAffliated } from "../utils/tter-service";
+import { getAllSuppliers, getAllSuppliersNotAffliated, getAllListing, getAllProductsNotInListing } from "../utils/tter-service";
 import { UserContext } from "./_app";
+import ListingExplore from "../components/ListingExplore";
+
+// Listing
+import ListingCard from "../components/ListingCard";
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
+
+
+  // AFFLIATE --------------------------------------------------
   const [affliateCards, setAffliateCards] = useState([]);
 
   const [affliateExplore, setAffliateExplore] = useState([]);
@@ -21,16 +28,21 @@ export default function TterManagement() {
       const tiktokerID = "48479c4d-0419-45c8-8d84-d3997c673858";
 
       try {
-        // Fetch affiliated suppliers
         const affiliatedSuppliers = await getAllSuppliers(tiktokerID);
         const initialAffiliateCards = affiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
         setAffliateCards(initialAffiliateCards);
 
-        // Fetch non-affiliated suppliers
         const nonAffiliatedSuppliers = await getAllSuppliersNotAffliated(tiktokerID);
         const initialAffiliateExplore = nonAffiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
-        console.log(initialAffiliateExplore);
         setAffliateExplore(initialAffiliateExplore);
+
+        const listings = await getAllListing(tiktokerID);
+        const initialListingCards = listings.map(listing => ({ data: listing }));
+        setListingCards(initialListingCards);
+
+        const productsNotInListing = await getAllProductsNotInListing(tiktokerID);
+        const initialListingExplore = productsNotInListing.map(listing => ({ data: listing }));
+        setListingExplore(initialListingExplore);
       } catch (error) {
         console.error("Error fetching suppliers:", error);
       }
@@ -51,6 +63,14 @@ export default function TterManagement() {
     updatedAffiliateCards[index].isOpen = false;
     setAffliateCards(updatedAffiliateCards);
   };
+
+  // AFFLIATE END --------------------------------------------------
+
+  // LISTING --------------------------------------------------
+  const [listingCards, setListingCards] = useState([]);
+
+  const [listingExplore, setListingExplore] = useState([]);
+
 
   return (
     <div id="root" className={styles.container}>
@@ -90,16 +110,26 @@ export default function TterManagement() {
                   <AffiliateExplore key={index} affiliate={affliateExplore[index].data} />
                 </Grid>
               ))}
-
+              <Grid xs={12}>
+                <h1 className={styles.sectionTitle} style={{ marginTop: "10px" }}>Your Listings</h1>
+              </Grid>
               <Grid xs={12}>
                 <h4>Here you can view all your products you are listing on your account</h4>
               </Grid>
-              <Grid xs={12}>
-                <p>This is a sample section with a TikTok-like card UI.</p>
-              </Grid>
+              {listingCards.map((listing, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <ListingCard key={index} listing={listingCards[index].data} />
+                </Grid>
+              ))}
+
               <Grid xs={12}>
                 <h6>Explore more products, increase your revenue through more listings</h6>
               </Grid>
+              {listingExplore.map((listing, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <ListingExplore key={index} listing={listingExplore[index].data} />
+                </Grid>
+              ))}
             </Grid>
           </Box>
         </div>
