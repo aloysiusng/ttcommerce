@@ -17,12 +17,6 @@ const Sidebar = (props) => {
               <h1>Analytics</h1>
             </button>
           </Link>
-          <Link href="/supplier-explore">
-            <button>
-              <i className="bi bi-search"></i>
-              <h1>Explore</h1>
-            </button>
-          </Link>
           <Link href="/supplier-management">
             <button>
               <i className="bi bi-clipboard"></i>
@@ -44,14 +38,6 @@ const Sidebar = (props) => {
               <i className="bi bi-clipboard"></i>
               <h1>Management</h1>
             </button>
-          </Link>
-          <Link href="/tter-progress">
-            <>
-              <button>
-                <i className="bi bi-graph-up-arrow"></i>
-                <h1>Progress</h1>
-              </button>
-            </>
           </Link>
         </div>
       )}
