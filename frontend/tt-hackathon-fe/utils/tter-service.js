@@ -48,15 +48,30 @@ const createListing = async (body) => {
 const getAllListingBySellerID = async (sellerID) => {
   var url = ""
   // Get listings via Tiktok ID 
-  // Get listing price, reviews and product iD
+  // Get listing price, reviews and prod  uct iD
   // Product details for below
 }
 
-const getAllAffiliatesBySellerId = async (sellerId) => {
-  var url = ""
-  // Get affiliates via Tiktok ID
-  // use get aflliates to  see if user_id is in the list
-  // display
+const getAllSuppliers = async (tiktokerID) => {
+  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    // Filter for affliates
+    const parsedData = await response.json();
+    const parsedSuppliers = JSON.parse(parsedData.suppliers);
+    const filteredSuppliers = parsedSuppliers.filter((supplier) =>
+      supplier.tiktokers.includes(tiktokerID)
+    );
+
+    return filteredSuppliers;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 }
 
-export { getAllProducts, createListing };
+export { getAllProducts, createListing, getAllSuppliers };
