@@ -34,38 +34,31 @@ export default function SupplierManagement() {
   async function fetchTopSellers() {
     console.log(supplier.tiktokers_sales)
     const sellers = Object.entries(supplier.tiktokers_sales);
-    sellers.sort((x, y) => x[1] - y[1]);
+    sellers.sort((x, y) => y[1] - x[1]);
     console.log("sellers are" + JSON.stringify(sellers));
 
     for (let i = 0; i < sellers.length; i++) {
-      try {
-        getTiktokerById(sellers[i][0]).then((res) => {
-          // tiktoker.put("numOrders", sellers[i][1])
-          res.numOrders = sellers[i][1];
-          console.log("res numOrders is " + res.numOrders);
-          if(!tiktoker_ids.includes(res.tiktoker_id)) {
-            tiktokers.push(res);
-            const updated_tiktoker_ids = [...tiktoker_ids];
-            updated_tiktoker_ids.push(res.tiktoker_id);
-            setTiktokerIds(updated_tiktoker_ids);
-          }
-        });
-        setTiktokers(tiktokers);
-        console.log("tiktokers are " + tiktokers);
-      } catch (error) {
-        console.log("Error fetching tiktoker: " + error);
-        alert("Error retrieving tiktoker from the backend");
-      }
+      await fetchTiktokers(sellers[i][0], sellers[i][1]);
     }
   }
 
-  async function fetchTiktokers() {
+  async function fetchTiktokers(tiktokerId, numOrders) {
     
     try {
-      const tiktoker = await getTiktokerById(user.email);
-      tiktokers.push(tiktoker)
+      await getTiktokerById(tiktokerId).then((res) => {
+        // tiktoker.put("numOrders", sellers[i][1])
+        res.numOrders = numOrders;
+        console.log("res numOrders is " + res.numOrders);
+        if(!tiktoker_ids.includes(res.tiktoker_id)) {
+          tiktokers.push(res);
+          const updated_tiktoker_ids = [...tiktoker_ids];
+          updated_tiktoker_ids.push(res.tiktoker_id);
+          setTiktokerIds(updated_tiktoker_ids);
+        }
+        console.log("tiktokers are " + res);
+      });
       setTiktokers(tiktokers);
-      console.log(tiktokers)
+      
     } catch (error) {
       console.log("Error fetching tiktoker: " + error);
       alert("Error retrieving tiktoker from the backend");
