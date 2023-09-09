@@ -9,12 +9,11 @@ import styles from "../styles/TterManagement.module.css";
 import { affliatesExplore } from "../utils/dummyData";
 import { getAllSuppliers } from "../utils/tter-service";
 import { UserContext } from "./_app";
+import { affiliates } from "../utils/dummyData";
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
   const [affliateCards, setAffliateCards] = useState([]);
-  const [affiliates, setAffiliates] = useState(affliatesExplore);
-  const [affiliateModals, setAffiliateModals] = useState(affiliates.map((affliate, index) => ({ isOpen: false, data: affliate })));
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -32,9 +31,6 @@ export default function TterManagement() {
   }, []);
 
   const openModal = (index) => {
-    const updatedModals = [...affiliateModals];
-    updatedModals[index].isOpen = true;
-    setAffiliateModals(updatedModals);
     const updatedAffiliateCards = [...affliateCards];
     updatedAffiliateCards[index].isOpen = true;
     setAffliateCards(updatedAffiliateCards);
@@ -44,9 +40,6 @@ export default function TterManagement() {
     const updatedAffiliateCards = [...affliateCards];
     updatedAffiliateCards[index].isOpen = false;
     setAffliateCards(updatedAffiliateCards);
-    const updatedModals = [...affiliateModals];
-    updatedModals[index].isOpen = false;
-    setAffiliateModals(updatedModals);
   };
 
   return (
@@ -74,9 +67,9 @@ export default function TterManagement() {
               <Grid xs={12}>
                 <h4>Here you can view all your affiliates and manage them</h4>
               </Grid>
-              {affiliates.map((affiliate, index) => (
+              {affliateCards.map((affiliate, index) => (
                 <Grid xs={12} md={6} lg={4} xl={3}>
-                  <AffiliateCard key={index} affiliate={affiliate} isOpen={affiliateModals[index].isOpen} data={affiliateModals[index].data} openModal={() => openModal(index)} closeModal={() => closeModal(index)} />
+                  <AffiliateCard key={index} affiliate={affiliate} isOpen={affliateCards[index].isOpen} data={affliateCards[index].data} openModal={() => openModal(index)} closeModal={() => closeModal(index)} />
                 </Grid>
               ))}
               <Grid xs={12}>

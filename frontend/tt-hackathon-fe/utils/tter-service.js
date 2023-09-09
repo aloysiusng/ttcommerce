@@ -74,4 +74,20 @@ const getAllSuppliers = async (tiktokerID) => {
   }
 }
 
-export { getAllProducts, createListing, getAllSuppliers };
+const getAllProductsbySupplier = async (supplierID) => {
+  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_products_by_supplier?supplier_id=" + supplierID;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const parsedData = await response.json();
+
+    return parsedData;
+
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+}
+
+export { getAllProducts, createListing, getAllSuppliers, getAllProductsbySupplier };
