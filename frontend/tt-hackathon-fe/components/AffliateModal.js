@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styles from '../styles/AffliateModal.module.css';
 
-Modal.setAppElement('#root');
 
 const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
     // TODO: data handling
