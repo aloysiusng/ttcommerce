@@ -1,8 +1,8 @@
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import React from "react";
-const SearchBar = ({ searchQuery, setSearchQuery }) => (
-  <form>
+const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
+  <>
     <TextField
       id="search-bar"
       className="text"
@@ -14,10 +14,10 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
       variant="outlined"
       placeholder="Search..."
     />
-    <IconButton type="submit" aria-label="search">
+    <IconButton aria-label="search" onClick={handleSearch}>
       <i className="bi bi-search" />
     </IconButton>
-  </form>
+  </>
 );
 
 export default SearchBar;

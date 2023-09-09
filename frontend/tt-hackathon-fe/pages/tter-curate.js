@@ -19,15 +19,24 @@ export default function TterCurate() {
   const [openModal, setOpenModal] = useState(false);
   const [modalProduct, setModalProduct] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [filteredProducts, setFilteredProducts] = useState([]);
   async function fetchAllProducts() {
     getAllProducts()
-      .then((res) => setAllProducts(JSON.parse(res.products)))
+      .then((res) => {
+        setAllProducts(JSON.parse(res.products));
+        setFilteredProducts(JSON.parse(res.products));
+      })
       .catch((err) => toast.error("Error fetching products please contact support!"));
   }
 
+  const handleSearch = () => {
+    const filteredResults = allProducts.filter((product) => product.product_name.toLowerCase().includes(searchQuery.toLowerCase()));
+    setFilteredProducts(filteredResults);
+  };
+
   useEffect(() => {
     fetchAllProducts();
+    setFilteredProducts(allProducts);
   }, []);
 
   return (
@@ -48,12 +57,12 @@ export default function TterCurate() {
         <Box sx={{ pt: 4, width: "80%" }}>
           <Grid container spacing={2}>
             <Grid xs={12}>
-              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
             </Grid>
             <Grid xs={12}>
               <h1 className={styles.sectionTitle}>Products Available</h1>
             </Grid>
-            {allProducts.map((product) => (
+            {filteredProducts.map((product) => (
               <Grid xs={12} md={6} lg={4} xl={3}>
                 <div
                   key={product.product_id}
