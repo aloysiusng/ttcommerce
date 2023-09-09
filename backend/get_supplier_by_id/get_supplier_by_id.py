@@ -10,7 +10,7 @@ supplierTable = dynamodb.Table("Suppliers")
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
-        body = json.loads(event["body"])
+        body = json.loads(event['queryStringParameters'])
         supplier_id = body.get("supplier_id")
         response = supplierTable.get_item(Key={"supplier_id": supplier_id})
         if "Item" not in response:
