@@ -1,5 +1,6 @@
 const doLoginWithEmailPassword = (loginCredentials) => {
   const { email, password } = loginCredentials;
+
   // MOCK FX
   if (email == "seller@gmail.com") {
     return {

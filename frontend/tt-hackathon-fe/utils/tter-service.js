@@ -40,7 +40,6 @@ const getProductById = async (id) => {
 const createListing = async (body) => {
   var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/create_listing";
   try {
-    console.log(body);
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(body),
@@ -92,6 +91,7 @@ const getAllProductsNotInListing = async (tiktokerID) => {
     var products = await getAllProductsbySupplier(suppliers[i].supplier_id);
     productList = productList.concat(products);
   }
+  console.log(productList)
   var productsNotInListing = [];
   for (var i = 0; i < productList.length; i++) {
     var product = productList[i];

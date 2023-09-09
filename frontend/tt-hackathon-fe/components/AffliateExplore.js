@@ -47,6 +47,10 @@ const AffiliateExplore = ({ affiliate }) => {
     setRequestModalIsOpen(false);
   };
 
+  const redirectToCurate = () => {
+    window.location.href = "/tter-curate";
+  };
+
   return (
     <div style={affiliateCardSmallStyle}>
       <h3 style={{ color: "red" }}>{affiliate.category}</h3>
@@ -54,7 +58,7 @@ const AffiliateExplore = ({ affiliate }) => {
       <img src="man.png" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
       <p style={{ color: "black", margin: "10px" }}>{affiliate.description}</p>
       {/* Redirect to View page with get all products */}
-      <button style={buttonStyle}>View products</button>
+      <button style={buttonStyle} onClick={() => redirectToCurate()}>View products</button>
       <button style={buttonStyle_two} onClick={() => openRequestModal()}>
         Request Affliation
       </button>

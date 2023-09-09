@@ -14,7 +14,7 @@ const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
                 try {
                     console.log(data)
                     console.log(data.supplier_id)
-                    const productsData = await getAllProductsbySupplier("9a62670a-30f6-4860-9dc6-b40e30447e50");
+                    const productsData = await getAllProductsbySupplier(data.supplier_id);
                     setProducts(productsData);
                     console.log(productsData);
                 } catch (error) {
@@ -26,8 +26,9 @@ const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
         }
     }, [isOpen, data.supplier_id]);
 
-    const handleRequestDemo = (productId) => {
-        setRequestedDemos(prev => [...prev, productId]);
+    const handleRequestDemo = (product_name) => {
+        setRequestedDemos(prev => [...prev, product_name]);
+        console.log(requestedDemos);
     };
 
     return (
@@ -58,8 +59,8 @@ const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
                                         <td>{product.quantity}</td>
                                         <td>{product.supplier_price}</td>
                                         <button className={styles['request-button']}
-                                            onClick={() => handleRequestDemo(product.id)}
-                                            style={requestedDemos.includes(product.id) ? { backgroundColor: 'green' } : {}}
+                                            onClick={() => handleRequestDemo(product.product_name)}
+                                            style={requestedDemos.includes(product.product_name) ? { backgroundColor: 'green' } : {}}
                                         >
                                             Request Demo
                                         </button>
