@@ -69,6 +69,7 @@ const CreateUserForm = ({ userType, handleCreateFormModalClose }) => {
         type: userType,
       };
     }
+    console.log(body);
     handleCreateUser(body)
       .then((res) => {
         console.log(res);

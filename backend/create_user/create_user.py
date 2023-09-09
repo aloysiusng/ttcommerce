@@ -17,8 +17,8 @@ def lambda_handler(event, context):
         # Extract data from the API Gateway event
         body = json.loads(event["body"])
         user_type = body.get("type")
-        email = body.get("email")
-        response = users_table.get_item(Key={"email": email})
+        user_email = body.get("email")
+        response = users_table.get_item(Key={"user_email": user_email})
 
         # validate if user exists
         if "Item" in response:
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         user_id = str(uuid.uuid4())
         response = users_table.put_item(
             Item={
-                "email": email,
+                "user_email": user_email,
                 "password": password,
                 "type": user_type,
                 "user_id": user_id,
