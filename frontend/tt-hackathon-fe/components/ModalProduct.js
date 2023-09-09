@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import homeStyles from "../styles/Home.module.css";
 import styles from "../styles/ModalProduct.module.css";
-import {createListing} from "../utils/tter-service";
+import { createListing } from "../utils/tter-service";
 
 const ModalProduct = ({ product, handleClose }) => {
   const fontColor = product.quantity > 0 ? "green" : "red";
@@ -21,12 +21,10 @@ const ModalProduct = ({ product, handleClose }) => {
       // tiktoker_id: user.id,
     };
     console.log(body);
-    try {
-      createListing(body).then((res) => toast.success("Listing created!") && handleClose());
-    } catch (error) {
-      console.log("Error creating listing: " + error);
-      toast.error("Error creating listing please contact support!");
-    }
+
+    createListing(body)
+      .then((res) => toast.success("Listing created!") && handleClose())
+      .catch((err) => toast.error("Error creating listing please contact support!"));
   }
   return (
     <>

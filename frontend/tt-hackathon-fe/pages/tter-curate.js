@@ -21,12 +21,9 @@ export default function TterCurate() {
   const [searchQuery, setSearchQuery] = useState("");
 
   async function fetchAllProducts() {
-    try {
-      getAllProducts().then((res) => setAllProducts(JSON.parse(res.products)));
-    } catch (error) {
-      console.log("Error fetching all products: " + error);
-      toast.error("Error retrieving products please contact support!");
-    }
+    getAllProducts()
+      .then((res) => setAllProducts(JSON.parse(res.products)))
+      .catch((err) => toast.error("Error fetching products please contact support!"));
   }
 
   useEffect(() => {
