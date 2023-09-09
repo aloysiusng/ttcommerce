@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Head from "next/head";
 import { useContext, useState } from "react";
-import IndexPage from "../components/IndexPage";
+import CreateUserForm from "../components/CreateUserForm";
 import LoginForm from "../components/LoginForm";
 import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
@@ -11,16 +11,30 @@ import { useRouter } from "next/router";
 import TailwindSpec from "../components/TailwindSpec";
 
 export default function Home() {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const [userType, setUserType] = useState("");
+  // const [supplierModalOpen, setSupplierModalOpen] = useState(false);
+  const [createFormModalOpen, setCreateFormModalOpen] = useState(false);
+  const [createUserModalOpen, setCreateUserModalOpen] = useState(false);
   const router = useRouter();
 
-  const openModal = () => {
-    setModalOpen(true);
+  const handleSetUserType = (ut) => {
+    setUserType(ut);
+    setCreateUserModalOpen(false);
+    setCreateFormModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const handleCreateFormModalClose = () => {
+    setCreateFormModalOpen(false);
+  };
+
+  const openLoginModal = () => {
+    setLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setLoginModalOpen(false);
   };
 
   const onLoginSuccess = (user) => {
@@ -39,10 +53,49 @@ export default function Home() {
         <title>TikTok Collective</title>
         <link rel="icon" src="tiktok_icon.png" />
       </Head>
-      <Navbar isLoggedIn={user} loginOnClick={openModal}></Navbar>
+      <Navbar isLoggedIn={user} loginOnClick={openLoginModal}></Navbar>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
         <LoginForm _callback={onLoginSuccess}></LoginForm>
+      </Modal>
+      {/* MODAL user select which type to create */}
+      <Modal
+        isOpen={createUserModalOpen}
+        onClose={() => setCreateUserModalOpen(false)}
+      >
+        <Box justifyContent="space-between">
+          <Typography variant="h2" sx={{ padding: 4, mb: 4 }}>
+            Sign up as:
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ mx: 4, backgroundColor: "#FE2C55" }}
+            onClick={() => handleSetUserType("tiktoker")}
+          >
+            Tiktoker
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            color="error"
+            sx={{ mx: 4 }}
+            onClick={() => handleSetUserType("supplier")}
+          >
+            Supplier
+          </Button>
+        </Box>
+      </Modal>
+      {/* MODAL user fills in form */}
+      <Modal
+        isOpen={createFormModalOpen}
+        onClose={() => handleCreateFormModalClose(false)}
+        width="50%"
+      >
+        <CreateUserForm
+          userType={userType}
+          handleCreateFormModalClose={handleCreateFormModalClose}
+        />
       </Modal>
 
       <main style={{ display: "flex", width: "100%", overflow: "hidden" }}>

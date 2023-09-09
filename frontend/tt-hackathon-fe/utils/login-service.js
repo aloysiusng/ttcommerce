@@ -19,4 +19,37 @@ const doLoginWithEmailPassword = (loginCredentials) => {
   } // END MOCK
 };
 
-export { doLoginWithEmailPassword };
+const handleLogin = async (email, password) => {
+  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/login_user";
+  try {
+    console.log(body);
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ email: email, password: password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+const handleCreateUser = async (body) => {
+  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/create_user";
+  try {
+    console.log(body);
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+export { doLoginWithEmailPassword, handleCreateUser, handleLogin };
