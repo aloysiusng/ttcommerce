@@ -74,6 +74,28 @@ const getAllSuppliers = async (tiktokerID) => {
   }
 }
 
+const getAllSuppliersNotAffliated = async (tiktokerID) => {
+  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    // Filter for non-affliates
+    const parsedData = await response.json();
+    const parsedSuppliers = JSON.parse(parsedData.suppliers);
+    const filteredSuppliers = parsedSuppliers.filter((supplier) =>
+      !(supplier.tiktokers.includes(tiktokerID))
+    );
+
+    return filteredSuppliers;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 const getAllProductsbySupplier = async (supplierID) => {
   var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_products_by_supplier?supplier_id=" + supplierID;
   try {
@@ -90,4 +112,4 @@ const getAllProductsbySupplier = async (supplierID) => {
   }
 }
 
-export { getAllProducts, createListing, getAllSuppliers, getAllProductsbySupplier };
+export { getAllProducts, createListing, getAllSuppliers, getAllSuppliersNotAffliated, getAllProductsbySupplier };
