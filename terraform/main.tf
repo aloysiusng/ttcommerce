@@ -1044,6 +1044,41 @@ resource "aws_lambda_permission" "get_all_listings_permission" {
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
 
+# ========================= GET /get_all_suppliers ========================================
+resource "aws_lambda_function" "get_all_suppliers" {
+  function_name = "get_all_suppliers"
+  filename      = "../backend/get_all_suppliers.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_all_suppliers.get_all_suppliers.lambda_handler"
+
+  source_code_hash = filebase64sha256("../backend/get_all_suppliers.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_all_suppliers" {
+  name              = "/aws/lambda/${aws_lambda_function.get_all_suppliers.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_all_suppliers_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_all_suppliers.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_all_suppliers_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_all_suppliers"
+  target    = "integrations/${aws_apigatewayv2_integration.get_all_suppliers_integration.id}"
+}
+resource "aws_lambda_permission" "get_all_suppliers_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_all_suppliers.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
 # ========================= GET /get_tiktoker_by_id ========================================
 resource "aws_lambda_function" "get_tiktoker_by_id" {
   function_name = "get_tiktoker_by_id"
