@@ -10,7 +10,7 @@ tiktokerTable = dynamodb.Table("Tiktokers")
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
-        body = json.loads(event['queryStringParameters'])
+        body = event['queryStringParameters']
         tiktoker_id = body.get("tiktoker_id")
         response = tiktokerTable.get_item(Key={"tiktoker_id": tiktoker_id})
         if "Item" not in response:
