@@ -135,7 +135,8 @@ data "aws_iam_policy_document" "dynamodb_policy" {
       aws_dynamodb_table.tiktokers.arn,
       aws_dynamodb_table.listings.arn,
       aws_dynamodb_table.orders.arn,
-      aws_dynamodb_table.reviews.arn
+      aws_dynamodb_table.reviews.arn,
+      aws_dynamodb_table.users.arn
     ]
   }
 }
