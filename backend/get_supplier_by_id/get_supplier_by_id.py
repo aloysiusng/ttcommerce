@@ -15,7 +15,7 @@ def lambda_handler(event, context):
         supplier["orders"] = list(supplier.get("orders", []))
         supplier["products"] = list(supplier.get("products", []))
         supplier["tiktokers"] = list(supplier.get("tiktokers", []))
-
+        
         return {
             'statusCode': 200,
             'body': json.dumps(supplier)
