@@ -1,12 +1,90 @@
 import Head from "next/head";
-import { useContext } from "react";
+import styles from "../styles/SupplierAnalytics.module.css";
+import { useEffect, useContext, useState } from "react";
+import Sidebar from "../components/sidebar";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/SupplierAnalytics.module.css";
 import { UserContext } from "./_app";
+import SellerMiniCard from "../components/TopSellerCard";
+import {
+  getTiktokerById,
+  getSupplierById,
+} from "../utils/topseller-service";
 
 export default function SupplierAnalytics() {
   const { user, setUser } = useContext(UserContext);
+  const [supplier, setSupplier] = useState([]);
+  const [supplierId, setSupplierId] = useState("7b0febb8-d61d-4ff6-be7c-120beb7ea691")
+  const [topSellers, setTopSellers] = useState({});
+  const [tiktokers, setTiktokers] = useState([]);
+  const [tiktoker_ids, setTiktokerIds] = useState([]);
+
+  async function fetchSupplier() {
+    try {
+      // const current_supplier = await getSupplierById(supplierId);
+      getSupplierById(supplierId).then((res) => setSupplier(res));
+      // setSupplier(current_supplier);
+      console.log("supplier is " + supplier);
+      console.log("keys are " + topSellers)
+    } catch (error) {
+      console.log("Error fetching supplier: " + error);
+      alert("Error retrieving supplier from the backend");
+    }
+  }
+
+  async function fetchTopSellers() {
+    console.log(supplier.tiktokers_sales)
+    const sellers = Object.entries(supplier.tiktokers_sales);
+    sellers.sort((x, y) => x[1] - y[1]);
+    console.log("sellers are" + JSON.stringify(sellers));
+
+    for (let i = 0; i < sellers.length; i++) {
+      try {
+        getTiktokerById(sellers[i][0]).then((res) => {
+          // tiktoker.put("numOrders", sellers[i][1])
+          res.numOrders = sellers[i][1];
+          console.log("res numOrders is " + res.numOrders);
+          if(!tiktoker_ids.includes(res.tiktoker_id)) {
+            tiktokers.push(res);
+            const updated_tiktoker_ids = [...tiktoker_ids];
+            updated_tiktoker_ids.push(res.tiktoker_id);
+            setTiktokerIds(updated_tiktoker_ids);
+          }
+        });
+        setTiktokers(tiktokers);
+        console.log("tiktokers are " + tiktokers);
+      } catch (error) {
+        console.log("Error fetching tiktoker: " + error);
+        alert("Error retrieving tiktoker from the backend");
+      }
+    }
+  }
+
+  async function fetchTiktokers() {
+    
+    try {
+      const tiktoker = await getTiktokerById(user.email);
+      tiktokers.push(tiktoker)
+      setTiktokers(tiktokers);
+      console.log(tiktokers)
+    } catch (error) {
+      console.log("Error fetching tiktoker: " + error);
+      alert("Error retrieving tiktoker from the backend");
+    }
+  }
+
+  useEffect(() => {
+    fetchSupplier();
+    if (supplier.length != 0) {
+      setTopSellers(supplier.tiktokers_sales);
+    }
+    if (Object.keys(topSellers).length != 0) {
+      fetchTopSellers();
+    }
+    // fetchTiktokers();
+  }, [supplier.supplier_id, Object.keys(topSellers).length]);
 
   return (
     <div className={styles.container}>
@@ -19,7 +97,15 @@ export default function SupplierAnalytics() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
-          <h1>ANALYTICS</h1>
+          <h1 className={styles.sectionTitle}>Total Orders: <span className={styles.red}>{supplier.length != 0 ? supplier.orders.length : 0}</span></h1>
+          <br></br>
+          <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
+          <div className={styles.carousell}>
+            {tiktokers?.map((affiliate) => (
+              <SellerMiniCard seller={affiliate} />
+            ))}
+          </div>
+          
         </div>
       </main>
 
