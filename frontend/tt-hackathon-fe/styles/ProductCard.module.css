@@ -10,7 +10,6 @@
 }
 
 .productCard :hover {
-  cursor: pointer;
 }
 
 .productCardContent {
@@ -37,4 +36,23 @@
 }
 
 .productQuantity {
+}
+
+.secondaryButton {
+  background-color: #ffffff;
+  color: rgb(118, 118, 118);
+  border-radius: 1em;
+  border-color: transparent;
+  transition: color 0.3s ease;
+  align-self: flex-start;
+  padding: 0em 0em 2em 2em;
+}
+
+.secondaryButton h1 {
+  margin: 0;
+}
+
+.secondaryButton:hover {
+  color: rgb(0, 0, 0);
+  cursor: pointer;
 }

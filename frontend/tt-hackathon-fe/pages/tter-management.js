@@ -9,22 +9,20 @@ import AffiliateExplore from "../components/AffliateExplore";
 import { affiliates, affliatesExplore } from "../utils/dummyData";
 
 const cardContainerStyle = {
-  width: '100%',
-  backgroundColor: 'lightgrey',
-  border: '2px solid #FF2D55', 
-  color: 'white',
-  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  borderRadius: '16px',
-  padding: '16px'
+  width: "100%",
+  backgroundColor: "lightgrey",
+  border: "2px solid #FF2D55",
+  color: "white",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  borderRadius: "16px",
+  padding: "16px",
 };
 
-
 export default function TterManagement() {
-
   const { user, setUser } = useContext(UserContext);
 
   const [affiliateModals, setAffiliateModals] = useState(
-    affiliates.map((affliate, index) => ({ isOpen: false, data:  affliate}))
+    affiliates.map((affliate, index) => ({ isOpen: false, data: affliate }))
   );
 
   const openModal = (index) => {
@@ -39,19 +37,17 @@ export default function TterManagement() {
     setAffiliateModals(updatedModals);
   };
 
-
   const cardContainerStyle = {
-    width: '100%',
-    backgroundColor: 'lightgrey',
-    border: '2px solid #FF2D55',
-    color: 'white',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: '16px',
-    padding: '16px',
-    display: 'flex',
-    overflowX: 'auto',
+    width: "100%",
+    backgroundColor: "lightgrey",
+    border: "2px solid #FF2D55",
+    color: "white",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    borderRadius: "16px",
+    padding: "16px",
+    display: "flex",
+    overflowX: "auto",
   };
-
 
   return (
     <div id="root" className={styles.container}>
@@ -70,7 +66,7 @@ export default function TterManagement() {
           <h1 className={styles.sectionTitle}>Your Affiliates</h1>
           <div>
             <h4>Here you can view all your affiliates and manage them</h4>
-            <div className={styles}>
+            <div className={styles} style={{ display: "flex" }}>
               {affiliates.map((affiliate, index) => (
                 <AffiliateCard
                   key={index}
@@ -88,15 +84,20 @@ export default function TterManagement() {
                 <AffiliateExplore key={index} affiliate={affiliate} />
               ))}
             </div>
-          </div>  
+          </div>
 
           <h1 className={styles.sectionTitle}>Your Listings</h1>
           <div>
-            <h4>Here you can view all your products you are listing on your account</h4>
+            <h4>
+              Here you can view all your products you are listing on your
+              account
+            </h4>
             <div>
               <p>This is a sample section with a TikTok-like card UI.</p>
             </div>
-            <h6>Explore more products, increase your revenue through more listings</h6>
+            <h6>
+              Explore more products, increase your revenue through more listings
+            </h6>
           </div>
         </div>
       </main>

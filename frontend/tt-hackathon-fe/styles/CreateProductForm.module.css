@@ -54,3 +54,22 @@
   object-fit: contain;
   object-position: center;
 }
+
+.secondaryButton {
+  background-color: #e9e9e9;
+  color: rgb(0, 0, 0);
+  padding: 1em;
+  border-radius: 1em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+  margin-top: 2em;
+}
+
+.secondaryButton h1 {
+  margin: 0;
+}
+
+.secondaryButton:hover {
+  background-color: rgb(204, 204, 204);
+  cursor: pointer;
+}

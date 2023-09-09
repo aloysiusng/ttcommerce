@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styles from "../styles/CreateProductForm.module.css";
-import { createProduct } from "../utils/seller-service";
+import { createProduct, deleteProduct } from "../utils/seller-service";
 
 const CreateProductForm = (props) => {
   const [productName, setProductName] = useState("");
@@ -10,21 +10,50 @@ const CreateProductForm = (props) => {
   const [quantity, setQuantity] = useState("");
   const [price, setSupplierPrice] = useState("");
 
+  useEffect(() => {
+    if (props.productToEdit) {
+      setProductName(props.productToEdit.product_name);
+      setDescription(props.productToEdit.description);
+      setQuantity(props.productToEdit.quantity);
+      setSupplierPrice(props.productToEdit.supplier_price);
+    }
+  }, []);
+
+  const handleDelete = async () => {
+    deleteProduct(props.productToEdit);
+    props.changesMade();
+    props.closeModal();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createProduct({
-      description: description,
-      product_name: productName,
-      supplier_id: "TEST",
-      image: imageBase64,
-      quantity: quantity,
-      supplier_price: price,
-    });
+    if (props.productToEdit) {
+      createProduct({
+        product_id: props.productToEdit.product_id,
+        description: description,
+        product_name: productName,
+        supplier_id: "7b0febb8-d61d-4ff6-be7c-120beb7ea691", //CHANGE THIS ONCE USER LOGIN IMPLEMENTED
+        image: imageBase64.slice(23),
+        quantity: quantity,
+        supplier_price: price,
+      });
+    } else {
+      createProduct({
+        description: description,
+        product_name: productName,
+        supplier_id: "7b0febb8-d61d-4ff6-be7c-120beb7ea691", //CHANGE THIS ONCE USER LOGIN IMPLEMENTED
+        image: imageBase64.slice(23),
+        quantity: quantity,
+        supplier_price: price,
+      });
+    }
     setProductName("");
     setDescription("");
     setImageBase64("");
     setQuantity("");
     setSupplierPrice("");
+    props.changesMade();
+    props.closeModal();
   };
 
   const handleImageUpload = (e) => {
@@ -34,6 +63,7 @@ const CreateProductForm = (props) => {
       reader.onload = (ev) => {
         const base64img = ev.target.result;
         setImageBase64(base64img);
+        console.log(base64img);
       };
       reader.readAsDataURL(file);
     }
@@ -41,7 +71,7 @@ const CreateProductForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h1>Create a new product</h1>
+      <h1>{props.isEdit ? "Edit a product" : "Create a new product"}</h1>
       {imageBase64.length > 0 && (
         <img className={styles.productImage} src={imageBase64} alt="Uploaded" />
       )}
@@ -94,11 +124,27 @@ const CreateProductForm = (props) => {
         <label htmlFor="image" className={styles.label}>
           Attach Image
         </label>
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          required
+        />
       </div>
       <button type="submit" className={styles.submitButton}>
         <h1>Create</h1>
       </button>
+      {props.productToEdit && (
+        <button
+          type="button"
+          onClick={() => {
+            handleDelete();
+          }}
+          className={styles.secondaryButton}
+        >
+          <h1>Delete Product</h1>
+        </button>
+      )}
     </form>
   );
 };

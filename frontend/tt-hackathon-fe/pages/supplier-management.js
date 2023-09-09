@@ -22,6 +22,18 @@ export default function SupplierManagement() {
   const [sellerAllOrders, setSellerAllOrders] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [productToEdit, setProductToEdit] = useState(undefined);
+  const [hadChangesMade, setHasChangesMade] = useState(false);
+
+  const toggleChanges = () => {
+    location.reload();
+  };
+
+  const handleEdit = (product) => {
+    console.log(product);
+    setProductToEdit(product);
+    openModal("editProduct");
+  };
 
   const openModal = (type) => {
     setModalType(type);
@@ -65,22 +77,12 @@ export default function SupplierManagement() {
     }
   }
 
-  async function fetchSellerAllOrders() {
-    try {
-      const orders = await getAllOrdersBySellerId(user.email);
-      setSellerAllOrders(orders);
-      console.log(orders);
-    } catch (error) {
-      console.log("Error fetching seller all orders: " + error);
-      alert("Error retrieving orders from the backend");
-    }
-  }
-
   useEffect(() => {
+    console.log("USE EFFECT FIRED");
     fetchSellerAllAffiliates();
     fetchSellerAllProducts();
     fetchSellerAllOrders();
-  });
+  }, [hadChangesMade]);
 
   return (
     <div className={styles.container}>
@@ -90,11 +92,25 @@ export default function SupplierManagement() {
       </Head>
       <Navbar isLoggedIn={user}></Navbar>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {modalType == "createProduct" && (
-          <CreateProductForm></CreateProductForm>
-        )}
-      </Modal>
+      {modalType == "createProduct" && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateProductForm
+            closeModal={closeModal}
+            changesMade={toggleChanges}
+          ></CreateProductForm>
+        </Modal>
+      )}
+
+      {modalType == "editProduct" && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateProductForm
+            isEdit={true}
+            closeModal={closeModal}
+            productToEdit={productToEdit}
+            changesMade={toggleChanges}
+          ></CreateProductForm>
+        </Modal>
+      )}
 
       <main>
         <Sidebar user={user}></Sidebar>
@@ -117,13 +133,12 @@ export default function SupplierManagement() {
                 <tr>
                   <td>{order.order_id}</td>
                   <td>{order.product.product_name}</td>
-                  <td>{order.product.supplier_price}</td>
+                  <td>{order.product.price}</td>
                   <td>{order.quantity}</td>
                   <td>
                     $
                     {(
-                      Number(order.quantity) *
-                      Number(order.product.supplier_price.slice(1))
+                      Number(order.quantity) * Number(order.product.price)
                     ).toFixed(2)}
                   </td>
                   <td>{`${order.buyer.name} (@${order.buyer.username})`}</td>
@@ -189,7 +204,7 @@ export default function SupplierManagement() {
           </div>
           <div className={styles.carousell}>
             {sellerAllProducts?.map((product) => (
-              <ProductCard product={product} />
+              <ProductCard product={product} handleEdit={handleEdit} />
             ))}
           </div>
 
