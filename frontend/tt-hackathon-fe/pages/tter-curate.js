@@ -1,14 +1,16 @@
+import { Box, Grid } from "@mui/material";
 import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Modal from "../components/Modal";
 import ModalProduct from "../components/ModalProduct";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
-import Sidebar from "../components/sidebar";
+import SearchBar from "../components/SearchBar";
+import Sidebar from "../components/Sidebar";
 import styles from "../styles/TterCurate.module.css";
 import { getAllProducts } from "../utils/tter-service";
 import { UserContext } from "./_app";
-import { toast } from "react-toastify";
 
 export default function TterCurate() {
   const { user, setUser } = useContext(UserContext);
@@ -16,6 +18,7 @@ export default function TterCurate() {
   const [allProducts, setAllProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalProduct, setModalProduct] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   async function fetchAllProducts() {
     try {
@@ -40,27 +43,33 @@ export default function TterCurate() {
 
       <main>
         <Sidebar user={user}></Sidebar>
-        <div className={styles.contentContainer}>
-          {/* modal open when product*/}
-          <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
-            <ModalProduct product={modalProduct} handleClose={() => setOpenModal(false)} />
-          </Modal>
-          {/* main content */}
-          <h1 className={styles.sectionTitle}>Products Available</h1>
-          <div className={styles.productCardContainer}>
+        {/* modal open when product*/}
+        <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+          <ModalProduct product={modalProduct} handleClose={() => setOpenModal(false)} />
+        </Modal>
+        {/* main content */}
+        <Box sx={{ pt: 4, width: "80%" }}>
+          <Grid container spacing={2}>
+            <Grid xs={12}>
+              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            </Grid>
+            <Grid xs={12}>
+              <h1 className={styles.sectionTitle}>Products Available</h1>
+            </Grid>
             {allProducts.map((product) => (
-              <div
-                className={styles.productCardWrapper}
-                key={product.product_id}
-                onClick={() => {
-                  setOpenModal(true);
-                  setModalProduct(product);
-                }}>
-                <ProductCard product={product} />
-              </div>
+              <Grid xs={12} md={4} lg={3} xl={3}>
+                <div
+                  key={product.product_id}
+                  onClick={() => {
+                    setOpenModal(true);
+                    setModalProduct(product);
+                  }}>
+                  <ProductCard product={product} />
+                </div>
+              </Grid>
             ))}
-          </div>
-        </div>
+          </Grid>
+        </Box>
       </main>
 
       <style jsx>{`

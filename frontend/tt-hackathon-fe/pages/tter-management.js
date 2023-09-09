@@ -1,8 +1,8 @@
 import Head from "next/head";
-import styles from "../styles/SupplierAnalytics.module.css";
-import { useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
+import { useContext } from "react";
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import styles from "../styles/SupplierAnalytics.module.css";
 import { UserContext } from "./_app";
 
 export default function TterManagement() {
@@ -38,9 +38,7 @@ export default function TterManagement() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
         * {
           box-sizing: border-box;
