@@ -3,20 +3,18 @@ import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
 import AffiliateCard from "../components/AffiliateCard";
 import AffiliateExplore from "../components/AffliateExplore";
+import ListingExplore from "../components/ListingExplore";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/TterManagement.module.css";
-import { affliatesExplore } from "../utils/dummyData";
-import { getAllSuppliers, getAllSuppliersNotAffliated, getAllListing, getAllProductsNotInListing } from "../utils/tter-service";
+import { getAllListing, getAllProductsNotInListing, getAllSuppliers, getAllSuppliersNotAffliated } from "../utils/tter-service";
 import { UserContext } from "./_app";
-import ListingExplore from "../components/ListingExplore";
 
 // Listing
 import ListingCard from "../components/ListingCard";
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
-
 
   // AFFLIATE --------------------------------------------------
   const [affliateCards, setAffliateCards] = useState([]);
@@ -29,19 +27,19 @@ export default function TterManagement() {
 
       try {
         const affiliatedSuppliers = await getAllSuppliers(tiktokerID);
-        const initialAffiliateCards = affiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
+        const initialAffiliateCards = affiliatedSuppliers.map((affiliate) => ({ isOpen: false, data: affiliate }));
         setAffliateCards(initialAffiliateCards);
 
         const nonAffiliatedSuppliers = await getAllSuppliersNotAffliated(tiktokerID);
-        const initialAffiliateExplore = nonAffiliatedSuppliers.map(affiliate => ({ isOpen: false, data: affiliate }));
+        const initialAffiliateExplore = nonAffiliatedSuppliers.map((affiliate) => ({ isOpen: false, data: affiliate }));
         setAffliateExplore(initialAffiliateExplore);
 
         const listings = await getAllListing(tiktokerID);
-        const initialListingCards = listings.map(listing => ({ data: listing }));
+        const initialListingCards = listings.map((listing) => ({ data: listing }));
         setListingCards(initialListingCards);
 
         const productsNotInListing = await getAllProductsNotInListing(tiktokerID);
-        const initialListingExplore = productsNotInListing.map(listing => ({ data: listing }));
+        const initialListingExplore = productsNotInListing.map((listing) => ({ data: listing }));
         setListingExplore(initialListingExplore);
       } catch (error) {
         console.error("Error fetching suppliers:", error);
@@ -50,7 +48,6 @@ export default function TterManagement() {
 
     fetchData();
   }, []);
-
 
   const openModal = (index) => {
     const updatedAffiliateCards = [...affliateCards];
@@ -71,7 +68,6 @@ export default function TterManagement() {
 
   const [listingExplore, setListingExplore] = useState([]);
 
-
   return (
     <div id="root" className={styles.container}>
       <Head>
@@ -83,7 +79,7 @@ export default function TterManagement() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div>
-          <Box sx={{ pt: 4 }}>
+          <Box sx={{ py: 4 }}>
             <Grid container spacing={2}>
               <Grid xs={12}>
                 <h1 className={styles.sectionTitle}>Management</h1>
@@ -103,7 +99,7 @@ export default function TterManagement() {
                 </Grid>
               ))}
               <Grid xs={12}>
-                <h6>Explore more affliates, improve your product range</h6>
+                <h4>Explore more affliates, improve your product range</h4>
               </Grid>
               {affliateExplore.map((affiliate, index) => (
                 <Grid xs={12} md={6} lg={4} xl={3}>
@@ -111,7 +107,9 @@ export default function TterManagement() {
                 </Grid>
               ))}
               <Grid xs={12}>
-                <h1 className={styles.sectionTitle} style={{ marginTop: "10px" }}>Your Listings</h1>
+                <h1 className={styles.sectionTitle} style={{ marginTop: "10px" }}>
+                  Your Listings
+                </h1>
               </Grid>
               <Grid xs={12}>
                 <h4>Here you can view all your products you are listing on your account</h4>
@@ -123,7 +121,7 @@ export default function TterManagement() {
               ))}
 
               <Grid xs={12}>
-                <h6>Explore more products, increase your revenue through more listings</h6>
+                <h4>Explore more products, increase your revenue through more listings</h4>
               </Grid>
               {listingExplore.map((listing, index) => (
                 <Grid xs={12} md={6} lg={4} xl={3}>
