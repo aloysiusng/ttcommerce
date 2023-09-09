@@ -1,53 +1,90 @@
+import { Box, Grid } from "@mui/material";
 import Head from "next/head";
-import styles from "../styles/TterManagement.module.css";
-import { useContext, useState } from "react";
-import Sidebar from "../components/sidebar";
-import Navbar from "../components/Navbar";
-import { UserContext } from "./_app";
+import { useContext, useEffect, useState } from "react";
 import AffiliateCard from "../components/AffiliateCard";
 import AffiliateExplore from "../components/AffliateExplore";
-import { affiliates, affliatesExplore } from "../utils/dummyData";
+import ListingExplore from "../components/ListingExplore";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import styles from "../styles/TterManagement.module.css";
+import {
+  getAllListing,
+  getAllProductsNotInListing,
+  getAllSuppliers,
+  getAllSuppliersNotAffliated,
+} from "../utils/tter-service";
+import { UserContext } from "./_app";
 
-const cardContainerStyle = {
-  width: "100%",
-  backgroundColor: "lightgrey",
-  border: "2px solid #FF2D55",
-  color: "white",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "16px",
-  padding: "16px",
-};
+// Listing
+import ListingCard from "../components/ListingCard";
 
 export default function TterManagement() {
   const { user, setUser } = useContext(UserContext);
 
-  const [affiliateModals, setAffiliateModals] = useState(
-    affiliates.map((affliate, index) => ({ isOpen: false, data: affliate }))
-  );
+  // AFFLIATE --------------------------------------------------
+  const [affliateCards, setAffliateCards] = useState([]);
+
+  const [affliateExplore, setAffliateExplore] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const tiktokerID = "48479c4d-0419-45c8-8d84-d3997c673858";
+
+      try {
+        const affiliatedSuppliers = await getAllSuppliers(tiktokerID);
+        const initialAffiliateCards = affiliatedSuppliers.map((affiliate) => ({
+          isOpen: false,
+          data: affiliate,
+        }));
+        setAffliateCards(initialAffiliateCards);
+
+        const nonAffiliatedSuppliers = await getAllSuppliersNotAffliated(
+          tiktokerID
+        );
+        const initialAffiliateExplore = nonAffiliatedSuppliers.map(
+          (affiliate) => ({ isOpen: false, data: affiliate })
+        );
+        setAffliateExplore(initialAffiliateExplore);
+
+        const listings = await getAllListing(tiktokerID);
+        const initialListingCards = listings.map((listing) => ({
+          data: listing,
+        }));
+        setListingCards(initialListingCards);
+
+        const productsNotInListing = await getAllProductsNotInListing(
+          tiktokerID
+        );
+        const initialListingExplore = productsNotInListing.map((listing) => ({
+          data: listing,
+        }));
+        setListingExplore(initialListingExplore);
+      } catch (error) {
+        console.error("Error fetching suppliers:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const openModal = (index) => {
-    const updatedModals = [...affiliateModals];
-    updatedModals[index].isOpen = true;
-    setAffiliateModals(updatedModals);
+    const updatedAffiliateCards = [...affliateCards];
+    updatedAffiliateCards[index].isOpen = true;
+    setAffliateCards(updatedAffiliateCards);
   };
 
   const closeModal = (index) => {
-    const updatedModals = [...affiliateModals];
-    updatedModals[index].isOpen = false;
-    setAffiliateModals(updatedModals);
+    const updatedAffiliateCards = [...affliateCards];
+    updatedAffiliateCards[index].isOpen = false;
+    setAffliateCards(updatedAffiliateCards);
   };
 
-  const cardContainerStyle = {
-    width: "100%",
-    backgroundColor: "lightgrey",
-    border: "2px solid #FF2D55",
-    color: "white",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "16px",
-    padding: "16px",
-    display: "flex",
-    overflowX: "auto",
-  };
+  // AFFLIATE END --------------------------------------------------
+
+  // LISTING --------------------------------------------------
+  const [listingCards, setListingCards] = useState([]);
+
+  const [listingExplore, setListingExplore] = useState([]);
 
   return (
     <div id="root" className={styles.container}>
@@ -60,45 +97,79 @@ export default function TterManagement() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div>
-          <h1 className={styles.sectionTitle}>Management</h1>
-          <h4>Here you can manage your Tiktok Commerce</h4>
-
-          <h1 className={styles.sectionTitle}>Your Affiliates</h1>
-          <div>
-            <h4>Here you can view all your affiliates and manage them</h4>
-            <div className={styles} style={{ display: "flex" }}>
-              {affiliates.map((affiliate, index) => (
-                <AffiliateCard
-                  key={index}
-                  affiliate={affiliate}
-                  isOpen={affiliateModals[index].isOpen}
-                  data={affiliateModals[index].data}
-                  openModal={() => openModal(index)}
-                  closeModal={() => closeModal(index)}
-                />
+          <Box sx={{ py: 4 }}>
+            <Grid container spacing={2}>
+              <Grid xs={12}>
+                <h1 className={styles.sectionTitle}>Management</h1>
+              </Grid>
+              <Grid xs={12}>
+                <h4>Here you can manage your Tiktok Commerce</h4>
+              </Grid>
+              <Grid xs={12}>
+                <h1 className={styles.sectionTitle}>Your Affiliates</h1>
+              </Grid>
+              <Grid xs={12}>
+                <h4>Here you can view all your affiliates and manage them</h4>
+              </Grid>
+              {affliateCards.map((affiliate, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <AffiliateCard
+                    key={index}
+                    affiliate={affliateCards[index].data}
+                    isOpen={affliateCards[index].isOpen}
+                    data={affliateCards[index].data}
+                    openModal={() => openModal(index)}
+                    closeModal={() => closeModal(index)}
+                  />
+                </Grid>
               ))}
-            </div>
-            <h6>Explore more affliates, improve your product range</h6>
-            <div>
-              {affliatesExplore.map((affiliate, index) => (
-                <AffiliateExplore key={index} affiliate={affiliate} />
+              <Grid xs={12}>
+                <h4>Explore more affliates, improve your product range</h4>
+              </Grid>
+              {affliateExplore.map((affiliate, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <AffiliateExplore
+                    key={index}
+                    affiliate={affliateExplore[index].data}
+                  />
+                </Grid>
               ))}
-            </div>
-          </div>
+              <Grid xs={12}>
+                <h1
+                  className={styles.sectionTitle}
+                  style={{ marginTop: "10px" }}
+                >
+                  Your Listings
+                </h1>
+              </Grid>
+              <Grid xs={12}>
+                <h4>
+                  Here you can view all your products you are listing on your
+                  account
+                </h4>
+              </Grid>
+              {listingCards.map((listing, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <ListingCard key={index} listing={listingCards[index].data} />
+                </Grid>
+              ))}
 
-          <h1 className={styles.sectionTitle}>Your Listings</h1>
-          <div>
-            <h4>
-              Here you can view all your products you are listing on your
-              account
-            </h4>
-            <div>
-              <p>This is a sample section with a TikTok-like card UI.</p>
-            </div>
-            <h6>
-              Explore more products, increase your revenue through more listings
-            </h6>
-          </div>
+              <Grid xs={12}>
+                <h4>
+                  Explore more products, increase your revenue through more
+                  listings
+                </h4>
+              </Grid>
+              {listingExplore.map((listing, index) => (
+                <Grid xs={12} md={6} lg={4} xl={3}>
+                  <ListingExplore
+                    key={index}
+                    listing={listingExplore[index].data}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </div>
       </main>
 

@@ -16,10 +16,15 @@ lambda_client = boto3.client('lambda')
 def lambda_handler(event, context):
     try:
         # Extract data from the API Gateway event
-        body = json.loads(event['body'])
+        body = event['queryStringParameters']
         listing_id = body.get("listing_id")
 
         listing_response = listingsTable.get_item(Key={"listing_id": listing_id})
+        if "Item" not in listing_response:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"message": "Listing does not exist"})
+            }
         # Convert sets to lists in the response
         item = listing_response.get("Item", {})
         item["reviews"] = list(item.get("reviews", []))

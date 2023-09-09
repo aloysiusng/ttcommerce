@@ -1,19 +1,19 @@
 import Head from "next/head";
-import styles from "../styles/SupplierManagement.module.css";
-import { useContext, useState, useEffect } from "react";
-import Sidebar from "../components/sidebar";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import CreateProductForm from "../components/CreateProductForm";
+import Modal from "../components/Modal";
 import Navbar from "../components/Navbar";
-import { UserContext } from "./_app";
+import ProductCard from "../components/ProductCard";
+import Sidebar from "../components/Sidebar";
+import UserMiniCard from "../components/UserMiniCard";
+import styles from "../styles/SupplierManagement.module.css";
 import {
   getAllAffiliatesBySellerId,
   getAllOrdersBySellerId,
   getAllProductsBySellerId,
 } from "../utils/seller-service";
-import ProductCard from "../components/ProductCard";
-import UserMiniCard from "../components/UserMiniCard";
-import Modal from "../components/Modal";
-import CreateProductForm from "../components/CreateProductForm";
-import { toast } from "react-toastify";
+import { UserContext } from "./_app";
 
 export default function SupplierManagement() {
   const { user, setUser } = useContext(UserContext);

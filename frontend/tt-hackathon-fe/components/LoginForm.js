@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import styles from "../styles/LoginForm.module.css";
 import { doLoginWithEmailPassword } from "../utils/login-service";
 
@@ -15,6 +15,39 @@ const LoginForm = (props) => {
     setEmail("");
     setPassword("");
   };
+
+
+  // Tiktok login area 
+  const [accessToken, setAccessToken] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (accessToken) {
+      fetch('https://api.tiktok.com/v1/user/info/', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('API Request Failed');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setUserInfo(data);
+        })
+        .catch((error) => {
+          console.error('API Request Error:', error);
+        });
+    }
+  }, [accessToken]);
+
+  const initiateTikTokLogin = async () => {
+    router.push('/api/oauth');
+  };
+  //End of tiktok login code logic 
 
   return (
     <form onSubmit={handleSubmit} className={styles.loginForm}>
@@ -68,6 +101,23 @@ const LoginForm = (props) => {
         <h1>Log in</h1>
       </button>
       <br></br>
+      <div>
+        {accessToken ? (
+          <div>
+            <p>Authenticated</p>
+            {userInfo && (
+              <div>
+                <p>User Info:</p>
+                <pre>{JSON.stringify(userInfo, null, 2)}</pre>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button onClick={initiateTikTokLogin}>
+            Login with TikTok
+          </button>
+        )}
+      </div>
       <div>
         <hr></hr>
         <p style={{ fontSize: "0.75em" }}>

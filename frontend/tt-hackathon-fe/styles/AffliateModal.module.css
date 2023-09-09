@@ -34,11 +34,23 @@
   
   .modal-button {
     margin-top: 16px;
-    background-color: #FF2D55;
-    color: white;
+    background-color: rgb(104, 201, 208);
+    color: black;
     border: none;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
   }
+
+  .request-button {
+    margin-top: 16px;
+    background-color: #FFFFFF;
+    color: black;
+    border: 1px solid #FF2D55;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+
   

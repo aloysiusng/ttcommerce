@@ -25,12 +25,22 @@ def lambda_handler(event, context):
         
         # Get listing
         response = listingTable.get_item(Key={'listing_id': listing_id})
+        if "Item" not in response:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"message": "Listing does not exist"})
+            }
         listing = response['Item']
         product_id = listing["product_id"]
         seller_id = listing["tiktoker_id"]
 
         # Get product
         response = productTable.get_item(Key={'product_id': product_id})
+        if "Item" not in response:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"message": "Product does not exist"})
+            }
         product = response['Item']
         supplier_id = product['supplier_id']
 
@@ -61,6 +71,11 @@ def lambda_handler(event, context):
 
         # update tiktoker orders
         response = tiktokerTable.get_item(Key={'tiktoker_id': buyer_id})
+        if 'Item' not in response:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'message': 'Tiktoker does not exist'})
+            }
         tiktoker = response['Item']
         if "" in tiktoker["orders"]:
             tiktoker["orders"].remove("")
@@ -69,6 +84,11 @@ def lambda_handler(event, context):
 
         # update supplier orders
         response = supplierTable.get_item(Key={'supplier_id': supplier_id})
+        if 'Item' not in response:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'message': 'Supplier does not exist'})
+            }
         supplier = response['Item']
         if "" in supplier["orders"]:
             supplier["orders"].remove("")

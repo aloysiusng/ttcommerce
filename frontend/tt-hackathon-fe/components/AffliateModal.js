@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import styles from '../styles/AffliateModal.module.css';
+import { getAllProductsbySupplier } from '../utils/tter-service.js';
 
-Modal.setAppElement('#root');
 
 const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
-    // TODO: data handling
+    const [products, setProducts] = useState([]);
+    const [requestedDemos, setRequestedDemos] = useState([]);
+
+    useEffect(() => {
+        if (isOpen) {
+            const fetchProducts = async () => {
+                try {
+                    console.log(data)
+                    console.log(data.supplier_id)
+                    const productsData = await getAllProductsbySupplier("9a62670a-30f6-4860-9dc6-b40e30447e50");
+                    setProducts(productsData);
+                    console.log(productsData);
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+            };
+
+            fetchProducts();
+        }
+    }, [isOpen, data.supplier_id]);
+
+    const handleRequestDemo = (productId) => {
+        setRequestedDemos(prev => [...prev, productId]);
+    };
 
     return (
         <Modal
@@ -17,27 +40,31 @@ const AffiliateModal = ({ isOpen, onRequestClose, data, modalType }) => {
                 <div className={styles["modal-container"]}>
                     <div className={styles["modal-content"]}>
                         <h2 className={styles["modal-header"]}>Request Sent</h2>
-                        {/* TODO: Create the rows and output based on product */}
                         <table>
                             <thead>
                                 <tr>
                                     <th>Item</th>
+                                    <th>Description</th>
+                                    <th>quantity</th>
+                                    <th>Supplier Price</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Item 1</td>
-                                    <td>
-                                        <button>Request Demo</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Item 2</td>
-                                    <td>
-                                        <button>Request Demo</button>
-                                    </td>
-                                </tr>
+                                {products.map((product, index) => (
+                                    <tr key={index}>
+                                        <td>{product.product_name}</td>
+                                        <td>{product.description}</td>
+                                        <td>{product.quantity}</td>
+                                        <td>{product.supplier_price}</td>
+                                        <button className={styles['request-button']}
+                                            onClick={() => handleRequestDemo(product.id)}
+                                            style={requestedDemos.includes(product.id) ? { backgroundColor: 'green' } : {}}
+                                        >
+                                            Request Demo
+                                        </button>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                         <button

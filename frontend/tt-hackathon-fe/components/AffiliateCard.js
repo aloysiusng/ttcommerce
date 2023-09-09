@@ -19,11 +19,11 @@ const AffiliateCard = ({ affiliate, isOpen, data, openModal, closeModal }) => {
             <div className={styles['affiliate-card']}>
                 <div>
                     <h2>{affiliate.name}</h2>
-                    <p>{affiliate.subheader}</p>
+                    <p>{affiliate.description}</p>
                 </div>
                 <div className={styles['affiliate-image']}>
                     <img
-                        src={affiliate.imageUrl}
+                        src='man.png'
                         alt={`Image of ${affiliate.name}`}
                     />
                 </div>
