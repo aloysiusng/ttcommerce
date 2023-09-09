@@ -34,8 +34,7 @@ export default function Home() {
       <Navbar isLoggedIn={user} loginOnClick={openModal}></Navbar>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {/* <LoginForm _callback={onLoginSuccess}></LoginForm> */}
-        <LoginFormNew></LoginFormNew>
+        <LoginForm _callback={onLoginSuccess}></LoginForm>
       </Modal>
 
       <main>
