@@ -21,12 +21,9 @@ export default function TterCurate() {
   const [searchQuery, setSearchQuery] = useState("");
 
   async function fetchAllProducts() {
-    try {
-      getAllProducts().then((res) => setAllProducts(JSON.parse(res.products)));
-    } catch (error) {
-      console.log("Error fetching all products: " + error);
-      toast.error("Error retrieving products please contact support!");
-    }
+    getAllProducts()
+      .then((res) => setAllProducts(JSON.parse(res.products)))
+      .catch((err) => toast.error("Error fetching products please contact support!"));
   }
 
   useEffect(() => {
@@ -57,7 +54,7 @@ export default function TterCurate() {
               <h1 className={styles.sectionTitle}>Products Available</h1>
             </Grid>
             {allProducts.map((product) => (
-              <Grid xs={12} md={4} lg={3} xl={3}>
+              <Grid xs={12} md={6} lg={4} xl={3}>
                 <div
                   key={product.product_id}
                   onClick={() => {

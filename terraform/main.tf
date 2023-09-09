@@ -241,40 +241,6 @@ resource "aws_apigatewayv2_stage" "lambda" {
   }
 }
 #======================================== API Gateway routes========================================
-# ========================= GET /getTest ========================================
-resource "aws_lambda_function" "getTest" {
-  function_name = "getTest"
-  filename      = "../backend/getTest.zip"
-  role          = aws_iam_role.super_lambda_role.arn
-  handler       = "getTest.getTest.lambda_handler"
-  #                   function name
-  source_code_hash = filebase64sha256("../backend/getTest.zip")
-
-  runtime = "python3.8"
-  timeout = 900
-}
-resource "aws_cloudwatch_log_group" "test" {
-  name              = "/aws/lambda/${aws_lambda_function.getTest.function_name}"
-  retention_in_days = 30
-}
-resource "aws_apigatewayv2_integration" "getTest_integration" {
-  api_id             = aws_apigatewayv2_api.lambda.id
-  integration_uri    = aws_lambda_function.getTest.invoke_arn
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
-}
-resource "aws_apigatewayv2_route" "getTest_route" {
-  api_id    = aws_apigatewayv2_api.lambda.id
-  route_key = "GET /getTest"
-  target    = "integrations/${aws_apigatewayv2_integration.getTest_integration.id}"
-}
-resource "aws_lambda_permission" "getTest_permission" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.getTest.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
-}
 
 # ========================= POST /create_product ========================================
 resource "aws_lambda_function" "create_product" {

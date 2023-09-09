@@ -20,6 +20,11 @@ def lambda_handler(event, context):
         listing_id = body.get("listing_id")
 
         listing_response = listingsTable.get_item(Key={"listing_id": listing_id})
+        if "Item" not in listing_response:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"message": "Listing does not exist"})
+            }
         # Convert sets to lists in the response
         item = listing_response.get("Item", {})
         item["reviews"] = list(item.get("reviews", []))
