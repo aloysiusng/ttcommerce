@@ -210,6 +210,7 @@ resource "aws_apigatewayv2_api" "lambda" {
     allow_origins = ["*"]
     allow_methods = ["POST", "GET", "PUT", "DELETE","OPTIONS"]
     max_age       = 300
+    allow_headers = ["content-type"]
   }
 }
 resource "aws_cloudwatch_log_group" "api_gw" {
@@ -1005,6 +1006,40 @@ resource "aws_lambda_permission" "get_all_products_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.get_all_products.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+# ========================= GET /get_all_listings ========================================
+resource "aws_lambda_function" "get_all_listings" {
+  function_name = "get_all_listings"
+  filename      = "../backend/get_all_listings.zip"
+  role          = aws_iam_role.super_lambda_role.arn
+  handler       = "get_all_listings.get_all_listings.lambda_handler"
+
+  source_code_hash = filebase64sha256("../backend/get_all_listings.zip")
+
+  runtime = "python3.8"
+  timeout = 900
+}
+resource "aws_cloudwatch_log_group" "get_all_listings" {
+  name              = "/aws/lambda/${aws_lambda_function.get_all_listings.function_name}"
+  retention_in_days = 30
+}
+resource "aws_apigatewayv2_integration" "get_all_listings_integration" {
+  api_id             = aws_apigatewayv2_api.lambda.id
+  integration_uri    = aws_lambda_function.get_all_listings.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+resource "aws_apigatewayv2_route" "get_all_listings_route" {
+  api_id    = aws_apigatewayv2_api.lambda.id
+  route_key = "GET /get_all_listings"
+  target    = "integrations/${aws_apigatewayv2_integration.get_all_listings_integration.id}"
+}
+resource "aws_lambda_permission" "get_all_listings_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.get_all_listings.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }

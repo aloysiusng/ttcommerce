@@ -1,5 +1,6 @@
 import products from "../mock/mock-seller-all-products.json";
 import affiliates from "../mock/mock-seller-all-affiliates.json";
+import orders from "../mock/mock-seller-all-orders.json";
 
 /* API LIST
 1) createProduct(productName, price, desc, qty, supplierId, image) // all params string
@@ -27,4 +28,21 @@ const getAllAffiliatesBySellerId = (sellerId) => {
   });
 };
 
-export { getAllProductsBySellerId, getAllAffiliatesBySellerId };
+const getAllOrdersBySellerId = (sellerId) => {
+  //MOCK
+  const allOrders = orders;
+  return new Promise((resolve, reject) => {
+    resolve(allOrders);
+  });
+};
+
+const createProduct = (product) => {
+  console.log(product);
+};
+
+export {
+  getAllProductsBySellerId,
+  getAllAffiliatesBySellerId,
+  getAllOrdersBySellerId,
+  createProduct,
+};

@@ -9,7 +9,7 @@
 
 .sidebar {
   min-width: 300px;
-  background-color: "red";
+  background-color: red;
   height: 100%;
   display: flex;
   flex-direction: column;

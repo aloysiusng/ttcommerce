@@ -9,9 +9,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.14.8",
+    "@mui/material": "^5.14.8",
     "bootstrap-icons": "^1.10.5",
+    "emailjs-com": "^3.2.0",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-modal": "^3.16.1",
+    "react-toastify": "^9.1.3"
   }
 }

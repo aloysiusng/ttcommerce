@@ -1,0 +1,45 @@
+.modalProductContent {
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.productName {
+  margin: 0em 0em 1em;
+}
+
+.productDescription {
+  margin: 0em 0em 1em;
+  align-items: left;
+  text-align: left;
+}
+
+.para {
+  align-items: left;
+  text-align: left;
+  margin: 0em 0em 1em;
+}
+
+.productImage {
+  margin: 0em 0em 1em;
+  height: 300px;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0em 0em 1em;
+}
+
+.listingPriceInput {
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 0em 0em 2em;
+}
