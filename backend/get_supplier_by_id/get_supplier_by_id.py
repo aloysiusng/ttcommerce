@@ -15,6 +15,8 @@ def lambda_handler(event, context):
         supplier["orders"] = list(supplier.get("orders", []))
         supplier["products"] = list(supplier.get("products", []))
         supplier["tiktokers"] = list(supplier.get("tiktokers", []))
+        for key,value in supplier["tiktokers_sales"].items():
+            supplier["tiktokers_sales"][key] = str(value)
         
         return {
             'statusCode': 200,
