@@ -4,6 +4,7 @@ import AffiliateModal from "./AffliateModal";
 import AffiliateSendRequest from "./AffliateSendRequest";
 
 const AffiliateCard = ({ affiliate, isOpen, data, openModal, closeModal }) => {
+    console.log(data);
     const [requestModalIsOpen, setRequestModalIsOpen] = useState(false);
 
     const openRequestModal = () => {
