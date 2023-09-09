@@ -24,10 +24,13 @@ def lambda_handler(event, context):
         supplier_id = body.get("supplier_id")
         image = body.get("image")
 
-        # Generate a UUID
-        uuid_value = str(uuid.uuid4())
+        if body.get("product_id") is not None:
+            product_id = body.get("product_id")
+        else:
+            # Generate a UUID
+            product_id = str(uuid.uuid4())
 
-        storage_name = "productName" + "_" + uuid_value + ".jpg"
+        storage_name = "productName" + "_" + product_id + ".jpg"
         # Upload the image to S3
         # with open(image, 'rb') as image_file:
         # Decode the base64 data into bytes
@@ -57,7 +60,7 @@ def lambda_handler(event, context):
         # Access DynamoDB
         products_response = productTable.put_item(
             Item={
-                "product_id": uuid_value,
+                "product_id": product_id,
                 "product_name": product_name,
                 "supplier_price": supplier_price,
                 "description": description,
@@ -76,7 +79,7 @@ def lambda_handler(event, context):
                 "body": json.dumps({"message": "Supplier does not exist"}),
             }
         supplier = supplier_response["Item"]
-        supplier["products"].add(uuid_value)
+        supplier["products"].add(product_id)
         # add product to supplier's list of product
         response = supplierTable.put_item(Item=supplier)
 

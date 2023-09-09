@@ -5,7 +5,7 @@ const affiliateCardSmallStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  maxWidth: "200px",
+  maxWidth: "300px",
   backgroundColor: "",
   border: "2px solid rgb(104, 201, 208)",
   color: "white",
@@ -13,6 +13,7 @@ const affiliateCardSmallStyle = {
   borderRadius: "16px",
   padding: "8px",
   textAlign: "center",
+  margin: "16px",
 };
 
 const buttonStyle = {
