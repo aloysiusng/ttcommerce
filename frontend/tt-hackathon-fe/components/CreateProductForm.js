@@ -9,6 +9,7 @@ const CreateProductForm = (props) => {
   const [imageBase64, setImageBase64] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setSupplierPrice] = useState("");
+  const [picChanged, setPicChanged] = useState(false);
 
   useEffect(() => {
     if (props.productToEdit) {
@@ -16,11 +17,12 @@ const CreateProductForm = (props) => {
       setDescription(props.productToEdit.description);
       setQuantity(props.productToEdit.quantity);
       setSupplierPrice(props.productToEdit.supplier_price);
+      setImageBase64(props.productToEdit.image_url);
     }
   }, []);
 
   const handleDelete = async () => {
-    deleteProduct(props.productToEdit);
+    await deleteProduct(props.productToEdit);
     props.changesMade();
     props.closeModal();
   };
@@ -28,17 +30,18 @@ const CreateProductForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (props.productToEdit) {
-      createProduct({
+      const image = picChanged ? imageBase64.slice(23) : imageBase64;
+      await createProduct({
         product_id: props.productToEdit.product_id,
         description: description,
         product_name: productName,
         supplier_id: "7b0febb8-d61d-4ff6-be7c-120beb7ea691", //CHANGE THIS ONCE USER LOGIN IMPLEMENTED
-        image: imageBase64.slice(23),
+        image: image,
         quantity: quantity,
         supplier_price: price,
       });
     } else {
-      createProduct({
+      await createProduct({
         description: description,
         product_name: productName,
         supplier_id: "7b0febb8-d61d-4ff6-be7c-120beb7ea691", //CHANGE THIS ONCE USER LOGIN IMPLEMENTED
@@ -57,6 +60,7 @@ const CreateProductForm = (props) => {
   };
 
   const handleImageUpload = (e) => {
+    setPicChanged(true);
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -128,11 +132,11 @@ const CreateProductForm = (props) => {
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          required
+          required={!props.productToEdit}
         />
       </div>
       <button type="submit" className={styles.submitButton}>
-        <h1>Create</h1>
+        <h1>{props.isEdit ? "Update" : "Create"}</h1>
       </button>
       {props.productToEdit && (
         <button

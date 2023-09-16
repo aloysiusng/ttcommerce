@@ -7,6 +7,7 @@ import Sidebar from "../components/Sidebar";
 
 import { UserContext } from "./_app";
 import SellerMiniCard from "../components/TopSellerCard";
+import StackedBarChart from "../components/StackedBarChart";
 import { getTiktokerById, getSupplierById } from "../utils/topseller-service";
 
 export default function SupplierAnalytics() {
@@ -87,18 +88,47 @@ export default function SupplierAnalytics() {
       <main>
         <Sidebar user={user}></Sidebar>
         <div className={styles.contentContainer}>
+          {/*
           <h1 className={styles.sectionTitle}>
             Total Orders:{" "}
             <span className={styles.red}>
               {supplier.length != 0 ? supplier.orders.length : 0}
             </span>
-          </h1>
-          <br></br>
-          <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
-          <div className={styles.carousell}>
-            {tiktokers?.map((affiliate) => (
-              <SellerMiniCard seller={affiliate} />
-            ))}
+          </h1> */}
+          <div className={styles.metrics}>
+            <div className={styles.sales_info_card}>
+              <div className={styles.sales_info_item}>
+                <div className={styles.sales_info_label}>Total Revenue to date:</div>
+                <div className={styles.sales_info_value}>$1000.30</div>
+              </div>
+              <div className={styles.sales_info_item}>
+                <div className={styles.sales_info_label}>Total Revenue for this month:</div>
+                <div className={styles.sales_info_value}>$240.78</div>
+              </div>
+              <div className={styles.sales_info_item}>
+                <div className={styles.sales_info_label}>Total Items Sold this month:</div>
+                <div className={styles.sales_info_value}>30</div>
+              </div>
+              <div className={styles.sales_info_item}>
+                <div className={styles.sales_info_label}>Total Orders:</div>
+                <div className={styles.sales_info_value}>{supplier.length != 0 ? supplier.orders.length : 0}</div>
+              </div>
+            </div>
+            <br></br>
+            <div className={styles.topSellingAffiliates}>
+              <h1 className={styles.sectionTitle}>Top Selling Affiliates</h1>
+              <div className={styles.carousell}>
+                {tiktokers?.map((affiliate) => (
+                  <SellerMiniCard seller={affiliate} />
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* <div className={styles.chart}>
+            <BarChart tiktokers={tiktokers}/>
+          </div> */}
+          <div className={styles.chart}>
+            <StackedBarChart/>
           </div>
         </div>
       </main>

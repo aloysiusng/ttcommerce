@@ -9,8 +9,34 @@
 // }
 // export { getAllProducts };
 
+const affiliateWithSupplier = async (
+  supplier_id,
+  tter_id = "48479c4d-0419-45c8-8d84-d3997c673858"
+) => {
+  console.log(supplier_id);
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/create_affliate";
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ supplier_id: supplier_id, tter_id: tter_id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 const getAllProducts = async () => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_products";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_products";
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -24,7 +50,9 @@ const getAllProducts = async () => {
 };
 
 const getProductById = async (id) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_product?product_id=" + id;
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_product?product_id=" +
+    id;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -38,7 +66,8 @@ const getProductById = async (id) => {
 };
 
 const createListing = async (body) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/create_listing";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/create_listing";
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -58,7 +87,8 @@ const createListing = async (body) => {
 };
 
 const getAllListing = async (tiktokerID) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_listings";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_listings";
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -68,7 +98,9 @@ const getAllListing = async (tiktokerID) => {
     // Filter for listings under tiktokerID
     const parsedData = await response.json();
     const parsedListings = JSON.parse(parsedData.listings);
-    const filteredListings = parsedListings.filter((listing) => listing.tiktoker_id == tiktokerID);
+    const filteredListings = parsedListings.filter(
+      (listing) => listing.tiktoker_id == tiktokerID
+    );
 
     for (var i = 0; i < filteredListings.length; i++) {
       const product = await getProductById(filteredListings[i].product_id);
@@ -91,7 +123,7 @@ const getAllProductsNotInListing = async (tiktokerID) => {
     var products = await getAllProductsbySupplier(suppliers[i].supplier_id);
     productList = productList.concat(products);
   }
-  console.log(productList)
+  console.log(productList);
   var productsNotInListing = [];
   for (var i = 0; i < productList.length; i++) {
     var product = productList[i];
@@ -110,7 +142,8 @@ const getAllProductsNotInListing = async (tiktokerID) => {
 };
 
 const getAllSuppliers = async (tiktokerID) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -120,8 +153,11 @@ const getAllSuppliers = async (tiktokerID) => {
     // Filter for affliates
     const parsedData = await response.json();
     const parsedSuppliers = JSON.parse(parsedData.suppliers);
-    const filteredSuppliers = parsedSuppliers.filter((supplier) => supplier.tiktokers.includes(tiktokerID));
-
+    const filteredSuppliers = parsedSuppliers.filter((supplier) =>
+      supplier.tiktokers.includes(tiktokerID)
+    );
+    console.log("Parsed Affiliate JSON:");
+    console.log(filteredSuppliers);
     return filteredSuppliers;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -130,7 +166,8 @@ const getAllSuppliers = async (tiktokerID) => {
 };
 
 const getAllSuppliersNotAffliated = async (tiktokerID) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_all_suppliers";
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -140,7 +177,9 @@ const getAllSuppliersNotAffliated = async (tiktokerID) => {
     // Filter for non-affliates
     const parsedData = await response.json();
     const parsedSuppliers = JSON.parse(parsedData.suppliers);
-    const filteredSuppliers = parsedSuppliers.filter((supplier) => !supplier.tiktokers.includes(tiktokerID));
+    const filteredSuppliers = parsedSuppliers.filter(
+      (supplier) => !supplier.tiktokers.includes(tiktokerID)
+    );
 
     return filteredSuppliers;
   } catch (error) {
@@ -150,7 +189,9 @@ const getAllSuppliersNotAffliated = async (tiktokerID) => {
 };
 
 const getAllProductsbySupplier = async (supplierID) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_products_by_supplier?supplier_id=" + supplierID;
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/get_products_by_supplier?supplier_id=" +
+    supplierID;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -165,7 +206,8 @@ const getAllProductsbySupplier = async (supplierID) => {
 };
 
 const deleteListing = async (listingID) => {
-  var url = "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/delete_listing";
+  var url =
+    "https://iytttt1316.execute-api.ap-southeast-1.amazonaws.com/api/delete_listing";
   try {
     const response = await fetch(url, {
       method: "DELETE",
@@ -185,4 +227,14 @@ const deleteListing = async (listingID) => {
   }
 };
 
-export { createListing, deleteListing, getAllListing, getAllProducts, getAllProductsNotInListing, getAllProductsbySupplier, getAllSuppliers, getAllSuppliersNotAffliated };
+export {
+  createListing,
+  deleteListing,
+  getAllListing,
+  getAllProducts,
+  getAllProductsNotInListing,
+  getAllProductsbySupplier,
+  getAllSuppliers,
+  getAllSuppliersNotAffliated,
+  affiliateWithSupplier,
+};

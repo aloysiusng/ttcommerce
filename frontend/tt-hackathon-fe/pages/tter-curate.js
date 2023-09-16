@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import SearchBar from "../components/SearchBar";
 import Sidebar from "../components/Sidebar";
-import styles from "../styles/TterCurate.module.css";
+import styles from "../styles/SupplierManagement.module.css";
 import { getAllProducts } from "../utils/tter-service";
 import { UserContext } from "./_app";
 
@@ -64,34 +64,35 @@ export default function TterCurate() {
           />
         </Modal>
         {/* main content */}
-        <Box sx={{ pt: 4, pl: 4, width: "80%" }}>
-          <Grid container spacing={2}>
-            <Grid xs={12} xl={12}>
-              <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                handleSearch={handleSearch}
-                handleClear={handleClear}
-              />
-            </Grid>
-            <Grid xs={12}>
-              <h1 className={styles.sectionTitle}>Products Available</h1>
-            </Grid>
+        <div className={styles.contentContainer}>
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+            handleClear={handleClear}
+            style={{ marginTop: "10px" }}
+          />
+          <h1 className={styles.sectionTitle} style={{ marginTop: "1em" }}>
+            Products Available
+          </h1>
+          <div className={styles.carousell2}>
             {filteredProducts.map((product) => (
-              <Grid xs={12} md={6} lg={4} xl={3}>
-                <div
-                  key={product.product_id}
-                  onClick={() => {
-                    setOpenModal(true);
-                    setModalProduct(product);
-                  }}
-                >
-                  <ProductCard product={product} nonEditable={true} />
-                </div>
-              </Grid>
+              <div
+                key={product.product_id}
+                onClick={() => {
+                  setOpenModal(true);
+                  setModalProduct(product);
+                }}
+              >
+                <ProductCard
+                  product={product}
+                  nonEditable={true}
+                  fixHeight={true}
+                />
+              </div>
             ))}
-          </Grid>
-        </Box>
+          </div>
+        </div>
       </main>
 
       <style jsx>{`

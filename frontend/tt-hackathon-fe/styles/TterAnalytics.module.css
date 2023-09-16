@@ -149,13 +149,13 @@
 }
 
 .carousell {
-  display: flex;
-  width: 100%;
-  height: 80%;
-  flex-wrap: nowrap;
-  overflow: auto;
-  align-self: flex-start;
-  scrollbar-width: none;
+    display: flex;
+    width: 100%;
+    height: 80%;
+    flex-wrap: nowrap;
+    overflow: auto;
+    align-self: flex-start;
+    scrollbar-width: none;
 }
 
 .carousell::-webkit-scrollbar {
@@ -179,12 +179,11 @@
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  width:30%;
+  width: 30%;
   margin: 0 5% 0 0;
 }
 
 .sales_info_item {
-  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;

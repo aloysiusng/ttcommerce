@@ -1,43 +1,11 @@
 import React, { useState } from "react";
 import AffiliateSendRequest from "./AffliateSendRequest";
+import styles from "../styles/AffliateCard.module.css";
+import { useRouter } from "next/router";
 
-const affiliateCardSmallStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  maxWidth: "300px",
-  backgroundColor: "",
-  border: "2px solid rgb(104, 201, 208)",
-  color: "white",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "16px",
-  padding: "8px",
-  textAlign: "center",
-  margin: "16px",
-};
-
-const buttonStyle = {
-  margin: "2px 8px",
-  padding: "8px 16px",
-  backgroundColor: "rgb(104, 201, 208)",
-  color: "black",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-};
-
-const buttonStyle_two = {
-  margin: "2px 8px",
-  padding: "8px 16px",
-  backgroundColor: "#000000",
-  color: "white",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-};
-
-const AffiliateExplore = ({ affiliate }) => {
+const AffiliateExplore = ({ affiliate, pic }) => {
   const [requestModalIsOpen, setRequestModalIsOpen] = useState(false);
+  const router = useRouter();
 
   const openRequestModal = () => {
     setRequestModalIsOpen(true);
@@ -48,21 +16,75 @@ const AffiliateExplore = ({ affiliate }) => {
   };
 
   const redirectToCurate = () => {
-    window.location.href = "/tter-curate";
+    router.push("/tter-curate");
   };
 
   return (
-    <div style={affiliateCardSmallStyle}>
-      <h3 style={{ color: "red" }}>{affiliate.category}</h3>
-      <h4 style={{ color: "black"}} >{affiliate.name}</h4>
-      <img src="man.png" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
-      <p style={{ color: "black", margin: "10px" }}>{affiliate.description}</p>
-      {/* Redirect to View page with get all products */}
-      <button style={buttonStyle} onClick={() => redirectToCurate()}>View products</button>
-      <button style={buttonStyle_two} onClick={() => openRequestModal()}>
-        Request Affliation
-      </button>
-      {requestModalIsOpen && <AffiliateSendRequest isOpen={requestModalIsOpen} onRequestClose={closeRequestModal} type={2} />}
+    <div className={styles["affiliate-card"]}>
+      <div
+        className={styles["affiliate-image"]}
+        style={{
+          backgroundImage: `url(${pic})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <h3 className={styles["tag"]}>
+          <i
+            style={{ fontSize: "1em", marginRight: "0.5em" }}
+            className="bi bi-tag-fill"
+          ></i>
+          {String(affiliate.category).split(" ")[0]}
+        </h3>
+      </div>
+      <div style={{ textAlign: "center", padding: "0em 1em" }}>
+        <h1>{affiliate.name}</h1>
+        <p style={{ color: "grey", wordBreak: "break-word" }}>
+          {affiliate.description}
+        </p>
+      </div>
+      <div className={styles["affiliate-buttons"]}>
+        <button
+          className={styles.hackButton2}
+          onClick={() => redirectToCurate()}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "1em",
+              alignContent: "center",
+            }}
+          >
+            <i style={{ fontSize: "2em" }} className="bi bi-box-seam"></i>
+            <h2 style={{ alignSelf: "center" }}>Products</h2>
+          </div>
+        </button>
+        <button
+          className={styles.hackButton2}
+          onClick={() => openRequestModal()}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "1em",
+              alignContent: "center",
+            }}
+          >
+            <i style={{ fontSize: "2em" }} className="bi bi-person-plus"></i>
+            <h2 style={{ alignSelf: "center" }}>Affiliate</h2>
+          </div>
+        </button>
+      </div>
+      {requestModalIsOpen && (
+        <AffiliateSendRequest
+          isOpen={requestModalIsOpen}
+          onRequestClose={closeRequestModal}
+          type={2}
+          supplier_id={affiliate.supplier_id}
+        />
+      )}
     </div>
   );
 };

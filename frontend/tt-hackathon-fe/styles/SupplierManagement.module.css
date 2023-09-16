@@ -170,6 +170,15 @@
   scrollbar-width: none;
 }
 
+.carousell2 {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow: auto;
+  align-self: flex-start;
+  scrollbar-width: none;
+}
+
 .carousell::-webkit-scrollbar {
   width: 0.5em; /* Width of the scrollbar track */
 }

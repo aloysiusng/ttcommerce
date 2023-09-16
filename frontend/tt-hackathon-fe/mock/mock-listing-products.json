@@ -1,0 +1,32 @@
+{
+    "listing": [
+        {
+          "id": "1",
+          "name": "Surface Pro",
+          "price": "$1500",
+          "quantity": "9",
+          "image_url": "https://s3-ap-southeast-1.amazonaws.com/images-bucket-13812931/productName_775eeefd-b1f9-40f4-87f2-4ae0e68596b1.jpg"
+        },
+        {
+          "id": "2",
+          "name": "Wireless Headphone",
+          "price": "$89.50",
+          "quantity": "5",
+          "image_url": "https://s3-ap-southeast-1.amazonaws.com/images-bucket-13812931/productName_4e7c8648-4742-414a-8572-a96465f63d2f.jpg"
+        },
+        {
+          "id": "3",
+          "name": "Game Console",
+          "price": "$1123",
+          "quantity": "3",
+          "image_url": "https://s3-ap-southeast-1.amazonaws.com/images-bucket-13812931/productName_9a73c8f5-a0d0-43b8-b087-b271dcc3b419.jpg"
+        },
+        {
+          "id": "4",
+          "name": "LIGE Digital Watch",
+          "price": "$120",
+          "quantity": "2",
+          "image_url": "https://s3-ap-southeast-1.amazonaws.com/images-bucket-13812931/productName_e8ec287c-0318-4d2b-ab46-60cebfc30094.jpg"
+        }
+      ]
+}

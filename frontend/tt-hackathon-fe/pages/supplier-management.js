@@ -26,7 +26,8 @@ export default function SupplierManagement() {
   const [hadChangesMade, setHasChangesMade] = useState(false);
 
   const toggleChanges = () => {
-    location.reload();
+    //location.reload();
+    setHasChangesMade(!hadChangesMade);
   };
 
   const handleEdit = (product) => {
@@ -129,46 +130,47 @@ export default function SupplierManagement() {
               </tr>
             </thead>
             <tbody>
-              {sellerAllOrders.map((order) => (
-                <tr>
-                  <td>{order.order_id}</td>
-                  <td>{order.product.product_name}</td>
-                  <td>{order.product.price}</td>
-                  <td>{order.quantity}</td>
-                  <td>
-                    $
-                    {(
-                      Number(order.quantity) * Number(order.product.price)
-                    ).toFixed(2)}
-                  </td>
-                  <td>{`${order.buyer.name} (@${order.buyer.username})`}</td>
-                  <td>
-                    <button
-                      className={styles.secondaryButton}
-                      style={{ padding: "0.8em 1em" }}
-                      onClick={() => {
-                        alert(
-                          "Feature unimplemented: \nSeller's OMS will be linked and opened locally."
-                        );
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5em",
+              {sellerAllOrders
+                .map((order) => (
+                  <tr>
+                    <td>{order.order_id}</td>
+                    <td>{order.product.product_name}</td>
+                    <td>{order.product.price}</td>
+                    <td>{order.quantity}</td>
+                    <td>
+                      $
+                      {(
+                        Number(order.quantity) * Number(order.product.price)
+                      ).toFixed(2)}
+                    </td>
+                    <td>{`${order.buyer.name} (@${order.buyer.username})`}</td>
+                    <td>
+                      <button
+                        className={styles.secondaryButton}
+                        style={{ padding: "0.8em 1em" }}
+                        onClick={() => {
+                          window.location.href =
+                            "https://www.sap.com/sea/products/crm/order-management-system.html";
                         }}
                       >
-                        <i
-                          style={{ fontSize: "1.3em" }}
-                          className="bi bi-box-arrow-right"
-                        ></i>
-                        <p>Open in OMS</p>
-                      </div>
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5em",
+                          }}
+                        >
+                          <i
+                            style={{ fontSize: "1.3em" }}
+                            className="bi bi-box-arrow-right"
+                          ></i>
+                          <p>Open in OMS</p>
+                        </div>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+                .slice(0, 5)}
             </tbody>
           </table>
 

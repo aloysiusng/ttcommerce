@@ -7,6 +7,7 @@
   margin: 16px 16px 16px 0px;
   min-width: 300px;
   min-height: 300px;
+  max-width: 300px;
 }
 
 .productCard :hover {
@@ -15,6 +16,8 @@
 .productCardContent {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .productName {
@@ -54,5 +57,20 @@
 
 .secondaryButton:hover {
   color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.hackButton {
+  background-color: #fe2c55;
+  color: white;
+  padding: 1em;
+  border-radius: 1em;
+  border-color: transparent;
+  transition: background-color 0.3s ease;
+  margin-top: 2em;
+}
+
+.hackButton:hover {
+  background-color: rgb(186, 28, 59);
   cursor: pointer;
 }
